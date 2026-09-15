@@ -263,7 +263,9 @@ const server = http.createServer((req, res) => {
   let filePath = path.join(PUBLIC_DIR, pathname === '/' ? 'index.html' : pathname);
 
   fs.stat(filePath, (err, stats) => {
-    if (err || !stats.isFile()) {
+    if (!err && stats.isDirectory()) {
+      filePath = path.join(filePath, 'index.html');
+    } else if (err || !stats.isFile()) {
       // Fallback to index.html for SPA routing
       filePath = path.join(PUBLIC_DIR, 'index.html');
     }

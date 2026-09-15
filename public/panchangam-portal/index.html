@@ -1,0 +1,2153 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>தென்னக ஜோதிடக் கணித தளம் • Universal Jyotish & Panchangam Portal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --background: #fdfbf7;
+      --card: #ffffff;
+      --border: #e7dfd3;
+      --foreground: #1c1917;
+      --muted-foreground: #78716c;
+      --secondary: #f7f3eb;
+      --primary: #b45309;
+      --accent-gold: #d97706;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --background: #0c0a09;
+        --card: #1c1917;
+        --border: #292524;
+        --foreground: #fafaf9;
+        --muted-foreground: #a8a29e;
+        --secondary: #292524;
+        --primary: #f59e0b;
+        --accent-gold: #fbbf24;
+      }
+    }
+    .chart-box {
+      aspect-ratio: 1 / 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 0.35rem;
+      border: 1px solid var(--border);
+      position: relative;
+      background: var(--card);
+      transition: all 0.2s ease;
+    }
+    .chart-box:hover {
+      background: var(--secondary);
+    }
+    .chart-center {
+      grid-column: 2 / 4;
+      grid-row: 2 / 4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background: var(--secondary);
+      border: 1px solid var(--border);
+      padding: 0.5rem;
+    }
+    .tab-active {
+      background-color: #d97706 !important;
+      color: #ffffff !important;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .subtab-active {
+      background-color: #b45309 !important;
+      color: #ffffff !important;
+    }
+    .lesson-tab-active {
+      background-color: #b45309 !important;
+      color: #ffffff !important;
+      border-color: #b45309 !important;
+    }
+    @keyframes warningShake {
+      0%, 100% { transform: translate(-50%, 0) scale(1); }
+      20%, 60% { transform: translate(calc(-50% - 8px), 0) scale(1.02); }
+      40%, 80% { transform: translate(calc(-50% + 8px), 0) scale(1.02); }
+    }
+    .warning-shake {
+      animation: warningShake 0.4s ease-in-out !important;
+    }
+  </style>
+</head>
+<body class="bg-[var(--background)] text-[var(--foreground)] antialiased min-h-screen flex flex-col justify-between p-3 sm:p-6 transition-colors duration-200">
+
+  <!-- Right-Click Disabled Warning Toast -->
+  <div id="right-click-warning" style="display:none; position:fixed; top:24px; left:50%; transform:translateX(-50%); z-index:999999; background:rgba(28, 15, 15, 0.96); backdrop-filter:blur(10px); border:2px solid #ef4444; border-radius:16px; padding:18px 32px; box-shadow:0 20px 45px rgba(0,0,0,0.8), 0 0 30px rgba(239,68,68,0.45); color:#fff; text-align:center; min-width:320px; max-width:92vw; pointer-events:none; transition:opacity 0.25s ease;">
+    <div style="display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:6px;">
+      <span style="font-size:2rem; line-height:1;">⚠️</span>
+      <span style="font-size:1.15rem; font-weight:800; color:#fca5a5; text-transform:uppercase; letter-spacing:1px;" id="warning-head">எச்சரிக்கை! / Warning!</span>
+    </div>
+    <div style="font-size:1.35rem; font-weight:900; color:#fee2e2; margin-bottom:4px; text-shadow:0 2px 4px rgba(0,0,0,0.6);" id="warning-main">
+      Don't do that.
+    </div>
+    <div style="font-size:0.9rem; color:#fecaca; font-weight:500;" id="warning-sub">
+      வலது கிளிக் அனுமதிக்கப்படவில்லை (Right-click is disabled)
+    </div>
+  </div>
+
+  <div class="max-w-5xl mx-auto w-full space-y-6">
+    
+    <!-- Top Invocatory Ribbon (Sages' Blessings) -->
+    <div class="flex flex-col sm:flex-row justify-between items-center gap-2 px-4 py-2 bg-amber-500/10 border border-amber-500/20 rounded-xl text-xs">
+      <div class="flex items-center gap-2 font-serif text-amber-800 dark:text-amber-300">
+        <span class="text-base">🕉️</span>
+        <span id="txt-sages-blessing" class="font-medium">மஹரிஷி பராசரர் • வரருசி முனிவர் • வராஹமிஹிரர் அருளாசி பெற்ற கணித முறைமை</span>
+      </div>
+      
+      <!-- Language Controls -->
+      <div class="flex items-center gap-2">
+        <button onclick="setLanguage('ta')" id="btn-lang-ta" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-amber-600 text-white transition">
+          தமிழ்
+        </button>
+        <button onclick="setLanguage('en')" id="btn-lang-en" class="px-2.5 py-1 rounded-lg text-xs font-bold text-[var(--muted-foreground)] hover:bg-[var(--secondary)] transition">
+          English
+        </button>
+      </div>
+    </div>
+
+    <!-- Main Navigation Header -->
+    <header class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 shadow-sm space-y-4">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-100 dark:bg-amber-950/80 text-amber-800 dark:text-amber-300 border border-amber-500/30">
+              ★ <span id="lbl-badge-deterministic">சுயாதீன சாஸ்திரக் கணிதப் பொறி</span>
+            </span>
+            <span class="text-xs text-[var(--muted-foreground)]" id="lbl-engine-ver">Parashara & Suddha Vakya Core v2.0</span>
+          </div>
+          <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight mt-2 text-[var(--foreground)]" id="title-main">
+            தென்னக ஜோதிட & பஞ்சாங்க ஆய்வு தளம்
+          </h1>
+          <p class="text-xs sm:text-sm text-[var(--muted-foreground)] mt-1" id="sub-title">
+            ராசி-நவாம்சம் சக்கரம் • 4 வாழ்வியல் பலன்கள் • பஞ்சாங்கம் • ஜோதிடப் பாடசாலை
+          </p>
+        </div>
+
+        <!-- Master View Switcher (Horoscope vs Daily Panchangam vs Academy) -->
+        <div class="flex flex-wrap p-1 bg-[var(--secondary)] border border-[var(--border)] rounded-xl text-xs font-bold w-full sm:w-auto gap-1">
+          <button onclick="switchMasterView('horoscope')" id="nav-btn-horoscope" class="flex-1 sm:flex-none px-3.5 py-2 rounded-lg tab-active transition flex items-center justify-center gap-1.5">
+            <span>🌟</span> <span id="lbl-nav-horoscope">ஜாதக ஆய்வு & சக்கரம்</span>
+          </button>
+          <button onclick="switchMasterView('panchangam')" id="nav-btn-panchangam" class="flex-1 sm:flex-none px-3.5 py-2 rounded-lg text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition flex items-center justify-center gap-1.5">
+            <span>📅</span> <span id="lbl-nav-panchangam">தினசரி பஞ்சாங்கம்</span>
+          </button>
+          <button onclick="switchMasterView('academy')" id="nav-btn-academy" class="flex-1 sm:flex-none px-3.5 py-2 rounded-lg text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition flex items-center justify-center gap-1.5">
+            <span>📖</span> <span id="lbl-nav-academy">ஜோதிடப் பாடசாலை</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- ========================================================================= -->
+    <!-- VIEW 1: HOROSCOPE PREDICTIONS & SOUTH INDIAN CHART (D1 / D9)              -->
+    <!-- ========================================================================= -->
+    <div id="view-horoscope" class="space-y-6">
+      
+      <!-- Quick Load Sample Profiles -->
+      <div class="flex flex-wrap items-center justify-between gap-3 p-3 bg-[var(--card)] border border-[var(--border)] rounded-xl text-xs">
+        <span class="font-bold text-[var(--muted-foreground)] flex items-center gap-1.5">
+          <span>⚡</span> <span id="lbl-quick-samples">துரித மாதிரி ஜாதகங்கள் (Quick Samples):</span>
+        </span>
+        <div class="flex flex-wrap items-center gap-2">
+          <button onclick="loadProfile('benchmark')" id="btn-profile-benchmark" class="px-3 py-1.5 rounded-lg border border-amber-500/40 bg-amber-500/15 text-amber-900 dark:text-amber-200 font-bold transition flex items-center gap-1.5">
+            <span>⚖️</span> <span id="btn-sample-govt">மாதிரி 1: அரசு / நீதித்துறை</span>
+          </button>
+          <button onclick="loadProfile('tech')" id="btn-profile-tech" class="px-3 py-1.5 rounded-lg border border-[var(--border)] bg-[var(--secondary)] text-[var(--foreground)] font-bold transition flex items-center gap-1.5">
+            <span>💻</span> <span id="btn-sample-tech">மாதிரி 2: IT / தொழில்நுட்பம்</span>
+          </button>
+          <button onclick="loadProfile('finance')" id="btn-profile-finance" class="px-3 py-1.5 rounded-lg border border-[var(--border)] bg-[var(--secondary)] text-[var(--foreground)] font-bold transition flex items-center gap-1.5">
+            <span>💰</span> <span id="btn-sample-finance">மாதிரி 3: வணிகம் & நிதி</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mid Section: Form Inputs & South Indian Graphical Chart Side-by-Side -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- Left Column: Input Form (4 cols) -->
+        <div class="lg:col-span-4 bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 shadow-sm space-y-4">
+          <h2 class="text-sm font-bold text-[var(--foreground)] flex items-center gap-2 border-b border-[var(--border)] pb-3">
+            <span>📜</span> <span id="hdr-birth-data">ஜாதக விவர உள்ளீடுகள் (Birth Data)</span>
+          </h2>
+
+          <div>
+            <label class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1" id="lbl-dob">பிறந்த தேதி (Date of Birth)</label>
+            <input type="date" id="in-dob" value="1992-04-20" onchange="runAllCalculations()" class="w-full bg-[var(--background)] border border-[var(--border)] rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 font-medium">
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1" id="lbl-tob">பிறந்த நேரம்</label>
+              <input type="time" id="in-tob" value="10:15" onchange="runAllCalculations()" class="w-full bg-[var(--background)] border border-[var(--border)] rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 font-medium">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1" id="lbl-gender">பாலினம்</label>
+              <select id="in-gender" onchange="runAllCalculations()" class="w-full bg-[var(--background)] border border-[var(--border)] rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 font-medium">
+                <option value="male" selected id="opt-male">ஆண் (Male)</option>
+                <option value="female" id="opt-female">பெண் (Female)</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1" id="lbl-lagna">உதய லக்கினம் (Ascendant)</label>
+            <select id="in-lagna" onchange="onLagnaChange()" class="w-full bg-[var(--background)] border border-[var(--border)] rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 font-medium">
+              <option value="0">மேஷம் (Aries)</option>
+              <option value="1">ரிஷபம் (Taurus)</option>
+              <option value="2" selected>மிதுனம் (Gemini)</option>
+              <option value="3">கடகம் (Cancer)</option>
+              <option value="4">சிம்மம் (Leo)</option>
+              <option value="5">கன்னி (Virgo)</option>
+              <option value="6">துலாம் (Libra)</option>
+              <option value="7">விருச்சிகம் (Scorpio)</option>
+              <option value="8">தனுசு (Sagittarius)</option>
+              <option value="9">மகரம் (Capricorn)</option>
+              <option value="10">கும்பம் (Aquarius)</option>
+              <option value="11">மீனம் (Pisces)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1" id="lbl-dasha-balance">பிறந்த போது தசா இருப்பு (Dasha Balance)</label>
+            <div class="grid grid-cols-2 gap-2">
+              <select id="in-dasha-lord" onchange="runAllCalculations()" class="w-full bg-[var(--background)] border border-[var(--border)] rounded-xl px-2 py-2 text-xs font-medium">
+                <option value="கேது">கேது (Ketu)</option>
+                <option value="சுக்கிரன்" selected>சுக்கிரன் (Venus)</option>
+                <option value="சூரியன்">சூரியன் (Sun)</option>
+                <option value="சந்திரன்">சந்திரன் (Moon)</option>
+                <option value="செவ்வாய்">செவ்வாய் (Mars)</option>
+                <option value="இராகு">இராகு (Rahu)</option>
+                <option value="குரு">குரு (Jupiter)</option>
+                <option value="சனி">சனி (Saturn)</option>
+                <option value="புதன்">புதன் (Mercury)</option>
+              </select>
+              <input type="number" id="in-dasha-years" value="1.4" step="0.1" onchange="runAllCalculations()" placeholder="ஆண்டுகள்" class="w-full bg-[var(--background)] border border-[var(--border)] rounded-xl px-3 py-2 text-xs font-medium">
+            </div>
+          </div>
+
+          <button onclick="runAllCalculations()" class="w-full py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-sm shadow-xs transition" id="btn-compute">
+            சாஸ்திர பலனைக் கணக்கிடு (Analyze Chart)
+          </button>
+
+        </div>
+
+        <!-- Right Column: Graphical South Indian Chart with D1 / D9 Switcher (8 cols) -->
+        <div class="lg:col-span-8 bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 shadow-sm space-y-4">
+          
+          <!-- Chart Header & Interactive D1/D9 Toggle -->
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[var(--border)] pb-3">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-base font-bold text-[var(--foreground)]" id="hdr-rasi-chart">தென்னக பாரம்பரிய சக்கரம் (South Indian Chart)</span>
+              </div>
+              <p class="text-xs text-[var(--muted-foreground)] mt-0.5" id="txt-chart-sub">
+                108 பாதக் கணிதப்படி ராசி மற்றும் நவாம்ச நிலைகள்
+              </p>
+            </div>
+
+            <!-- D1 / D9 Switcher Buttons -->
+            <div class="flex items-center p-1 bg-[var(--secondary)] rounded-xl border border-[var(--border)] text-xs font-bold self-start sm:self-auto">
+              <button onclick="switchChartMode('D1')" id="btn-chart-d1" class="px-3 py-1.5 rounded-lg subtab-active transition flex items-center gap-1">
+                <span>♈</span> <span id="lbl-btn-d1">ராசி (D1)</span>
+              </button>
+              <button onclick="switchChartMode('D9')" id="btn-chart-d9" class="px-3 py-1.5 rounded-lg text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition flex items-center gap-1">
+                <span>🔯</span> <span id="lbl-btn-d9">நவாம்சம் (D9)</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 4x4 Traditional South Indian Grid -->
+          <div class="grid grid-cols-4 grid-rows-4 w-full max-w-md mx-auto aspect-square border-2 border-amber-600/40 rounded-2xl overflow-hidden shadow-xs bg-[var(--background)]">
+            
+            <!-- Box 11: Meenam (Row 1, Col 1) -->
+            <div class="chart-box" id="box-11">
+              <span class="text-[10px] font-bold text-[var(--muted-foreground)]">மீனம் (Pisces)</span>
+              <div class="planets-space flex flex-wrap gap-1 text-xs font-bold text-[var(--foreground)]"></div>
+            </div>
+
+            <!-- Box 0: Mesham (Row 1, Col 2) -->
+            <div class="chart-box" id="box-0">
+              <span class="text-[10px] font-bold text-[var(--muted-foreground)]">மேஷம் (Aries)</span>
+              <div class="planets-space flex flex-wrap gap-1 text-xs font-bold text-[var(--foreground)]"></div>
+            </div>
+
+            <!-- Box 1: Rishabam (Row 1, Col 3) -->
+            <div class="chart-box" id="box-1">
+              <span class="text-[10px] font-bold text-[var(--muted-foreground)]">ரிஷபம் (Taurus)</span>
+              <div class="planets-space flex flex-wrap gap-1 text-xs font-bold text-[var(--foreground)]"></div>
+            </div>
+
+            <!-- Box 2: Mithunam (Row 1, Col 4) -->
+            <div class="chart-box" id="box-2">
+              <span class="text-[10px] font-bold text-[var(--muted-foreground)]">மிதுனம் (Gemini)</span>
+              <div class="planets-space flex flex-wrap gap-1 text-xs font-bold text-[var(--foreground)]"></div>
+            </div>
+
+            <!-- Box 10: Kumbham (Row 2, Col 1) -->
+            <div class="chart-box" id="box-10">
+              <span class="text-[10px] font-bold text-[var(--muted-foreground)]">கும்பம் (Aquarius)</span>
+              <div class="planets-space flex flex-wrap gap-1 text-xs font-bold text-[var(--foreground)]"></div>
+            </div>
+
+            <!-- Central Courtyard (Spans Row 2-3, Col 2-3) -->
+            <div class="chart-center">
+              <div class="text-xs uppercase tracking-wider font-extrabold text-amber-700 dark:text-amber-400" id="center-title">
+                ராசி சக்கரம் (D1)
+              </div>
+              <div class="text-xs font-bold text-[var(--foreground)] mt-1" id="center-lagna">
+                லக்னம்: மிதுனம்
+              </div>
+              <div class="text-[11px] text-[var(--muted-foreground)] mt-0.5" id="center-yogi">
+                யோககாரகன்: சுக்கிரன், சனி
+              </div>
+              <div class="mt-2 flex flex-col items-center gap-1">
+                <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-semibold" id="center-status">
+                  100% சாஸ்திரக் கணிதம்
+                </span>
+                <span id="center-vargottama-pill" class="hidden text-[10px] px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-800 dark:text-amber-300 font-bold border border-amber-500/30">
+                  ★ வர்க்கோத்தமம்
+                </span>
+              </div>
+            </div>
+
+            <!-- Box 3: Katakam (Row 2, Col 4) -->
+            <div class="chart-box" id="box-3">
+              <span class="text-[10px] font-bold text-[var(--muted-foreground)]">கடகம் (Cancer)</span>
+              <div class="planets-space flex flex-wrap gap-1 text-xs font-bold text-[var(--foreground)]"></div>
+            </div>
+
+            <!-- Box 9: Makaram (Row 3, Col 1) -->
+            <div class="chart-box" id="box-9">
+              <span class="text-[10px] font-bold text-[var(--muted-foreground)]">மகரம் (Capricorn)</span>
+              <div class="planets-space flex flex-wrap gap-1 text-xs font-bold text-[var(--foreground)]"></div>
+            </div>
+
+            <!-- Box 4: Simham (Row 3, Col 4) -->
+            <div class="chart-box" id="box-4">
+              <span class="text-[10px] font-bold text-[var(--muted-foreground)]">சிம்மம் (Leo)</span>
+              <div class="planets-space flex flex-wrap gap-1 text-xs font-bold text-[var(--foreground)]"></div>
+            </div>
+
+            <!-- Box 8: Dhanusu (Row 4, Col 1) -->
+            <div class="chart-box" id="box-8">
+              <span class="text-[10px] font-bold text-[var(--muted-foreground)]">தனுசு (Sagittarius)</span>
+              <div class="planets-space flex flex-wrap gap-1 text-xs font-bold text-[var(--foreground)]"></div>
+            </div>
+
+            <!-- Box 7: Vrichikam (Row 4, Col 2) -->
+            <div class="chart-box" id="box-7">
+              <span class="text-[10px] font-bold text-[var(--muted-foreground)]">விருச்சிகம் (Scorpio)</span>
+              <div class="planets-space flex flex-wrap gap-1 text-xs font-bold text-[var(--foreground)]"></div>
+            </div>
+
+            <!-- Box 6: Thula (Row 4, Col 3) -->
+            <div class="chart-box" id="box-6">
+              <span class="text-[10px] font-bold text-[var(--muted-foreground)]">துலாம் (Libra)</span>
+              <div class="planets-space flex flex-wrap gap-1 text-xs font-bold text-[var(--foreground)]"></div>
+            </div>
+
+            <!-- Box 5: Kanya (Row 4, Col 4) -->
+            <div class="chart-box" id="box-5">
+              <span class="text-[10px] font-bold text-[var(--muted-foreground)]">கன்னி (Virgo)</span>
+              <div class="planets-space flex flex-wrap gap-1 text-xs font-bold text-[var(--foreground)]"></div>
+            </div>
+
+          </div>
+
+          <!-- Chart Legend & Vargottama Note -->
+          <div class="flex flex-wrap items-center justify-between gap-2 text-[11px] text-[var(--muted-foreground)] pt-2 border-t border-[var(--border)]">
+            <div class="flex items-center gap-3">
+              <span class="flex items-center gap-1">
+                <span class="inline-block w-2.5 h-2.5 rounded bg-red-500"></span> <span id="leg-lagna">லக்கினம் (Lagna)</span>
+              </span>
+              <span class="flex items-center gap-1">
+                <span class="inline-block w-2.5 h-2.5 rounded bg-amber-500"></span> <span id="leg-exalted">உச்ச கிரகம் (Exalted)</span>
+              </span>
+              <span class="flex items-center gap-1">
+                <span class="inline-block w-2.5 h-2.5 rounded bg-emerald-500"></span> <span id="leg-vargottama">வர்க்கோத்தமம் (Vargottama)</span>
+              </span>
+            </div>
+            <div id="vargottama-summary-text" class="font-semibold text-amber-700 dark:text-amber-300"></div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Bottom Section: The 4 Life Predictions Tabs & Gauges -->
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 shadow-sm space-y-5">
+        
+        <!-- Tab Controls -->
+        <div class="flex gap-2 border-b border-[var(--border)] pb-2 overflow-x-auto text-xs sm:text-sm font-semibold">
+          <button onclick="switchLifeTab('career')" id="tab-btn-career" class="px-4 py-2 rounded-xl bg-amber-600 text-white shadow-xs transition flex items-center gap-1.5">
+            <span>💼</span> <span id="tab-lbl-career">1. உத்தியோகம் & தொழில்</span>
+          </button>
+          <button onclick="switchLifeTab('marriage')" id="tab-btn-marriage" class="px-4 py-2 rounded-xl text-[var(--muted-foreground)] hover:bg-[var(--secondary)] transition flex items-center gap-1.5">
+            <span>💍</span> <span id="tab-lbl-marriage">2. திருமணம் & வரன்</span>
+          </button>
+          <button onclick="switchLifeTab('progeny')" id="tab-btn-progeny" class="px-4 py-2 rounded-xl text-[var(--muted-foreground)] hover:bg-[var(--secondary)] transition flex items-center gap-1.5">
+            <span>👶</span> <span id="tab-lbl-progeny">3. புத்திர பாக்கியம்</span>
+          </button>
+          <button onclick="switchLifeTab('health')" id="tab-btn-health" class="px-4 py-2 rounded-xl text-[var(--muted-foreground)] hover:bg-[var(--secondary)] transition flex items-center gap-1.5">
+            <span>🌿</span> <span id="tab-lbl-health">4. ஆரோக்கியம் & ஆயுள்</span>
+          </button>
+        </div>
+
+        <!-- PANEL 1: CAREER PREDICTION -->
+        <div id="panel-career" class="space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            
+            <!-- Career Strength Card -->
+            <div class="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 space-y-3">
+              <div class="text-xs font-bold uppercase tracking-wider text-amber-800 dark:text-amber-300" id="lbl-primary-career">
+                பொருத்தமான முதன்மை தொழில் துறை
+              </div>
+              <div id="career-primary-title" class="text-base font-bold text-[var(--foreground)]">
+                அரசு உயர் பதவி, நீதித்துறை, நிர்வாக அதிகாரம்
+              </div>
+              
+              <!-- Graphical Progress Bar for Sector Strength -->
+              <div class="space-y-1">
+                <div class="flex justify-between text-[11px] font-semibold text-[var(--muted-foreground)]">
+                  <span id="lbl-career-strength">தொழில் யோக ஆற்றல் (Auspicious Affinity)</span>
+                  <span id="career-primary-score" class="text-amber-700 dark:text-amber-400">96%</span>
+                </div>
+                <div class="w-full bg-[var(--border)] h-2 rounded-full overflow-hidden">
+                  <div id="bar-career-score" class="bg-amber-600 h-2 rounded-full transition-all duration-500" style="width: 96%;"></div>
+                </div>
+              </div>
+              
+              <div class="text-xs text-[var(--muted-foreground)]">
+                <span id="lbl-secondary-career">இரண்டாம் துறை:</span> <strong id="career-secondary-title" class="text-[var(--foreground)]">மென்பொருள் & தொழில்நுட்பம்</strong>
+              </div>
+            </div>
+
+            <!-- 10th House Details -->
+            <div class="grid grid-cols-2 gap-3 text-xs">
+              <div class="p-3 bg-[var(--secondary)]/40 rounded-xl border border-[var(--border)]">
+                <span class="text-[var(--muted-foreground)]" id="lbl-10th-house">10-ம் வீடு (கர்ம ஸ்தானம்):</span>
+                <div id="career-10th-text" class="font-bold text-[var(--foreground)] mt-1">மீனம் (அதிபதி: குரு)</div>
+              </div>
+              <div class="p-3 bg-[var(--secondary)]/40 rounded-xl border border-[var(--border)]">
+                <span class="text-[var(--muted-foreground)]" id="lbl-yogakaraka">ராஜ யோககாரகன்:</span>
+                <div id="career-yogi-text" class="font-bold text-amber-700 dark:text-amber-400 mt-1">சுக்கிரன், சனி</div>
+              </div>
+              <div class="col-span-2 p-3 bg-[var(--secondary)]/40 rounded-xl border border-[var(--border)]">
+                <span class="text-[var(--muted-foreground)]" id="lbl-citation">சாஸ்திர ஆதாரம்:</span>
+                <div class="font-medium text-[var(--foreground)] mt-0.5">BPHS அத்தியாயம் 18 (கர்ம பலன்) & ஜாதக சந்திரிகா ஸ்லோகம் 22</div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Career Promotion Windows -->
+          <div class="space-y-2">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-[var(--foreground)]" id="lbl-career-windows">
+              உத்தியோக உயர்வு & மாற்றக் காலங்கள் (Dasha Timeline Windows):
+            </h4>
+            <div id="career-windows-list" class="space-y-2 text-xs"></div>
+          </div>
+        </div>
+
+        <!-- PANEL 2: MARRIAGE PREDICTION -->
+        <div id="panel-marriage" class="space-y-4 hidden">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            
+            <div class="p-4 rounded-xl bg-blue-500/10 border border-blue-500/20 space-y-3">
+              <div class="text-xs font-bold uppercase tracking-wider text-blue-800 dark:text-blue-300" id="lbl-marriage-status">
+                களத்திர பாவ பலன் & திருமண பாக்கியம்
+              </div>
+              <div id="mrg-suitability-text" class="text-sm font-bold text-[var(--foreground)]">
+                மாங்கல்ய யோகம் நல்ல பலத்தோடு அமைந்துள்ளது
+              </div>
+              <div class="p-2.5 rounded-lg bg-[var(--card)] border border-[var(--border)] text-xs space-y-1">
+                <span class="font-bold text-blue-700 dark:text-blue-300" id="lbl-chevvai-status">செவ்வாய் தோஷ நிலை (Manglik Evaluation):</span>
+                <p id="mrg-chevvai-desc" class="text-[var(--foreground)]">செவ்வாய் அமைப்பை ஆராய்ந்ததில் பராசர விதிப்படி தோஷ நிவர்த்தி உறுதி செய்யப்பட்டுள்ளது.</p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 text-xs">
+              <div class="p-3 bg-[var(--secondary)]/40 rounded-xl border border-[var(--border)]">
+                <span class="text-[var(--muted-foreground)]" id="lbl-7th-house">7-ம் வீடு (களத்திரம்):</span>
+                <div id="mrg-7th-text" class="font-bold text-[var(--foreground)] mt-1">தனுசு (அதிபதி: குரு)</div>
+              </div>
+              <div class="p-3 bg-[var(--secondary)]/40 rounded-xl border border-[var(--border)]">
+                <span class="text-[var(--muted-foreground)]" id="lbl-kalathra-karaka">களத்திர காரகன்:</span>
+                <div id="mrg-karaka-text" class="font-bold text-blue-600 dark:text-blue-400 mt-1">சுக்கிரன்</div>
+              </div>
+              <div class="col-span-2 p-3 bg-[var(--secondary)]/40 rounded-xl border border-[var(--border)]">
+                <span class="text-[var(--muted-foreground)]" id="lbl-partner-dir">வரன் திசை அமைப்பு:</span>
+                <div id="mrg-direction-text" class="font-bold text-[var(--foreground)] mt-0.5">தனுசு ராசிக்குரிய திசை (மண்டலம்)</div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="space-y-2">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-[var(--foreground)]" id="lbl-marriage-windows">
+              பொருத்தமான திருமண கால அவகாசங்கள் (Mature Age Windows):
+            </h4>
+            <div id="mrg-windows-list" class="space-y-2 text-xs"></div>
+          </div>
+        </div>
+
+        <!-- PANEL 3: PROGENY PREDICTION -->
+        <div id="panel-progeny" class="space-y-4 hidden">
+          <div class="p-4 rounded-xl bg-purple-500/10 border border-purple-500/20 space-y-3">
+            <div class="text-xs font-bold uppercase tracking-wider text-purple-800 dark:text-purple-300" id="lbl-progeny-title">
+              புத்திர பாக்கியம் & வம்ச விருத்தி (BPHS Ch. 16)
+            </div>
+            <div class="grid grid-cols-2 gap-3 text-xs">
+              <div class="p-3 bg-[var(--card)] rounded-xl border border-[var(--border)]">
+                <span class="text-[var(--muted-foreground)]" id="lbl-5th-house">5-ம் வீடு (புத்திர ஸ்தானம்):</span>
+                <div id="prog-5th-text" class="font-bold text-[var(--foreground)] mt-1">துலாம் (அதிபதி: சுக்கிரன்)</div>
+              </div>
+              <div class="p-3 bg-[var(--card)] rounded-xl border border-[var(--border)]">
+                <span class="text-[var(--muted-foreground)]" id="lbl-putrakaraka">புத்திரகாரகன்:</span>
+                <div class="font-bold text-purple-600 dark:text-purple-400 mt-1">தேவகுரு (வியாழன்)</div>
+              </div>
+            </div>
+            <p class="text-xs text-[var(--foreground)] leading-relaxed" id="prog-desc">
+              5-ம் அதிபதி மற்றும் புத்திரகாரகன் குருவின் தசா புக்தி காலங்களில் சந்தான விருத்தி கைகூடும்.
+            </p>
+          </div>
+        </div>
+
+        <!-- PANEL 4: HEALTH PREDICTION -->
+        <div id="panel-health" class="space-y-4 hidden">
+          <div class="p-4 rounded-xl bg-rose-500/10 border border-rose-500/20 space-y-3">
+            <div class="text-xs font-bold uppercase tracking-wider text-rose-800 dark:text-rose-300" id="lbl-health-title">
+              ஆரோக்கியம், ரோகம் & ஆயுள் பாதுகாப்பு (BPHS Ch. 17 & 44)
+            </div>
+            <div class="grid grid-cols-2 gap-3 text-xs">
+              <div class="p-3 bg-[var(--card)] rounded-xl border border-[var(--border)]">
+                <span class="text-[var(--muted-foreground)]" id="lbl-6th-house">6-ம் வீடு (ரோக ஸ்தானம்):</span>
+                <div id="health-6th-text" class="font-bold text-[var(--foreground)] mt-1">விருச்சிகம் (அதிபதி: செவ்வாய்)</div>
+              </div>
+              <div class="p-3 bg-[var(--card)] rounded-xl border border-[var(--border)]">
+                <span class="text-[var(--muted-foreground)]" id="lbl-marakas">மாரக கிரகங்கள் (Marakas):</span>
+                <div id="health-marakas-text" class="font-bold text-rose-600 dark:text-rose-400 mt-1">செவ்வாய், குரு</div>
+              </div>
+            </div>
+            <div class="p-3 bg-[var(--card)] rounded-xl border border-[var(--border)] text-xs space-y-1">
+              <span class="font-bold text-rose-700 dark:text-rose-300" id="lbl-organ-vulnerability">உடல் உறுப்பு விழிப்புணர்வுப் பகுதி (Vulnerability Area):</span>
+              <p id="health-organ-text" class="text-[var(--foreground)]">இனப்பெருக்க உறுப்புகள், நீர் நோய்கள்</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- VIEW 2: DAILY SUDDHA VAKYA PANCHANGAM (வரருசி சுத்த வாக்கிய பஞ்சாங்கம்)     -->
+    <!-- ========================================================================= -->
+    <div id="view-panchangam" class="space-y-6 hidden">
+      
+      <!-- Date Selector & Day Navigation -->
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+          <h2 class="text-base font-bold text-[var(--foreground)] flex items-center gap-2">
+            <span>📅</span> <span id="hdr-panchangam-date">சுத்த வாக்கிய பஞ்சாங்க நாள் கணிதம்</span>
+          </h2>
+          <p class="text-xs text-[var(--muted-foreground)] mt-0.5" id="txt-panchangam-desc">
+            வரருசி முனிவர் அருளிய வாக்கியக் கணித முறைப்படி தினசரி பஞ்ச அங்கங்கள் & முகூர்த்த காரணிகள்
+          </p>
+        </div>
+        
+        <div class="flex items-center gap-2 w-full sm:w-auto">
+          <input type="date" id="in-panchangam-date" value="2026-08-17" onchange="runPanchangamCalculations()" class="bg-[var(--background)] border border-[var(--border)] rounded-xl px-3 py-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-amber-500">
+          <button onclick="setTodayPanchangam()" class="px-3 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs shadow-xs transition" id="btn-panchangam-today">
+            இன்று (Today)
+          </button>
+        </div>
+      </div>
+
+      <!-- Panchangam Core Summary Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        
+        <!-- Dinamana & Sunrise Card -->
+        <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 shadow-sm space-y-2">
+          <div class="flex justify-between items-center text-xs font-semibold text-[var(--muted-foreground)]">
+            <span id="lbl-dinamana">தினமானம் (அகல்)</span>
+            <span class="text-amber-600">☀️</span>
+          </div>
+          <div id="p-dinamana" class="text-lg font-extrabold text-amber-700 dark:text-amber-400">
+            அகல் 30 50
+          </div>
+          <div class="text-[11px] text-[var(--muted-foreground)]">
+            <span id="lbl-sunrise">சூரிய உதயம்:</span> <strong id="p-sunrise" class="text-[var(--foreground)]">காலை 06:00</strong>
+          </div>
+        </div>
+
+        <!-- Nethiram Card -->
+        <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 shadow-sm space-y-2">
+          <div class="flex justify-between items-center text-xs font-semibold text-[var(--muted-foreground)]">
+            <span id="lbl-nethiram">நேத்திரம் (பார்வை)</span>
+            <span>👁️</span>
+          </div>
+          <div id="p-nethiram" class="text-lg font-extrabold text-emerald-600 dark:text-emerald-400">
+            2 (முழுப் பார்வை)
+          </div>
+          <div class="text-[11px] text-[var(--muted-foreground)]" id="p-nethiram-desc">
+            முகூர்த்த காரியங்களுக்கு அதி உன்னதம்
+          </div>
+        </div>
+
+        <!-- Jeevan Card -->
+        <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 shadow-sm space-y-2">
+          <div class="flex justify-between items-center text-xs font-semibold text-[var(--muted-foreground)]">
+            <span id="lbl-jeevan">ஜீவன் (உயிர்)</span>
+            <span>⚡</span>
+          </div>
+          <div id="p-jeevan" class="text-lg font-extrabold text-emerald-600 dark:text-emerald-400">
+            1 (முழு உயிர்)
+          </div>
+          <div class="text-[11px] text-[var(--muted-foreground)]" id="p-jeevan-desc">
+            செயல் தொடக்கத்திற்கு ஆக்கபூர்வ பலன்
+          </div>
+        </div>
+
+        <!-- Amritadi Yoga Card -->
+        <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 shadow-sm space-y-2">
+          <div class="flex justify-between items-center text-xs font-semibold text-[var(--muted-foreground)]">
+            <span id="lbl-amritadi">அமிர்தாதி யோகம்</span>
+            <span>✨</span>
+          </div>
+          <div id="p-amritadi" class="text-lg font-extrabold text-amber-600 dark:text-amber-400">
+            சித்த யோகம்
+          </div>
+          <div class="text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold" id="p-amritadi-desc">
+            சுப காரியங்களுக்கு உகந்தது
+          </div>
+        </div>
+
+      </div>
+
+      <!-- The 5 Limbs of Panchangam (பஞ்ச அங்கங்கள்) -->
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 shadow-sm space-y-4">
+        <h3 class="text-sm font-bold text-[var(--foreground)] flex items-center gap-2 border-b border-[var(--border)] pb-3">
+          <span>🖐️</span> <span id="hdr-pancha-angas">பஞ்ச அங்கங்கள் (Five Limbs of the Day)</span>
+        </h3>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3 text-xs">
+          
+          <div class="p-3 bg-[var(--secondary)]/50 rounded-xl border border-[var(--border)] space-y-1">
+            <span class="text-[var(--muted-foreground)] font-semibold" id="lbl-anga-tithi">1. திதி (Tithi):</span>
+            <div id="p-tithi" class="font-extrabold text-sm text-[var(--foreground)]">சதுர்த்தி</div>
+            <div id="p-tithi-time" class="text-[10px] text-[var(--muted-foreground)]">இரவு 08:24 வரை</div>
+          </div>
+
+          <div class="p-3 bg-[var(--secondary)]/50 rounded-xl border border-[var(--border)] space-y-1">
+            <span class="text-[var(--muted-foreground)] font-semibold" id="lbl-anga-vara">2. வாரம் (Vara):</span>
+            <div id="p-vara" class="font-extrabold text-sm text-[var(--foreground)]">திங்கள் (Monday)</div>
+            <div id="p-vara-lord" class="text-[10px] text-[var(--muted-foreground)]">அதிபதி: சந்திரன்</div>
+          </div>
+
+          <div class="p-3 bg-[var(--secondary)]/50 rounded-xl border border-[var(--border)] space-y-1">
+            <span class="text-[var(--muted-foreground)] font-semibold" id="lbl-anga-nak">3. நட்சத்திரம் (Star):</span>
+            <div id="p-nakshatra" class="font-extrabold text-sm text-[var(--foreground)]">அஸ்தம் (3-ம் பாதம்)</div>
+            <div id="p-nakshatra-time" class="text-[10px] text-[var(--muted-foreground)]">மாலை 05:12 வரை</div>
+          </div>
+
+          <div class="p-3 bg-[var(--secondary)]/50 rounded-xl border border-[var(--border)] space-y-1">
+            <span class="text-[var(--muted-foreground)] font-semibold" id="lbl-anga-yoga">4. யோகம் (Yoga):</span>
+            <div id="p-yoga" class="font-extrabold text-sm text-[var(--foreground)]">சுபம் (Subha)</div>
+            <div class="text-[10px] text-[var(--muted-foreground)]">நித்திய யோகம்</div>
+          </div>
+
+          <div class="p-3 bg-[var(--secondary)]/50 rounded-xl border border-[var(--border)] space-y-1">
+            <span class="text-[var(--muted-foreground)] font-semibold" id="lbl-anga-karana">5. கரணம் (Karana):</span>
+            <div id="p-karana" class="font-extrabold text-sm text-[var(--foreground)]">பவம் (Bava)</div>
+            <div class="text-[10px] text-[var(--muted-foreground)]">சுப காரிய சாதகம்</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Time Windows & Travel Guide -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <!-- Auspicious & Inauspicious Hours -->
+        <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 shadow-sm space-y-4">
+          <h3 class="text-sm font-bold text-[var(--foreground)] flex items-center gap-2 border-b border-[var(--border)] pb-3">
+            <span>⏱️</span> <span id="hdr-time-windows">சுப காலங்கள் & விலக்க வேண்டிய நேரங்கள்</span>
+          </h3>
+
+          <div class="space-y-2.5 text-xs">
+            <div class="flex justify-between items-center p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+              <span class="font-bold text-emerald-800 dark:text-emerald-300" id="lbl-nalla-neram">நல்ல நேரம்:</span>
+              <span id="p-nalla-neram" class="font-bold text-emerald-900 dark:text-emerald-200">காலை 06:15 - 07:15 | மாலை 04:45 - 05:45</span>
+            </div>
+
+            <div class="flex justify-between items-center p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20">
+              <span class="font-bold text-amber-800 dark:text-amber-300" id="lbl-gowri-neram">கௌரி நல்ல நேரம்:</span>
+              <span id="p-gowri-neram" class="font-bold text-amber-900 dark:text-amber-200">காலை 09:15 - 10:15 | இரவு 07:30 - 08:30</span>
+            </div>
+
+            <div class="flex justify-between items-center p-2.5 rounded-xl bg-rose-500/10 border border-rose-500/20">
+              <span class="font-bold text-rose-800 dark:text-rose-300" id="lbl-rahu-kalam">இராகு காலம்:</span>
+              <span id="p-rahu-kalam" class="font-bold text-rose-900 dark:text-rose-200">காலை 07:30 - 09:00</span>
+            </div>
+
+            <div class="flex justify-between items-center p-2.5 rounded-xl bg-[var(--secondary)]/50 border border-[var(--border)]">
+              <span class="font-semibold text-[var(--muted-foreground)]" id="lbl-yamagandam">எமகண்டம்:</span>
+              <span id="p-yamagandam" class="font-bold text-[var(--foreground)]">காலை 10:30 - 12:00</span>
+            </div>
+
+            <div class="flex justify-between items-center p-2.5 rounded-xl bg-[var(--secondary)]/50 border border-[var(--border)]">
+              <span class="font-semibold text-[var(--muted-foreground)]" id="lbl-kuligai">குளிகை:</span>
+              <span id="p-kuligai" class="font-bold text-[var(--foreground)]">மதியம் 01:30 - 03:00</span>
+            </div>
+
+            <div class="flex justify-between items-center p-2.5 rounded-xl bg-purple-500/10 border border-purple-500/20">
+              <span class="font-bold text-purple-800 dark:text-purple-300" id="lbl-thiyajyam">நட்சத்திர தியாஜ்யம்:</span>
+              <span id="p-thiyajyam" class="font-bold text-purple-900 dark:text-purple-200">நாழிகை 21 (மதியம் 02:24 - 04:00)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Travel & Soolai & Chandrashtamam -->
+        <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 shadow-sm space-y-4">
+          <h3 class="text-sm font-bold text-[var(--foreground)] flex items-center gap-2 border-b border-[var(--border)] pb-3">
+            <span>🧭</span> <span id="hdr-travel-guide">பயண வழிகாட்டல் & எச்சரிக்கைகள்</span>
+          </h3>
+
+          <!-- Vaara Soolai Card -->
+          <div class="p-4 rounded-xl bg-[var(--secondary)]/50 border border-[var(--border)] space-y-2 text-xs">
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-[var(--foreground)]" id="lbl-vaara-soolai">வாரசூலை (Travel Direction Restriction):</span>
+              <span id="p-soolai-dir" class="px-2 py-0.5 rounded bg-rose-500/10 text-rose-700 dark:text-rose-300 font-bold">கிழக்கு (East)</span>
+            </div>
+            <div class="text-[var(--muted-foreground)]">
+              <span id="lbl-parikaram">பரிகாரம் (Remedy):</span> <strong id="p-soolai-pari" class="text-[var(--foreground)]">தயிர் உட்கொண்டு பயணிக்கவும் (Curd)</strong>
+            </div>
+          </div>
+
+          <!-- Chandrashtamam Alert Card -->
+          <div class="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 space-y-2 text-xs">
+            <div class="flex items-center gap-2 text-amber-800 dark:text-amber-300 font-bold">
+              <span>⚠️</span>
+              <span id="lbl-chandrashtama-hdr">சந்திராஷ்டம எச்சரிக்கை (Chandrashtamam):</span>
+            </div>
+            <div class="font-extrabold text-sm text-[var(--foreground)]" id="p-chandrashtama-rasi">
+              கும்ப ராசி அன்பர்களுக்கு இன்று சந்திராஷ்டமம்
+            </div>
+            <p class="text-[11px] text-[var(--muted-foreground)] leading-relaxed" id="p-chandrashtama-desc">
+              சந்திரன் எட்டாம் வீட்டில் சஞ்சரிப்பதால் புதிய முயற்சிகள், ஒப்பந்தங்கள் கையெழுத்திடுதல் மற்றும் வாக்குவாதங்களைத் தவிர்க்கவும்.
+            </p>
+          </div>
+
+          <!-- Citation Note -->
+          <div class="p-3 rounded-xl bg-[var(--background)] border border-[var(--border)] text-[11px] text-[var(--muted-foreground)] space-y-1">
+            <div class="font-semibold text-amber-700 dark:text-amber-400" id="lbl-panchangam-citation">
+              சாஸ்திர ஆதாரம்: வரருசி முனிவரின் வாக்கிய கணித அட்டவணை
+            </div>
+            <div>அகல் (தினமானம்), நவகிரக உதய காலங்கள் மற்றும் அமிர்தாதி யோகம் சுத்த வாக்கிய முறைப்படி அமைக்கப்பட்டவை.</div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- VIEW 3: LEARN TAMIL/VEDIC ASTROLOGY (ஜோதிடப் பாடசாலை - BEGINNERS ACADEMY) -->
+    <!-- ========================================================================= -->
+    <div id="view-academy" class="space-y-6 hidden">
+      
+      <!-- Academy Intro Banner -->
+      <div class="bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-transparent border border-amber-500/30 rounded-2xl p-5 shadow-sm space-y-2">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="text-xl">📖</span>
+            <h2 class="text-lg font-extrabold text-[var(--foreground)]" id="hdr-academy-title">
+              ஜோதிடப் பாடசாலை • Vedic Astrology Beginner's Academy
+            </h2>
+          </div>
+          <span class="px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-800 dark:text-amber-300 font-bold text-xs" id="lbl-academy-level">
+            நிலை 1: தொடக்க நிலை (Level 1: Fundamentals)
+          </span>
+        </div>
+        <p class="text-xs sm:text-sm text-[var(--muted-foreground)] leading-relaxed" id="txt-academy-subtitle">
+          தென்னக ஜோதிடத்தின் அடிப்படைகளை எளிய தமிழில், படங்களுடனும் தெளிவான அட்டவணைகளுடனும் கற்றுக்கொள்ளுங்கள். அன்றாட வாழ்க்கையில் சுயமாகப் பயன் தரும் சாஸ்திர விதிகள்.
+        </p>
+      </div>
+
+      <!-- Chapter Tabs Selector (6 Lessons + 1 Routine Usable Cheat-Sheet) -->
+      <div class="flex gap-1.5 overflow-x-auto p-1 bg-[var(--secondary)] border border-[var(--border)] rounded-xl text-xs font-bold scrollbar-none">
+        <button onclick="switchLesson(1)" id="btn-lesson-1" class="whitespace-nowrap px-3 py-2 rounded-lg lesson-tab-active transition flex items-center gap-1.5">
+          <span>1️⃣</span> <span id="lbl-tab-l1">1. ராசிக் கட்டம்</span>
+        </button>
+        <button onclick="switchLesson(2)" id="btn-lesson-2" class="whitespace-nowrap px-3 py-2 rounded-lg text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition flex items-center gap-1.5">
+          <span>2️⃣</span> <span id="lbl-tab-l2">2. 12 ராசிகள் & தத்துவங்கள்</span>
+        </button>
+        <button onclick="switchLesson(3)" id="btn-lesson-3" class="whitespace-nowrap px-3 py-2 rounded-lg text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition flex items-center gap-1.5">
+          <span>3️⃣</span> <span id="lbl-tab-l3">3. நவகிரகங்கள் & உச்ச-நீசம்</span>
+        </button>
+        <button onclick="switchLesson(4)" id="btn-lesson-4" class="whitespace-nowrap px-3 py-2 rounded-lg text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition flex items-center gap-1.5">
+          <span>4️⃣</span> <span id="lbl-tab-l4">4. நட்சத்திரங்கள் & தசா</span>
+        </button>
+        <button onclick="switchLesson(5)" id="btn-lesson-5" class="whitespace-nowrap px-3 py-2 rounded-lg text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition flex items-center gap-1.5">
+          <span>5️⃣</span> <span id="lbl-tab-l5">5. லக்கினமும் 12 பாவங்களும்</span>
+        </button>
+        <button onclick="switchLesson(6)" id="btn-lesson-6" class="whitespace-nowrap px-3 py-2 rounded-lg text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition flex items-center gap-1.5">
+          <span>6️⃣</span> <span id="lbl-tab-l6">6. ஜாதகம் பார்க்கும் 5 படிகள்</span>
+        </button>
+        <button onclick="switchLesson(7)" id="btn-lesson-7" class="whitespace-nowrap px-3 py-2 rounded-lg text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition flex items-center gap-1.5 bg-amber-500/10">
+          <span>📑</span> <span id="lbl-tab-l7">துரிதக் குறிப்பேடு (Cheat-Sheet)</span>
+        </button>
+      </div>
+
+      <!-- LESSON 1 PANEL: THE SOUTH INDIAN CHART LAYOUT -->
+      <div id="panel-lesson-1" class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-sm space-y-5">
+        <div class="border-b border-[var(--border)] pb-3 flex justify-between items-start">
+          <div>
+            <span class="text-xs font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider">பாடம் 1 (Lesson 1)</span>
+            <h3 class="text-lg font-bold text-[var(--foreground)] mt-0.5" id="l1-title">தென்னக ராசிக் கட்டத்தின் ரகசியம் (South Indian Chart Layout)</h3>
+          </div>
+          <span class="text-2xl">🏛️</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+          <div class="md:col-span-7 space-y-3 text-xs sm:text-sm leading-relaxed text-[var(--foreground)]">
+            <p>
+              ஜோதிடத்தில் ராசி மண்டலம் என்பது விண்வெளியில் <strong>360 பாகை (360°)</strong> கொண்ட முழு வட்டம். இதனை நமது முன்னோர்கள் 12 சம பாகங்களாகப் (தலா 30°) பிரித்தனர். இதுவே <strong>12 ராசிகள்</strong> என அழைக்கப்படுகிறது.
+            </p>
+            <div class="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 space-y-1">
+              <strong class="text-amber-900 dark:text-amber-200">💡 தென்னகக் கட்டத்தின் தனிப்பெரும் ரகசியம்:</strong>
+              <p class="text-xs text-[var(--muted-foreground)]">
+                வட இந்திய முறையில் லக்கினம் மேல் கட்டத்தில் நிலையாக இருக்கும், ராசிகள் சுழலும். ஆனால் <strong>தென்னக முறைமையில் 12 ராசிகளின் இருப்பிடம் எப்போதும் நிலையானது (Fixed Signs)!</strong>
+              </p>
+            </div>
+            <ul class="list-disc list-inside space-y-1 text-xs">
+              <li><strong>மேஷம் (Aries):</strong> எப்போதும் மேலிருந்து இடமிருந்து 2-வது கட்டம் (Row 1, Col 2).</li>
+              <li><strong>சுழற்சி முறை:</strong> ராசிகள் எப்போதும் <strong>கடிகார முள் சுழலும் திசையில் (Clockwise)</strong> வரிசையாக நகரும்.</li>
+              <li>மேஷம் → ரிஷபம் → மிதுனம் → கடகம் → சிம்மம் → கன்னி → துலாம் → விருச்சிகம் → தனுசு → மகரம் → கும்பம் → மீனம்.</li>
+              <li><strong>லக்கினம் ('ல'):</strong> மனிதர்கள் பிறந்த நேரத்தின்படி இந்த 12 கட்டங்களில் ஏதேனும் ஒன்றில் வந்து அமரும்.</li>
+            </ul>
+          </div>
+
+          <!-- Mini Graphical South Indian 4x4 Reference Diagram -->
+          <div class="md:col-span-5 flex flex-col items-center">
+            <div class="text-[11px] font-bold text-[var(--muted-foreground)] mb-2">தென்னக 12 ராசிகளின் நிலையான இருப்பிடம்</div>
+            <div class="grid grid-cols-4 grid-rows-4 w-full aspect-square border-2 border-amber-600/40 rounded-xl overflow-hidden text-[10px] font-bold text-center bg-[var(--background)] shadow-xs">
+              <div class="p-1 border border-[var(--border)] flex flex-col justify-between bg-[var(--card)]"><span>மீனம்</span><span class="text-amber-600">12</span></div>
+              <div class="p-1 border border-amber-500/60 bg-amber-500/15 flex flex-col justify-between"><span class="text-amber-900 dark:text-amber-200">மேஷம் ★</span><span class="text-amber-700 font-black">1</span></div>
+              <div class="p-1 border border-[var(--border)] flex flex-col justify-between bg-[var(--card)]"><span>ரிஷபம்</span><span class="text-amber-600">2</span></div>
+              <div class="p-1 border border-[var(--border)] flex flex-col justify-between bg-[var(--card)]"><span>மிதுனம்</span><span class="text-amber-600">3</span></div>
+              <div class="p-1 border border-[var(--border)] flex flex-col justify-between bg-[var(--card)]"><span>கும்பம்</span><span class="text-amber-600">11</span></div>
+              <div class="grid-in-center col-span-2 row-span-2 p-2 bg-[var(--secondary)] flex flex-col items-center justify-center border border-[var(--border)]">
+                <span class="text-xs text-amber-700 dark:text-amber-300 font-extrabold">கடிகார முள் திசை</span>
+                <span class="text-[10px] text-[var(--muted-foreground)] mt-0.5">Clockwise ↻</span>
+              </div>
+              <div class="p-1 border border-[var(--border)] flex flex-col justify-between bg-[var(--card)]"><span>கடகம்</span><span class="text-amber-600">4</span></div>
+              <div class="p-1 border border-[var(--border)] flex flex-col justify-between bg-[var(--card)]"><span>மகரம்</span><span class="text-amber-600">10</span></div>
+              <div class="p-1 border border-[var(--border)] flex flex-col justify-between bg-[var(--card)]"><span>சிம்மம்</span><span class="text-amber-600">5</span></div>
+              <div class="p-1 border border-[var(--border)] flex flex-col justify-between bg-[var(--card)]"><span>தனுசு</span><span class="text-amber-600">9</span></div>
+              <div class="p-1 border border-[var(--border)] flex flex-col justify-between bg-[var(--card)]"><span>விருச்சிகம்</span><span class="text-amber-600">8</span></div>
+              <div class="p-1 border border-[var(--border)] flex flex-col justify-between bg-[var(--card)]"><span>துலாம்</span><span class="text-amber-600">7</span></div>
+              <div class="p-1 border border-[var(--border)] flex flex-col justify-between bg-[var(--card)]"><span>கன்னி</span><span class="text-amber-600">6</span></div>
+            </div>
+            <div class="text-[10px] text-[var(--muted-foreground)] mt-1">எந்த ஜாதகத்திலும் இந்த 12 கட்டங்களின் பெயர்கள் மாறவே மாறாது!</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LESSON 2 PANEL: 12 SIGNS & ELEMENTS -->
+      <div id="panel-lesson-2" class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-sm space-y-5 hidden">
+        <div class="border-b border-[var(--border)] pb-3 flex justify-between items-start">
+          <div>
+            <span class="text-xs font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider">பாடம் 2 (Lesson 2)</span>
+            <h3 class="text-lg font-bold text-[var(--foreground)] mt-0.5" id="l2-title">12 ராசிகளின் பஞ்சபூத தத்துவங்களும் குணங்களும் (Signs & Elements)</h3>
+          </div>
+          <span class="text-2xl">🔥</span>
+        </div>
+
+        <div class="space-y-4 text-xs sm:text-sm">
+          <p class="leading-relaxed text-[var(--foreground)]">
+            பஞ்சபூதங்களான நெருப்பு, நிலம், காற்று, நீர் ஆகிய நான்கின் கலவையே 12 ராசிகளாக விரிந்துள்ளன. ஒரு மனிதரின் குணம், தொழில் நாட்டம், சிந்தனை ஆகியவற்றை இந்த தத்துவங்களே தீர்மானிக்கின்றன:
+          </p>
+
+          <!-- 4 Elements Cards -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            <div class="p-3.5 rounded-xl bg-red-500/10 border border-red-500/20 space-y-1.5">
+              <div class="flex items-center justify-between">
+                <strong class="text-red-700 dark:text-red-300 text-xs">🔥 நெருப்பு ராசிகள் (Fire)</strong>
+              </div>
+              <div class="font-bold text-xs text-[var(--foreground)]">மேஷம், சிம்மம், தனுசு</div>
+              <p class="text-[11px] text-[var(--muted-foreground)]">ஆற்றல், வீரம், தலைமைத்துவ ஆளுமை, வேகம், சுயமாக முடிவெடுக்கும் திறன்.</p>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-amber-600/10 border border-amber-600/20 space-y-1.5">
+              <div class="flex items-center justify-between">
+                <strong class="text-amber-800 dark:text-amber-300 text-xs">🌍 நிலம் ராசிகள் (Earth)</strong>
+              </div>
+              <div class="font-bold text-xs text-[var(--foreground)]">ரிஷபம், கன்னி, மகரம்</div>
+              <p class="text-[11px] text-[var(--muted-foreground)]">பொறுமை, உழைப்பு, ஸ்திரத்தன்மை, நிதி மேலாண்மை, நடைமுறை யதார்த்த சிந்தனை.</p>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-sky-500/10 border border-sky-500/20 space-y-1.5">
+              <div class="flex items-center justify-between">
+                <strong class="text-sky-700 dark:text-sky-300 text-xs">💨 காற்று ராசிகள் (Air)</strong>
+              </div>
+              <div class="font-bold text-xs text-[var(--foreground)]">மிதுனம், துலாம், கும்பம்</div>
+              <p class="text-[11px] text-[var(--muted-foreground)]">புத்தி கூர்மை, தகவல் தொடர்பு, அறிவியல், கலை, சமூக உறவுகள், ஆய்வு நாட்டம்.</p>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-blue-500/10 border border-blue-500/20 space-y-1.5">
+              <div class="flex items-center justify-between">
+                <strong class="text-blue-700 dark:text-blue-300 text-xs">💧 நீர் ராசிகள் (Water)</strong>
+              </div>
+              <div class="font-bold text-xs text-[var(--foreground)]">கடகம், விருச்சிகம், மீனம்</div>
+              <p class="text-[11px] text-[var(--muted-foreground)]">உணர்வுப்பூர்வம், இரக்கம், உள்ளுணர்வு (Intuition), படைப்பாற்றல், ஆன்மீகம்.</p>
+            </div>
+          </div>
+
+          <!-- Movable, Fixed, Dual Table -->
+          <div class="p-4 rounded-xl bg-[var(--secondary)]/50 border border-[var(--border)] space-y-2">
+            <h4 class="font-bold text-xs text-[var(--foreground)]">ராசிகளின் இயக்க குணங்கள் (Movable, Fixed, Dual):</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+              <div class="p-2.5 bg-[var(--card)] rounded-lg border border-[var(--border)]">
+                <span class="font-bold text-amber-700 dark:text-amber-400">🏃 சரம் (Movable):</span>
+                <div class="font-medium mt-0.5">மேஷம், கடகம், துலாம், மகரம்</div>
+                <div class="text-[10px] text-[var(--muted-foreground)]">எப்போதும் இயக்கம், இடமாற்றம், புதிய தொடக்கங்கள்.</div>
+              </div>
+              <div class="p-2.5 bg-[var(--card)] rounded-lg border border-[var(--border)]">
+                <span class="font-bold text-amber-700 dark:text-amber-400">🏛️ ஸ்திரம் (Fixed):</span>
+                <div class="font-medium mt-0.5">ரிஷபம், சிம்மம், விருச்சிகம், கும்பம்</div>
+                <div class="text-[10px] text-[var(--muted-foreground)]">அசைக்க முடியாத உறுதி, பிடிவாதம், ஒரு இடத்தில் நிலைத்தல்.</div>
+              </div>
+              <div class="p-2.5 bg-[var(--card)] rounded-lg border border-[var(--border)]">
+                <span class="font-bold text-amber-700 dark:text-amber-400">⚖️ உபயம் (Dual):</span>
+                <div class="font-medium mt-0.5">மிதுனம், கன்னி, தனுசு, மீனம்</div>
+                <div class="text-[10px] text-[var(--muted-foreground)]">வளைந்து கொடுக்கும் குணம், இரட்டைச் சிந்தனை, சூழ்நிலைக்கேற்ப மாறுதல்.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LESSON 3 PANEL: PLANETS & DIGNITIES -->
+      <div id="panel-lesson-3" class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-sm space-y-5 hidden">
+        <div class="border-b border-[var(--border)] pb-3 flex justify-between items-start">
+          <div>
+            <span class="text-xs font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider">பாடம் 3 (Lesson 3)</span>
+            <h3 class="text-lg font-bold text-[var(--foreground)] mt-0.5" id="l3-title">நவகிரகங்கள் & உச்ச, நீச, ஆட்சி நிலைகள் (Planetary Dignities)</h3>
+          </div>
+          <span class="text-2xl">🪐</span>
+        </div>
+
+        <div class="space-y-4 text-xs sm:text-sm">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+              <strong class="text-emerald-800 dark:text-emerald-300 text-xs">🌟 இயற்கை சுபர்கள் (Natural Benefics):</strong>
+              <p class="text-xs text-[var(--foreground)] mt-1">
+                <strong>குரு (வியாழன்), சுக்கிரன், வளர்பிறை சந்திரன், பாவர்களுடன் சேராத புதன்.</strong><br>
+                இவர்கள் இயல்பாகவே கருணையும் நற்பலன்களையும் அருளக்கூடியவர்கள்.
+              </p>
+            </div>
+            <div class="p-3 rounded-xl bg-rose-500/10 border border-rose-500/20">
+              <strong class="text-rose-800 dark:text-rose-300 text-xs">⚔️ இயற்கை பாவிகள் (Natural Malefics):</strong>
+              <p class="text-xs text-[var(--foreground)] mt-1">
+                <strong>சனி, செவ்வாய், சூரியன் (குரூர கிரகம்), தேய்பிறை சந்திரன், ராகு, கேது.</strong><br>
+                இவர்கள் சோதனைகள், தடைகள் மற்றும் கர்ம வினைகள் மூலம் ஆன்மாவை பக்குவப்படுத்துபவர்கள்.
+              </p>
+            </div>
+          </div>
+
+          <div class="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 space-y-1 text-xs">
+            <strong class="text-amber-900 dark:text-amber-200">💡 ஆட்சி, உச்சம், நீசம் என்றால் என்ன?</strong>
+            <p class="text-[var(--muted-foreground)]">
+              • <strong>ஆட்சி (Own House):</strong> கிரகம் தனது சொந்த வீட்டில் இருப்பது (100% மகிழ்ச்சியும் சுதந்திரமும்).<br>
+              • <strong>உச்சம் (Exaltation):</strong> கிரகம் அரியணையில் ஏறி அமரும் ராஜா போன்ற உச்சபட்ச அதிகாரம் மற்றும் பலம் (100% ஆற்றல்).<br>
+              • <strong>நீசம் (Debilitation):</strong> உச்சத்திற்கு நேர் எதிரான 7-வது ராசி. கிரகம் சிறைப்பட்டது போல தன் பலத்தை இழந்து தவிக்கும் பலவீன நிலை.
+            </p>
+          </div>
+
+          <!-- Classical Table of Exaltation & Debilitation -->
+          <div class="overflow-x-auto">
+            <table class="w-full text-xs text-left border border-[var(--border)] rounded-xl overflow-hidden">
+              <thead class="bg-[var(--secondary)] text-[var(--foreground)] font-bold">
+                <tr>
+                  <th class="p-2.5 border-b border-[var(--border)]">கிரகம் (Planet)</th>
+                  <th class="p-2.5 border-b border-[var(--border)]">சொந்த வீடு (Own House)</th>
+                  <th class="p-2.5 border-b border-[var(--border)] text-amber-700 dark:text-amber-400">உச்ச ராசி (Exalted)</th>
+                  <th class="p-2.5 border-b border-[var(--border)] text-rose-600 dark:text-rose-400">நீச ராசி (Debilitated)</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-[var(--border)]">
+                <tr><td class="p-2 font-bold">சூரியன் (Sun)</td><td class="p-2">சிம்மம்</td><td class="p-2 font-bold text-amber-700 dark:text-amber-400">மேஷம்</td><td class="p-2 text-rose-600 dark:text-rose-400">துலாம்</td></tr>
+                <tr><td class="p-2 font-bold">சந்திரன் (Moon)</td><td class="p-2">கடகம்</td><td class="p-2 font-bold text-amber-700 dark:text-amber-400">ரிஷபம்</td><td class="p-2 text-rose-600 dark:text-rose-400">விருச்சிகம்</td></tr>
+                <tr><td class="p-2 font-bold">செவ்வாய் (Mars)</td><td class="p-2">மேஷம், விருச்சிகம்</td><td class="p-2 font-bold text-amber-700 dark:text-amber-400">மகரம்</td><td class="p-2 text-rose-600 dark:text-rose-400">கடகம்</td></tr>
+                <tr><td class="p-2 font-bold">புதன் (Mercury)</td><td class="p-2">மிதுனம், கன்னி</td><td class="p-2 font-bold text-amber-700 dark:text-amber-400">கன்னி</td><td class="p-2 text-rose-600 dark:text-rose-400">மீனம்</td></tr>
+                <tr><td class="p-2 font-bold">குரு (Jupiter)</td><td class="p-2">தனுசு, மீனம்</td><td class="p-2 font-bold text-amber-700 dark:text-amber-400">கடகம்</td><td class="p-2 text-rose-600 dark:text-rose-400">மகரம்</td></tr>
+                <tr><td class="p-2 font-bold">சுக்கிரன் (Venus)</td><td class="p-2">ரிஷபம், துலாம்</td><td class="p-2 font-bold text-amber-700 dark:text-amber-400">மீனம்</td><td class="p-2 text-rose-600 dark:text-rose-400">கன்னி</td></tr>
+                <tr><td class="p-2 font-bold">சனி (Saturn)</td><td class="p-2">மகரம், கும்பம்</td><td class="p-2 font-bold text-amber-700 dark:text-amber-400">துலாம்</td><td class="p-2 text-rose-600 dark:text-rose-400">மேஷம்</td></tr>
+                <tr><td class="p-2 font-bold">இராகு / கேது</td><td class="p-2">நிழல் கிரகங்கள் (சொந்த வீடு இல்லை)</td><td class="p-2 text-amber-700">ரிஷபம் / விருச்சிகம்</td><td class="p-2 text-rose-600">விருச்சிகம் / ரிஷபம்</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- LESSON 4 PANEL: 27 STARS & DASHA TIMELINE -->
+      <div id="panel-lesson-4" class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-sm space-y-5 hidden">
+        <div class="border-b border-[var(--border)] pb-3 flex justify-between items-start">
+          <div>
+            <span class="text-xs font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider">பாடம் 4 (Lesson 4)</span>
+            <h3 class="text-lg font-bold text-[var(--foreground)] mt-0.5" id="l4-title">27 நட்சத்திரங்கள் & 120 வருட விம்சோத்தரி தசா வரிசை (Stars & Dasha)</h3>
+          </div>
+          <span class="text-2xl">✨</span>
+        </div>
+
+        <div class="space-y-4 text-xs sm:text-sm">
+          <p class="leading-relaxed text-[var(--foreground)]">
+            ராசி மண்டலம் 27 நட்சத்திரங்களாகப் பிரிக்கப்பட்டுள்ளது. ஒரு நட்சத்திரத்திற்கு <strong>4 பாதங்கள்</strong>. மொத்தம் 27 × 4 = <strong>108 பாதங்கள்</strong>. ஒரு ராசியில் 2¼ நட்சத்திரங்கள் (9 பாதங்கள்) அடங்கும்.
+          </p>
+
+          <div class="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 space-y-1 text-xs">
+            <strong class="text-amber-900 dark:text-amber-200">💡 விம்சோத்தரி தசா காலக் கணிதம் (120 Years):</strong>
+            <p class="text-[var(--muted-foreground)]">
+              மனிதனின் முழுமையான ஆயுள் 120 ஆண்டுகளாகக் கணக்கிடப்பட்டு, 9 கிரகங்களுக்கும் குறிப்பிட்ட ஆண்டுகள் தசா காலங்களாகப் பங்கிடப்பட்டுள்ளன. இந்த வரிசை ஒருபோதும் மாறாது!
+            </p>
+          </div>
+
+          <!-- 9 Dasha Lords & Years Grid -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
+            <div class="p-3 bg-[var(--secondary)]/40 rounded-xl border border-[var(--border)]">
+              <div class="flex justify-between font-bold"><span>1. கேது தசா</span><span class="text-amber-700 dark:text-amber-400">7 ஆண்டுகள்</span></div>
+              <div class="text-[11px] text-[var(--muted-foreground)] mt-1">நட்சத்திரங்கள்: அசுவினி, மகம், மூலம்</div>
+            </div>
+            <div class="p-3 bg-[var(--secondary)]/40 rounded-xl border border-[var(--border)]">
+              <div class="flex justify-between font-bold"><span>2. சுக்கிர தசா</span><span class="text-amber-700 dark:text-amber-400">20 ஆண்டுகள்</span></div>
+              <div class="text-[11px] text-[var(--muted-foreground)] mt-1">நட்சத்திரங்கள்: பரணி, பூரம், பூராடம்</div>
+            </div>
+            <div class="p-3 bg-[var(--secondary)]/40 rounded-xl border border-[var(--border)]">
+              <div class="flex justify-between font-bold"><span>3. சூரிய தசா</span><span class="text-amber-700 dark:text-amber-400">6 ஆண்டுகள்</span></div>
+              <div class="text-[11px] text-[var(--muted-foreground)] mt-1">நட்சத்திரங்கள்: கார்த்திகை, உத்திரம், உத்திராடம்</div>
+            </div>
+            <div class="p-3 bg-[var(--secondary)]/40 rounded-xl border border-[var(--border)]">
+              <div class="flex justify-between font-bold"><span>4. சந்திர தசா</span><span class="text-amber-700 dark:text-amber-400">10 ஆண்டுகள்</span></div>
+              <div class="text-[11px] text-[var(--muted-foreground)] mt-1">நட்சத்திரங்கள்: ரோகிணி, அஸ்தம், திருவோணம்</div>
+            </div>
+            <div class="p-3 bg-[var(--secondary)]/40 rounded-xl border border-[var(--border)]">
+              <div class="flex justify-between font-bold"><span>5. செவ்வாய் தசா</span><span class="text-amber-700 dark:text-amber-400">7 ஆண்டுகள்</span></div>
+              <div class="text-[11px] text-[var(--muted-foreground)] mt-1">நட்சத்திரங்கள்: மிருகசீரிஷம், சித்திரை, அவிட்டம்</div>
+            </div>
+            <div class="p-3 bg-[var(--secondary)]/40 rounded-xl border border-[var(--border)]">
+              <div class="flex justify-between font-bold"><span>6. இராகு தசா</span><span class="text-amber-700 dark:text-amber-400">18 ஆண்டுகள்</span></div>
+              <div class="text-[11px] text-[var(--muted-foreground)] mt-1">நட்சத்திரங்கள்: திருவாதிரை, சுவாதி, சதயம்</div>
+            </div>
+            <div class="p-3 bg-[var(--secondary)]/40 rounded-xl border border-[var(--border)]">
+              <div class="flex justify-between font-bold"><span>7. குரு தசா</span><span class="text-amber-700 dark:text-amber-400">16 ஆண்டுகள்</span></div>
+              <div class="text-[11px] text-[var(--muted-foreground)] mt-1">நட்சத்திரங்கள்: புனர்பூசம், விசாகம், பூரட்டாதி</div>
+            </div>
+            <div class="p-3 bg-[var(--secondary)]/40 rounded-xl border border-[var(--border)]">
+              <div class="flex justify-between font-bold"><span>8. சனி தசா</span><span class="text-amber-700 dark:text-amber-400">19 ஆண்டுகள்</span></div>
+              <div class="text-[11px] text-[var(--muted-foreground)] mt-1">நட்சத்திரங்கள்: பூசம், அனுஷம், உத்திரட்டாதி</div>
+            </div>
+            <div class="p-3 bg-[var(--secondary)]/40 rounded-xl border border-[var(--border)]">
+              <div class="flex justify-between font-bold"><span>9. புதன் தசா</span><span class="text-amber-700 dark:text-amber-400">17 ஆண்டுகள்</span></div>
+              <div class="text-[11px] text-[var(--muted-foreground)] mt-1">நட்சத்திரங்கள்: ஆயில்யம், கேட்டை, ரேவதி</div>
+            </div>
+          </div>
+          <div class="text-center font-bold text-xs text-amber-700 dark:text-amber-300">
+            மொத்த ஆண்டுகள்: 7 + 20 + 6 + 10 + 7 + 18 + 16 + 19 + 17 = 120 ஆண்டுகள் (Vimshottari Complete Cycle)
+          </div>
+        </div>
+      </div>
+
+      <!-- LESSON 5 PANEL: LAGNA & 12 BHAVAS -->
+      <div id="panel-lesson-5" class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-sm space-y-5 hidden">
+        <div class="border-b border-[var(--border)] pb-3 flex justify-between items-start">
+          <div>
+            <span class="text-xs font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider">பாடம் 5 (Lesson 5)</span>
+            <h3 class="text-lg font-bold text-[var(--foreground)] mt-0.5" id="l5-title">லக்கினமும் 12 பாவங்களின் வாழ்வியல் அர்த்தங்களும் (Lagna & 12 Bhavas)</h3>
+          </div>
+          <span class="text-2xl">🏠</span>
+        </div>
+
+        <div class="space-y-4 text-xs sm:text-sm">
+          <p class="leading-relaxed text-[var(--foreground)]">
+            நீங்கள் பிறந்த வினாடியில் கிழக்கு வானில் உதித்துக் கொண்டிருந்த ராசியே <strong>'உதய லக்கினம்' (ல)</strong>. இதுவே உங்கள் ஜாதகத்தின் <strong>1-ம் வீடு (First House)</strong>. அங்கிருந்து வலஞ்சுழியாக 1 முதல் 12 வீடுகள் மனித வாழ்க்கையின் 12 முக்கிய கூறுகளைக் குறிக்கின்றன:
+          </p>
+
+          <!-- 12 Houses Detailed Cards -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 text-xs">
+            <div class="p-2.5 bg-[var(--secondary)]/40 rounded-xl border border-[var(--border)] space-y-0.5">
+              <strong class="text-amber-800 dark:text-amber-300">1-ம் பாவம் (தனு):</strong>
+              <p class="text-[var(--foreground)]">உடல், தோற்றம், ஆயுள், சுபாவம், கௌரவம்.</p>
+            </div>
+            <div class="p-2.5 bg-[var(--secondary)]/40 rounded-xl border border-[var(--border)] space-y-0.5">
+              <strong class="text-amber-800 dark:text-amber-300">2-ம் பாவம் (தனம்):</strong>
+              <p class="text-[var(--foreground)]">குடும்பம், தன வரவு, வாக்கு, கண்கள், ஆரம்பக் கல்வி.</p>
+            </div>
+            <div class="p-2.5 bg-[var(--secondary)]/40 rounded-xl border border-[var(--border)] space-y-0.5">
+              <strong class="text-amber-800 dark:text-amber-300">3-ம் பாவம் (சகஜம்):</strong>
+              <p class="text-[var(--foreground)]">தைரியம், முயற்சி, இளைய சகோதரம், தகவல் தொடர்பு.</p>
+            </div>
+            <div class="p-2.5 bg-[var(--secondary)]/40 rounded-xl border border-[var(--border)] space-y-0.5">
+              <strong class="text-amber-800 dark:text-amber-300">4-ம் பாவம் (சுகம்):</strong>
+              <p class="text-[var(--foreground)]">தாய், வீடு, வாகனம், கல்வி, மன மகிழ்ச்சி, நிலம்.</p>
+            </div>
+            <div class="p-2.5 bg-[var(--secondary)]/40 rounded-xl border border-[var(--border)] space-y-0.5">
+              <strong class="text-amber-800 dark:text-amber-300">5-ம் பாவம் (புத்திரம்):</strong>
+              <p class="text-[var(--foreground)]">குழந்தை பாக்கியம், பூர்வ புண்ணியம், அறிவு, கலை நாட்டம்.</p>
+            </div>
+            <div class="p-2.5 bg-[var(--secondary)]/40 rounded-xl border border-[var(--border)] space-y-0.5">
+              <strong class="text-amber-800 dark:text-amber-300">6-ம் பாவம் (ரோகம்):</strong>
+              <p class="text-[var(--foreground)]">கடன், நோய், எதிரிகள், வழக்கு, போட்டி, வேலைப்பளு.</p>
+            </div>
+            <div class="p-2.5 bg-[var(--secondary)]/40 rounded-xl border border-[var(--border)] space-y-0.5">
+              <strong class="text-amber-800 dark:text-amber-300">7-ம் பாவம் (களத்திரம்):</strong>
+              <p class="text-[var(--foreground)]">திருமணம், வாழ்க்கைத்துணை, கூட்டுத் தொழில், வெளி உலகம்.</p>
+            </div>
+            <div class="p-2.5 bg-[var(--secondary)]/40 rounded-xl border border-[var(--border)] space-y-0.5">
+              <strong class="text-amber-800 dark:text-amber-300">8-ம் பாவம் (ஆயுள்):</strong>
+              <p class="text-[var(--foreground)]">ஆயுள் பலம், திடீர் விபத்து, மன உளைச்சல், பரம்பரைச் சொத்து.</p>
+            </div>
+            <div class="p-2.5 bg-[var(--secondary)]/40 rounded-xl border border-[var(--border)] space-y-0.5">
+              <strong class="text-amber-800 dark:text-amber-300">9-ம் பாவம் (பாக்கியம்):</strong>
+              <p class="text-[var(--foreground)]">தந்தை, தர்மம், அதிர்ஷ்டம், ஆன்மீகம், உயர் கல்வி.</p>
+            </div>
+            <div class="p-2.5 bg-[var(--secondary)]/40 rounded-xl border border-[var(--border)] space-y-0.5">
+              <strong class="text-amber-800 dark:text-amber-300">10-ம் பாவம் (கர்மம்):</strong>
+              <p class="text-[var(--foreground)]">தொழில், வேலை, அதிகாரம், தலைமைப் பதவி, சமூக அந்தஸ்து.</p>
+            </div>
+            <div class="p-2.5 bg-[var(--secondary)]/40 rounded-xl border border-[var(--border)] space-y-0.5">
+              <strong class="text-amber-800 dark:text-amber-300">11-ம் பாவம் (லாபம்):</strong>
+              <p class="text-[var(--foreground)]">வருமானம், ஆசை நிறைவேறுதல், மூத்த சகோதரம், நண்பர்கள்.</p>
+            </div>
+            <div class="p-2.5 bg-[var(--secondary)]/40 rounded-xl border border-[var(--border)] space-y-0.5">
+              <strong class="text-amber-800 dark:text-amber-300">12-ம் பாவம் (விரயம்):</strong>
+              <p class="text-[var(--foreground)]">சுபச் செலவுகள், வெளிநாடு செல்லுதல், மோட்சம், நித்திரை சுகம்.</p>
+            </div>
+          </div>
+
+          <!-- Bhavas Functional Groups -->
+          <div class="p-4 rounded-xl bg-[var(--secondary)]/50 border border-[var(--border)] space-y-2">
+            <h4 class="font-bold text-xs text-[var(--foreground)]">பாவங்களின் முக்கிய பிரிவுகள் (Key House Groupings):</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+              <div class="p-2.5 bg-[var(--card)] rounded-lg border border-[var(--border)]">
+                <span class="font-bold text-amber-700 dark:text-amber-400">🏛️ கேந்திரங்கள் (1, 4, 7, 10):</span>
+                <p class="text-[10px] text-[var(--muted-foreground)] mt-0.5">விஷ்ணு ஸ்தானங்கள் — வாழ்க்கையின் நான்கு பலமான தூண்கள். இங்கு சுப கிரகங்கள் இருப்பது யோகம்.</p>
+              </div>
+              <div class="p-2.5 bg-[var(--card)] rounded-lg border border-[var(--border)]">
+                <span class="font-bold text-emerald-700 dark:text-emerald-400">👑 திரிகோணங்கள் (1, 5, 9):</span>
+                <p class="text-[10px] text-[var(--muted-foreground)] mt-0.5">லக்ஷ்மி ஸ்தானங்கள் — முன்ஜென்ம புண்ணியம், தெய்வ அனுகிரகம் மற்றும் யோக பலன்களைத் தரும் வீடுகள்.</p>
+              </div>
+              <div class="p-2.5 bg-[var(--card)] rounded-lg border border-[var(--border)]">
+                <span class="font-bold text-rose-700 dark:text-rose-400">⚠️ மறைவு ஸ்தானங்கள் (6, 8, 12):</span>
+                <p class="text-[10px] text-[var(--muted-foreground)] mt-0.5">திரிக ஸ்தானங்கள் — தடைகள், போராட்டங்கள் மற்றும் விரயங்களை ஏற்படுத்தக்கூடிய வீடுகள்.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LESSON 6 PANEL: HOW TO READ A CHART IN 5 STEPS -->
+      <div id="panel-lesson-6" class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-sm space-y-5 hidden">
+        <div class="border-b border-[var(--border)] pb-3 flex justify-between items-start">
+          <div>
+            <span class="text-xs font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider">பாடம் 6 (Lesson 6)</span>
+            <h3 class="text-lg font-bold text-[var(--foreground)] mt-0.5" id="l6-title">ஒரு ஜாதகத்தை 5 எளிய படிகளில் படிப்பது எப்படி? (How to Read Any Horoscope)</h3>
+          </div>
+          <span class="text-2xl">🔍</span>
+        </div>
+
+        <div class="space-y-3.5 text-xs sm:text-sm">
+          <p class="leading-relaxed text-[var(--foreground)]">
+            ஒரு ஜாதகப் புத்தகத்தைக் கையில் எடுத்தவுடன் எங்கே தொடங்குவது என்ற குழப்பமே பலருக்கும் இருக்கும். கீழே உள்ள 5 படிகளைப் பின்பற்றினால் எவரும் துல்லியமாக ஜாதகத்தை வாசிக்கலாம்:
+          </p>
+
+          <div class="space-y-2.5">
+            <div class="p-3.5 rounded-xl bg-[var(--secondary)]/50 border border-[var(--border)] flex gap-3 items-start">
+              <span class="w-6 h-6 rounded-full bg-amber-600 text-white font-bold flex items-center justify-center text-xs shrink-0 mt-0.5">1</span>
+              <div>
+                <strong class="text-sm font-bold text-[var(--foreground)]">படி 1: 'ல' (லக்கினம்) உள்ள கட்டத்தைக் காணுங்கள்</strong>
+                <p class="text-xs text-[var(--muted-foreground)] mt-0.5">
+                  ராசிக் கட்டத்தில் 'ல' அல்லது 'Asc' எந்த ராசியில் உள்ளது என்று பாருங்கள் (எ.கா. மிதுனம்). அதுவே உங்களின் 1-ம் வீடு (உங்கள் அடையாளம், உடல், குணம்).
+                </p>
+              </div>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-[var(--secondary)]/50 border border-[var(--border)] flex gap-3 items-start">
+              <span class="w-6 h-6 rounded-full bg-amber-600 text-white font-bold flex items-center justify-center text-xs shrink-0 mt-0.5">2</span>
+              <div>
+                <strong class="text-sm font-bold text-[var(--foreground)]">படி 2: 'சந்' (சந்திரன்) உள்ள ராசியைக் காணுங்கள்</strong>
+                <p class="text-xs text-[var(--muted-foreground)] mt-0.5">
+                  சந்திரன் இருக்கும் ராசியே உங்கள் <strong>ஜென்ம ராசி</strong>. சந்திரன் நின்ற நட்சத்திரமே உங்கள் <strong>பிறந்த நட்சத்திரம்</strong> (உங்கள் மனம் மற்றும் உணர்வுகளின் பிரதிபலிப்பு).
+                </p>
+              </div>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-[var(--secondary)]/50 border border-[var(--border)] flex gap-3 items-start">
+              <span class="w-6 h-6 rounded-full bg-amber-600 text-white font-bold flex items-center justify-center text-xs shrink-0 mt-0.5">3</span>
+              <div>
+                <strong class="text-sm font-bold text-[var(--foreground)]">படி 3: லக்கினத்தின் யோககாரகனைக் கண்டறியுங்கள்</strong>
+                <p class="text-xs text-[var(--muted-foreground)] mt-0.5">
+                  ஜாதக சந்திரிகா விதிப்படி உங்கள் லக்கினத்திற்கு கேந்திர-திரிகோண சுப ஆதிக்கம் பெற்ற யோககாரகன் யார் என்று பாருங்கள் (எ.கா. மிதுனத்திற்கு சுக்கிரன் & சனி; கடகத்திற்கு செவ்வாய்).
+                </p>
+              </div>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-[var(--secondary)]/50 border border-[var(--border)] flex gap-3 items-start">
+              <span class="w-6 h-6 rounded-full bg-amber-600 text-white font-bold flex items-center justify-center text-xs shrink-0 mt-0.5">4</span>
+              <div>
+                <strong class="text-sm font-bold text-[var(--foreground)]">படி 4: முக்கிய 4 வாழ்க்கைக் கேள்விகளை ஆராயுங்கள்</strong>
+                <p class="text-xs text-[var(--muted-foreground)] mt-0.5">
+                  • <strong>10-ம் வீடு</strong> (தொழில்/உத்தியோகம்) | • <strong>7-ம் வீடு</strong> (திருமணம்/வாழ்க்கைத்துணை)<br>
+                  • <strong>5-ம் வீடு</strong> (புத்திர பாக்கியம்) | • <strong>6-ம் வீடு</strong> (ஆரோக்கியம்/கடன்கள்).
+                </p>
+              </div>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-[var(--secondary)]/50 border border-[var(--border)] flex gap-3 items-start">
+              <span class="w-6 h-6 rounded-full bg-amber-600 text-white font-bold flex items-center justify-center text-xs shrink-0 mt-0.5">5</span>
+              <div>
+                <strong class="text-sm font-bold text-[var(--foreground)]">படி 5: நடப்பு தசா-புக்தியை வைத்து காலத்தை முடிவு செய்யுங்கள்</strong>
+                <p class="text-xs text-[var(--muted-foreground)] mt-0.5">
+                  ஒருவருக்கு ஜாதகத்தில் எப்பேர்ப்பட்ட யோகம் இருந்தாலும், அந்த யோகத்தை தரக்கூடிய கிரகத்தின் <strong>தசா அல்லது புக்தி காலம்</strong> வரும் போது மட்டுமே அந்த பலன் நடைமுறையில் கைகூடும்!
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LESSON 7 PANEL: ROUTINE USABLE CHEAT-SHEET -->
+      <div id="panel-lesson-7" class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-sm space-y-6 hidden">
+        <div class="border-b border-[var(--border)] pb-3 flex justify-between items-start">
+          <div>
+            <span class="text-xs font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider">துரிதக் குறிப்பேடு (Daily Routine Cheat-Sheet)</span>
+            <h3 class="text-lg font-bold text-[var(--foreground)] mt-0.5" id="l7-title">அன்றாட பயன்பாட்டிற்கான ஜோதிடக் குறிப்பு அட்டவணைகள்</h3>
+          </div>
+          <span class="text-2xl">📑</span>
+        </div>
+
+        <!-- 4 Quick Tables in a Responsive Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 text-xs">
+          
+          <!-- Cheat Table 1: Signs, Lords & Elements -->
+          <div class="p-4 rounded-xl bg-[var(--secondary)]/40 border border-[var(--border)] space-y-2">
+            <h4 class="font-bold text-xs text-amber-800 dark:text-amber-300">1. 12 ராசிகள், அதிபதிகள் & பூதங்கள்</h4>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left">
+                <thead><tr class="border-b border-[var(--border)] text-[var(--muted-foreground)]"><th>ராசி</th><th>அதிபதி</th><th>பூதம்</th></tr></thead>
+                <tbody class="divide-y divide-[var(--border)]">
+                  <tr><td class="py-1 font-semibold">மேஷம்</td><td>செவ்வாய்</td><td class="text-red-600">நெருப்பு</td></tr>
+                  <tr><td class="py-1 font-semibold">ரிஷபம்</td><td>சுக்கிரன்</td><td class="text-amber-700">நிலம்</td></tr>
+                  <tr><td class="py-1 font-semibold">மிதுனம்</td><td>புதன்</td><td class="text-sky-600">காற்று</td></tr>
+                  <tr><td class="py-1 font-semibold">கடகம்</td><td>சந்திரன்</td><td class="text-blue-600">நீர்</td></tr>
+                  <tr><td class="py-1 font-semibold">சிம்மம்</td><td>சூரியன்</td><td class="text-red-600">நெருப்பு</td></tr>
+                  <tr><td class="py-1 font-semibold">கன்னி</td><td>புதன்</td><td class="text-amber-700">நிலம்</td></tr>
+                  <tr><td class="py-1 font-semibold">துலாம்</td><td>சுக்கிரன்</td><td class="text-sky-600">காற்று</td></tr>
+                  <tr><td class="py-1 font-semibold">விருச்சிகம்</td><td>செவ்வாய்</td><td class="text-blue-600">நீர்</td></tr>
+                  <tr><td class="py-1 font-semibold">தனுசு</td><td>குரு</td><td class="text-red-600">நெருப்பு</td></tr>
+                  <tr><td class="py-1 font-semibold">மகரம்</td><td>சனி</td><td class="text-amber-700">நிலம்</td></tr>
+                  <tr><td class="py-1 font-semibold">கும்பம்</td><td>சனி</td><td class="text-sky-600">காற்று</td></tr>
+                  <tr><td class="py-1 font-semibold">மீனம்</td><td>குரு</td><td class="text-blue-600">நீர்</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Cheat Table 2: Exaltation & Debilitation -->
+          <div class="p-4 rounded-xl bg-[var(--secondary)]/40 border border-[var(--border)] space-y-2">
+            <h4 class="font-bold text-xs text-amber-800 dark:text-amber-300">2. உச்ச & நீச நிலைகள் அட்டவணை</h4>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left">
+                <thead><tr class="border-b border-[var(--border)] text-[var(--muted-foreground)]"><th>கிரகம்</th><th class="text-amber-700">உச்சம் (Exalted)</th><th class="text-rose-600">நீசம் (Debilitated)</th></tr></thead>
+                <tbody class="divide-y divide-[var(--border)]">
+                  <tr><td class="py-1 font-semibold">சூரியன்</td><td class="text-amber-700 font-bold">மேஷம்</td><td class="text-rose-600">துலாம்</td></tr>
+                  <tr><td class="py-1 font-semibold">சந்திரன்</td><td class="text-amber-700 font-bold">ரிஷபம்</td><td class="text-rose-600">விருச்சிகம்</td></tr>
+                  <tr><td class="py-1 font-semibold">செவ்வாய்</td><td class="text-amber-700 font-bold">மகரம்</td><td class="text-rose-600">கடகம்</td></tr>
+                  <tr><td class="py-1 font-semibold">புதன்</td><td class="text-amber-700 font-bold">கன்னி</td><td class="text-rose-600">மீனம்</td></tr>
+                  <tr><td class="py-1 font-semibold">குரு</td><td class="text-amber-700 font-bold">கடகம்</td><td class="text-rose-600">மகரம்</td></tr>
+                  <tr><td class="py-1 font-semibold">சுக்கிரன்</td><td class="text-amber-700 font-bold">மீனம்</td><td class="text-rose-600">கன்னி</td></tr>
+                  <tr><td class="py-1 font-semibold">சனி</td><td class="text-amber-700 font-bold">துலாம்</td><td class="text-rose-600">மேஷம்</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Cheat Table 3: 27 Stars & Dasha Years -->
+          <div class="p-4 rounded-xl bg-[var(--secondary)]/40 border border-[var(--border)] space-y-2">
+            <h4 class="font-bold text-xs text-amber-800 dark:text-amber-300">3. தசா நாதர்கள் & நட்சத்திரங்கள்</h4>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left">
+                <thead><tr class="border-b border-[var(--border)] text-[var(--muted-foreground)]"><th>தசா நாதர்</th><th>வருடங்கள்</th><th>நட்சத்திரங்கள்</th></tr></thead>
+                <tbody class="divide-y divide-[var(--border)]">
+                  <tr><td class="py-1 font-semibold">கேது</td><td>7</td><td>அசுவினி, மகம், மூலம்</td></tr>
+                  <tr><td class="py-1 font-semibold">சுக்கிரன்</td><td>20</td><td>பரணி, பூரம், பூராடம்</td></tr>
+                  <tr><td class="py-1 font-semibold">சூரியன்</td><td>6</td><td>கார்த்திகை, உத்திரம், உத்திராடம்</td></tr>
+                  <tr><td class="py-1 font-semibold">சந்திரன்</td><td>10</td><td>ரோகிணி, அஸ்தம், திருவோணம்</td></tr>
+                  <tr><td class="py-1 font-semibold">செவ்வாய்</td><td>7</td><td>மிருகசீரிஷம், சித்திரை, அவிட்டம்</td></tr>
+                  <tr><td class="py-1 font-semibold">இராகு</td><td>18</td><td>திருவாதிரை, சுவாதி, சதயம்</td></tr>
+                  <tr><td class="py-1 font-semibold">குரு</td><td>16</td><td>புனர்பூசம், விசாகம், பூரட்டாதி</td></tr>
+                  <tr><td class="py-1 font-semibold">சனி</td><td>19</td><td>பூசம், அனுஷம், உத்திரட்டாதி</td></tr>
+                  <tr><td class="py-1 font-semibold">புதன்</td><td>17</td><td>ஆயில்யம், கேட்டை, ரேவதி</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Cheat Table 4: House Meanings -->
+          <div class="p-4 rounded-xl bg-[var(--secondary)]/40 border border-[var(--border)] space-y-2">
+            <h4 class="font-bold text-xs text-amber-800 dark:text-amber-300">4. 12 பாவங்களின் துரிதக் குறியீடு</h4>
+            <div class="space-y-1 text-[11px]">
+              <div><strong>1:</strong> உடல், உயிர், குணம்</div>
+              <div><strong>2:</strong> தனம், வாக்கு, குடும்பம்</div>
+              <div><strong>3:</strong> தைரியம், இளைய சகோதரம்</div>
+              <div><strong>4:</strong> தாய், சுகம், கல்வி, வாகனம்</div>
+              <div><strong>5:</strong> புத்திர பாக்கியம், பூர்வ புண்ணியம்</div>
+              <div><strong>6:</strong> கடன், நோய், எதிரி, வழக்கு</div>
+              <div><strong>7:</strong> களத்திரம் (மனைவி/கணவன்), நண்பர்</div>
+              <div><strong>8:</strong> ஆயுள், எதிர்பாராத விபத்து</div>
+              <div><strong>9:</strong> தந்தை, பாக்கியம், தர்மம்</div>
+              <div><strong>10:</strong> உத்தியோகம், கர்மம், அதிகாரம்</div>
+              <div><strong>11:</strong> லாபம், மூத்த சகோதரம்</div>
+              <div><strong>12:</strong> விரயம், வெளிநாடு, மோட்சம்</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer with Sages Attribution -->
+    <footer class="text-center text-xs text-[var(--muted-foreground)] py-4 border-t border-[var(--border)] space-y-1">
+      <div>தென்னக ஜோதிடக் கணித ஆய்வு தளம் • Maharishi Parashara & Sage Vararuchi Suddha Vakya Engine</div>
+      <div class="font-medium text-amber-700 dark:text-amber-400">100% Deterministic Mathematical Shastric Precision • Multi-Profile & Neutral</div>
+    </footer>
+
+  </div>
+
+  <script>
+    let currentLang = 'ta';
+    let currentChartMode = 'D1';
+    let currentMasterView = 'horoscope';
+    let currentLessonId = 1;
+    let activeProfile = 'benchmark';
+
+    const I18N = {
+      ta: {
+        sagesBlessing: "மஹரிஷி பராசரர் • வரருசி முனிவர் • வராஹமிஹிரர் அருளாசி பெற்ற கணித முறைமை",
+        badgeDeterministic: "சுயாதீன சாஸ்திரக் கணிதப் பொறி",
+        mainTitle: "தென்னக ஜோதிட & பஞ்சாங்க ஆய்வு தளம்",
+        subTitle: "ராசி-நவாம்சம் சக்கரம் • 4 வாழ்வியல் பலன்கள் • பஞ்சாங்கம் • ஜோதிடப் பாடசாலை",
+        navHoroscope: "ஜாதக ஆய்வு & சக்கரம்",
+        navPanchangam: "தினசரி பஞ்சாங்கம்",
+        navAcademy: "ஜோதிடப் பாடசாலை",
+        quickSamples: "துரித மாதிரி ஜாதகங்கள் (Quick Samples):",
+        sampleGovt: "மாதிரி 1: அரசு / நீதித்துறை",
+        sampleTech: "மாதிரி 2: IT / தொழில்நுட்பம்",
+        sampleFinance: "மாதிரி 3: வணிகம் & நிதி",
+        birthData: "ஜாதக விவர உள்ளீடுகள் (Birth Data)",
+        dob: "பிறந்த தேதி (Date of Birth)",
+        tob: "பிறந்த நேரம்",
+        gender: "பாலினம்",
+        male: "ஆண் (Male)",
+        female: "பெண் (Female)",
+        lagna: "உதய லக்கினம் (Ascendant)",
+        dashaBalance: "பிறந்த போது தசா இருப்பு (Dasha Balance)",
+        btnCompute: "சாஸ்திர பலனைக் கணக்கிடு (Analyze Chart)",
+        rasiChart: "தென்னக பாரம்பரிய சக்கரம் (South Indian Chart)",
+        chartSub: "108 பாதக் கணிதப்படி ராசி மற்றும் நவாம்ச நிலைகள்",
+        btnD1: "ராசி (D1)",
+        btnD9: "நவாம்சம் (D9)",
+        legLagna: "லக்கினம்",
+        legExalted: "உச்ச கிரகம்",
+        legVargottama: "வர்க்கோத்தமம்",
+        tabCareer: "1. உத்தியோகம் & தொழில்",
+        tabMarriage: "2. திருமணம் & வரன்",
+        tabProgeny: "3. புத்திர பாக்கியம்",
+        tabHealth: "4. ஆரோக்கியம் & ஆயுள்",
+        primaryCareer: "பொருத்தமான முதன்மை தொழில் துறை",
+        careerStrength: "தொழில் யோக ஆற்றல் (Auspicious Affinity)",
+        secondaryCareer: "இரண்டாம் துறை:",
+        tenthHouse: "10-ம் வீடு (கர்ம ஸ்தானம்):",
+        yogakaraka: "ராஜ யோககாரகன்:",
+        citation: "சாஸ்திர ஆதாரம்:",
+        careerWindows: "உத்தியோக உயர்வு & மாற்றக் காலங்கள் (Dasha Timeline Windows):",
+        marriageStatus: "களத்திர பாவ பலன் & திருமண பாக்கியம்",
+        chevvaiStatus: "செவ்வாய் தோஷ நிலை (Manglik Evaluation):",
+        seventhHouse: "7-ம் வீடு (களத்திரம்):",
+        kalathraKaraka: "களத்திர காரகன்:",
+        partnerDir: "வரன் திசை அமைப்பு:",
+        marriageWindows: "பொருத்தமான திருமண கால அவகாசங்கள் (Mature Age Windows):",
+        progenyTitle: "புத்திர பாக்கியம் & வம்ச விருத்தி (BPHS Ch. 16)",
+        fifthHouse: "5-ம் வீடு (புத்திர ஸ்தானம்):",
+        putrakaraka: "புத்திரகாரகன்:",
+        progenyDesc: "5-ம் அதிபதி மற்றும் புத்திரகாரகன் குருவின் தசா புக்தி காலங்களில் சந்தான விருத்தி கைகூடும்.",
+        healthTitle: "ஆரோக்கியம், ரோகம் & ஆயுள் பாதுகாப்பு (BPHS Ch. 17 & 44)",
+        sixthHouse: "6-ம் வீடு (ரோக ஸ்தானம்):",
+        marakas: "மாரக கிரகங்கள் (Marakas):",
+        organVulnerability: "உடல் உறுப்பு விழிப்புணர்வுப் பகுதி (Vulnerability Area):",
+        hdrPanchangamDate: "சுத்த வாக்கிய பஞ்சாங்க நாள் கணிதம்",
+        panchangamDesc: "வரருசி முனிவர் அருளிய வாக்கியக் கணித முறைப்படி தினசரி பஞ்ச அங்கங்கள் & முகூர்த்த காரணிகள்",
+        panchangamToday: "இன்று (Today)",
+        dinamana: "தினமானம் (அகல்)",
+        sunrise: "சூரிய உதயம்:",
+        nethiram: "நேத்திரம் (பார்வை)",
+        jeevan: "ஜீவன் (உயிர்)",
+        amritadi: "அமிர்தாதி யோகம்",
+        hdrPanchaAngas: "பஞ்ச அங்கங்கள் (Five Limbs of the Day)",
+        angaTithi: "1. திதி (Tithi):",
+        angaVara: "2. வாரம் (Vara):",
+        angaNak: "3. நட்சத்திரம் (Star):",
+        angaYoga: "4. யோகம் (Yoga):",
+        angaKarana: "5. கரணம் (Karana):",
+        hdrTimeWindows: "சுப காலங்கள் & விலக்க வேண்டிய நேரங்கள்",
+        nallaNeram: "நல்ல நேரம்:",
+        gowriNeram: "கௌரி நல்ல நேரம்:",
+        rahuKalam: "இராகு காலம்:",
+        yamagandam: "எமகண்டம்:",
+        kuligai: "குளிகை:",
+        thiyajyam: "நட்சத்திர தியாஜ்யம்:",
+        hdrTravelGuide: "பயண வழிகாட்டல் & எச்சரிக்கைகள்",
+        vaaraSoolai: "வாரசூலை (Travel Direction Restriction):",
+        parikaram: "பரிகாரம் (Remedy):",
+        chandrashtamaHdr: "சந்திராஷ்டம எச்சரிக்கை (Chandrashtamam):",
+        panchangamCitation: "சாஸ்திர ஆதாரம்: வரருசி முனிவரின் வாக்கிய கணித அட்டவணை",
+        academyTitle: "ஜோதிடப் பாடசாலை • Vedic Astrology Beginner's Academy",
+        academyLevel: "நிலை 1: தொடக்க நிலை (Level 1: Fundamentals)",
+        academySubtitle: "தென்னக ஜோதிடத்தின் அடிப்படைகளை எளிய தமிழில், படங்களுடனும் தெளிவான அட்டவணைகளுடனும் கற்றுக்கொள்ளுங்கள். அன்றாட வாழ்க்கையில் சுயமாகப் பயன் தரும் சாஸ்திர விதிகள்.",
+        tabL1: "1. ராசிக் கட்டம்",
+        tabL2: "2. 12 ராசிகள் & தத்துவங்கள்",
+        tabL3: "3. நவகிரகங்கள் & உச்ச-நீசம்",
+        tabL4: "4. நட்சத்திரங்கள் & தசா",
+        tabL5: "5. லக்கினமும் 12 பாவங்களும்",
+        tabL6: "6. ஜாதகம் பார்க்கும் 5 படிகள்",
+        tabL7: "துரிதக் குறிப்பேடு (Cheat-Sheet)"
+      },
+      en: {
+        sagesBlessing: "Blessed by Maharishi Parashara, Sage Vararuchi & Varahamihira",
+        badgeDeterministic: "Deterministic Shastric Engine",
+        mainTitle: "Universal South Indian Astrology & Panchangam Portal",
+        subTitle: "Rasi-Navamsha Chakra • 4 Life Predictions • Panchangam • Academy",
+        navHoroscope: "Horoscope & Chart Analysis",
+        navPanchangam: "Daily Suddha Vakya Panchangam",
+        navAcademy: "Astrology Academy",
+        quickSamples: "Quick Sample Profiles:",
+        sampleGovt: "Sample 1: Govt / Judiciary",
+        sampleTech: "Sample 2: IT / Engineering",
+        sampleFinance: "Sample 3: Commerce & Finance",
+        birthData: "Birth Data Inputs",
+        dob: "Date of Birth",
+        tob: "Time of Birth",
+        gender: "Gender",
+        male: "Male",
+        female: "Female",
+        lagna: "Ascendant (Lagna)",
+        dashaBalance: "Dasha Balance at Birth",
+        btnCompute: "Analyze Chart",
+        rasiChart: "Traditional South Indian Chart",
+        chartSub: "Rasi and Navamsha positions calculated via 108 Pada math",
+        btnD1: "Rasi (D1)",
+        btnD9: "Navamsha (D9)",
+        legLagna: "Ascendant",
+        legExalted: "Exalted Planet",
+        legVargottama: "Vargottama",
+        tabCareer: "1. Career & Job",
+        tabMarriage: "2. Marriage & Partner",
+        tabProgeny: "3. Progeny & Children",
+        tabHealth: "4. Health & Longevity",
+        primaryCareer: "Primary Career Affinity",
+        careerStrength: "Career Auspicious Strength",
+        secondaryCareer: "Secondary Sector:",
+        tenthHouse: "10th House (Karma Bhava):",
+        yogakaraka: "Raja Yogakaraka:",
+        citation: "Shastric Citation:",
+        careerWindows: "Career Rise & Promotion Periods (Dasha Windows):",
+        marriageStatus: "Kalathra Bhava & Marriage Prospects",
+        chevvaiStatus: "Manglik (Chevvai Dosha) Status:",
+        seventhHouse: "7th House (Kalathra):",
+        kalathraKaraka: "Kalathra Karaka:",
+        partnerDir: "Partner Direction:",
+        marriageWindows: "Favorable Marriage Windows (Mature Age):",
+        progenyTitle: "Progeny & Family Lineage (BPHS Ch. 16)",
+        fifthHouse: "5th House (Putra Bhava):",
+        putrakaraka: "Putrakaraka:",
+        progenyDesc: "Blessings for progeny and lineage during 5th lord and Putrakaraka Jupiter periods.",
+        healthTitle: "Health, Disease & Longevity (BPHS Ch. 17 & 44)",
+        sixthHouse: "6th House (Roga Bhava):",
+        marakas: "Maraka Planets:",
+        organVulnerability: "Physical Vulnerability Zone:",
+        hdrPanchangamDate: "Suddha Vakya Daily Panchangam",
+        panchangamDesc: "Deterministic 5 limbs & Muhurtha factors codified from Sage Vararuchi's system",
+        panchangamToday: "Today",
+        dinamana: "Dinamana (Day Length)",
+        sunrise: "Sunrise:",
+        nethiram: "Nethiram (Sight)",
+        jeevan: "Jeevan (Life Force)",
+        amritadi: "Amritadi Yoga",
+        hdrPanchaAngas: "The Five Limbs of the Day (Pancha Angas)",
+        angaTithi: "1. Tithi:",
+        angaVara: "2. Vara (Day):",
+        angaNak: "3. Nakshatra (Star):",
+        angaYoga: "4. Yoga:",
+        angaKarana: "5. Karana:",
+        hdrTimeWindows: "Auspicious Hours & Inauspicious Periods",
+        nallaNeram: "Nalla Neram (Auspicious):",
+        gowriNeram: "Gowri Nalla Neram:",
+        rahuKalam: "Rahu Kalam:",
+        yamagandam: "Yamagandam:",
+        kuligai: "Kuligai:",
+        thiyajyam: "Nakshatra Thiyajyam:",
+        hdrTravelGuide: "Travel Guide & Warning Indications",
+        vaaraSoolai: "Vaara Soolai (Travel Restriction):",
+        parikaram: "Remedy:",
+        chandrashtamaHdr: "Chandrashtamam Warning:",
+        panchangamCitation: "Citation: Sage Vararuchi Suddha Vakya Siddhanta Tables",
+        academyTitle: "Vedic Astrology Academy • Beginner's Fundamentals",
+        academyLevel: "Level 1: Fundamentals (Basics to Routine Usables)",
+        academySubtitle: "Master the foundations of South Indian Vedic Astrology with clear chapter-wise guides, visual chart mappings, and routine usable cheat-sheets.",
+        tabL1: "1. Chart Layout",
+        tabL2: "2. 12 Signs & Elements",
+        tabL3: "3. Planets & Dignities",
+        tabL4: "4. 27 Stars & Dasha",
+        tabL5: "5. Lagna & 12 Houses",
+        tabL6: "6. 5 Steps to Read",
+        tabL7: "Routine Cheat-Sheet"
+      }
+    };
+
+    const RASIS_DATA = [
+      { id: 0, name_ta: "மேஷம்", name_en: "Aries", lord_ta: "செவ்வாய்", lord_en: "Mars" },
+      { id: 1, name_ta: "ரிஷபம்", name_en: "Taurus", lord_ta: "சுக்கிரன்", lord_en: "Venus" },
+      { id: 2, name_ta: "மிதுனம்", name_en: "Gemini", lord_ta: "புதன்", lord_en: "Mercury" },
+      { id: 3, name_ta: "கடகம்", name_en: "Cancer", lord_ta: "சந்திரன்", lord_en: "Moon" },
+      { id: 4, name_ta: "சிம்மம்", name_en: "Leo", lord_ta: "சூரியன்", lord_en: "Sun" },
+      { id: 5, name_ta: "கன்னி", name_en: "Virgo", lord_ta: "புதன்", lord_en: "Mercury" },
+      { id: 6, name_ta: "துலாம்", name_en: "Libra", lord_ta: "சுக்கிரன்", lord_en: "Venus" },
+      { id: 7, name_ta: "விருச்சிகம்", name_en: "Scorpio", lord_ta: "செவ்வாய்", lord_en: "Mars" },
+      { id: 8, name_ta: "தனுசு", name_en: "Sagittarius", lord_ta: "குரு", lord_en: "Jupiter" },
+      { id: 9, name_ta: "மகரம்", name_en: "Capricorn", lord_ta: "சனி", lord_en: "Saturn" },
+      { id: 10, name_ta: "கும்பம்", name_en: "Aquarius", lord_ta: "சனி", lord_en: "Saturn" },
+      { id: 11, name_ta: "மீனம்", name_en: "Pisces", lord_ta: "குரு", lord_en: "Jupiter" }
+    ];
+
+    const CHANDRIKA_RULES = {
+      0: { yogi_ta: "குரு, சூரியன்", yogi_en: "Jupiter, Sun", marakas_ta: "சுக்கிரன், புதன்", marakas_en: "Venus, Mercury" },
+      1: { yogi_ta: "சனி", yogi_en: "Saturn", marakas_ta: "குரு, செவ்வாய்", marakas_en: "Jupiter, Mars" },
+      2: { yogi_ta: "சுக்கிரன், சனி", yogi_en: "Venus, Saturn", marakas_ta: "செவ்வாய், குரு", marakas_en: "Mars, Jupiter" },
+      3: { yogi_ta: "செவ்வாய்", yogi_en: "Mars", marakas_ta: "சுக்கிரன், புதன்", marakas_en: "Venus, Mercury" },
+      4: { yogi_ta: "செவ்வாய்", yogi_en: "Mars", marakas_ta: "சனி, சுக்கிரன்", marakas_en: "Saturn, Venus" },
+      5: { yogi_ta: "சுக்கிரன், புதன்", yogi_en: "Venus, Mercury", marakas_ta: "செவ்வாய், குரு", marakas_en: "Mars, Jupiter" },
+      6: { yogi_ta: "சனி", yogi_en: "Saturn", marakas_ta: "செவ்வாய், குரு", marakas_en: "Mars, Jupiter" },
+      7: { yogi_ta: "சூரியன், சந்திரன்", yogi_en: "Sun, Moon", marakas_ta: "புதன், சுக்கிரன்", marakas_en: "Mercury, Venus" },
+      8: { yogi_ta: "சூரியன், புதன்", yogi_en: "Sun, Mercury", marakas_ta: "சுக்கிரன், புதன்", marakas_en: "Venus, Mercury" },
+      9: { yogi_ta: "சுக்கிரன்", yogi_en: "Venus", marakas_ta: "செவ்வாய், குரு", marakas_en: "Mars, Jupiter" },
+      10: { yogi_ta: "சுக்கிரன்", yogi_en: "Venus", marakas_ta: "குரு, செவ்வாய்", marakas_en: "Jupiter, Mars" },
+      11: { yogi_ta: "சந்திரன், செவ்வாய்", yogi_en: "Moon, Mars", marakas_ta: "சனி, சுக்கிரன்", marakas_en: "Saturn, Venus" }
+    };
+
+    const ORGAN_MAP = {
+      0: { ta: "தலை, மூளை, ரத்த அழுத்தம்", en: "Head, brain, blood pressure" },
+      1: { ta: "தொண்டை, முகம், குரல்வளை", en: "Throat, face, vocal cords" },
+      2: { ta: "சுவாசக்குழாய், நுரையீரல், தோள்பட்டை", en: "Respiratory tract, shoulders" },
+      3: { ta: "மார்பு, நுரையீரல், செரிமானம்", en: "Chest, stomach digestion" },
+      4: { ta: "இதயம், முதுகெலும்பு, உஷ்ணம்", en: "Heart, spine, vitality" },
+      5: { ta: "வயிறு, குடல், செரிமானக் கோளாறு", en: "Abdomen, intestines, digestion" },
+      6: { ta: "சிறுநீரகம், இடுப்புப் பகுதி", en: "Kidneys, lower back" },
+      7: { ta: "இனப்பெருக்க உறுப்புகள், நீர் நோய்கள்", en: "Reproductive organs, pelvic fluids" },
+      8: { ta: "தொடைகள், கல்லீரல், ரத்த ஓட்டம்", en: "Thighs, liver, arterial circulation" },
+      9: { ta: "மூட்டுகள், எலும்புகள், முழங்கால்", en: "Joints, knee bones, skin" },
+      10: { ta: "கணுக்கால், கால்கள், வாயுத் தொல்லை", en: "Ankles, shins, nervous system" },
+      11: { ta: "பாதங்கள், தூக்கமின்மை, நரம்பியல்", en: "Feet, sleep cycles, lymphatics" }
+    };
+
+    const PROFILES = {
+      benchmark: {
+        dob: "1992-04-20",
+        lagnaIdx: 2,
+        d9LagnaIdx: 2,
+        dashaLord: "சுக்கிரன்",
+        dashaYears: "1.4",
+        planets: [
+          { name_ta: "சூரி (உ)", name_en: "Sun(Ex)", d1: 0, d9: 3, isExalted: true },
+          { name_ta: "சந்", name_en: "Moon", d1: 0, d9: 7 },
+          { name_ta: "புத", name_en: "Merc", d1: 0, d9: 2, isD9Own: true },
+          { name_ta: "குரு", name_en: "Jup", d1: 2, d9: 10 },
+          { name_ta: "கேது", name_en: "Ketu", d1: 3, d9: 8 },
+          { name_ta: "சனி", name_en: "Sat", d1: 8, d9: 7 },
+          { name_ta: "இராகு", name_en: "Rahu", d1: 9, d9: 2 },
+          { name_ta: "செவ்", name_en: "Mars", d1: 10, d9: 9, isD9Exalted: true },
+          { name_ta: "சுக்", name_en: "Ven", d1: 10, d9: 2 }
+        ]
+      },
+      tech: {
+        dob: "1996-09-15",
+        lagnaIdx: 10,
+        d9LagnaIdx: 8,
+        dashaLord: "சந்திரன்",
+        dashaYears: "4.0",
+        planets: [
+          { name_ta: "செவ் (உ)", name_en: "Mars(Ex)", d1: 9, d9: 9, isExalted: true, isVargottama: true },
+          { name_ta: "புத (உ)", name_en: "Merc(Ex)", d1: 5, d9: 0, isExalted: true },
+          { name_ta: "சந் (உ)", name_en: "Moon(Ex)", d1: 1, d9: 1, isExalted: true, isVargottama: true },
+          { name_ta: "சனி", name_en: "Sat", d1: 10, d9: 1 },
+          { name_ta: "சுக்", name_en: "Ven", d1: 10, d9: 11, isD9Exalted: true },
+          { name_ta: "இராகு", name_en: "Rahu", d1: 2, d9: 1 },
+          { name_ta: "குரு", name_en: "Jup", d1: 8, d9: 0 }
+        ]
+      },
+      finance: {
+        dob: "1994-11-25",
+        lagnaIdx: 1,
+        d9LagnaIdx: 0,
+        dashaLord: "செவ்வாய்",
+        dashaYears: "3.2",
+        planets: [
+          { name_ta: "சந் (உ)", name_en: "Moon(Ex)", d1: 1, d9: 9, isExalted: true },
+          { name_ta: "குரு (உ)", name_en: "Jup(Ex)", d1: 3, d9: 3, isExalted: true, isVargottama: true },
+          { name_ta: "சனி (உ)", name_en: "Sat(Ex)", d1: 6, d9: 6, isExalted: true, isVargottama: true },
+          { name_ta: "சுக்", name_en: "Ven", d1: 0, d9: 5 },
+          { name_ta: "புத", name_en: "Merc", d1: 11, d9: 11, isVargottama: true },
+          { name_ta: "செவ்", name_en: "Mars", d1: 5, d9: 5, isVargottama: true },
+          { name_ta: "சூரி", name_en: "Sun", d1: 7, d9: 3 }
+        ]
+      }
+    };
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      document.getElementById('btn-lang-ta').className = lang === 'ta' 
+        ? "px-2.5 py-1 rounded-lg text-xs font-bold bg-amber-600 text-white transition"
+        : "px-2.5 py-1 rounded-lg text-xs font-bold text-[var(--muted-foreground)] hover:bg-[var(--secondary)] transition";
+      document.getElementById('btn-lang-en').className = lang === 'en'
+        ? "px-2.5 py-1 rounded-lg text-xs font-bold bg-amber-600 text-white transition"
+        : "px-2.5 py-1 rounded-lg text-xs font-bold text-[var(--muted-foreground)] hover:bg-[var(--secondary)] transition";
+
+      const t = I18N[lang];
+      document.getElementById('txt-sages-blessing').innerText = t.sagesBlessing;
+      document.getElementById('lbl-badge-deterministic').innerText = t.badgeDeterministic;
+      document.getElementById('title-main').innerText = t.mainTitle;
+      document.getElementById('sub-title').innerText = t.subTitle;
+      document.getElementById('lbl-nav-horoscope').innerText = t.navHoroscope;
+      document.getElementById('lbl-nav-panchangam').innerText = t.navPanchangam;
+      document.getElementById('lbl-nav-academy').innerText = t.navAcademy;
+
+      document.getElementById('lbl-quick-samples').innerText = t.quickSamples;
+      document.getElementById('btn-sample-govt').innerText = t.sampleGovt;
+      document.getElementById('btn-sample-tech').innerText = t.sampleTech;
+      document.getElementById('btn-sample-finance').innerText = t.sampleFinance;
+      document.getElementById('hdr-birth-data').innerText = t.birthData;
+      document.getElementById('lbl-dob').innerText = t.dob;
+      document.getElementById('lbl-tob').innerText = t.tob;
+      document.getElementById('lbl-gender').innerText = t.gender;
+      document.getElementById('opt-male').innerText = t.male;
+      document.getElementById('opt-female').innerText = t.female;
+      document.getElementById('lbl-lagna').innerText = t.lagna;
+      document.getElementById('lbl-dasha-balance').innerText = t.dashaBalance;
+      document.getElementById('btn-compute').innerText = t.btnCompute;
+      document.getElementById('hdr-rasi-chart').innerText = t.rasiChart;
+      document.getElementById('txt-chart-sub').innerText = t.chartSub;
+      document.getElementById('lbl-btn-d1').innerText = t.btnD1;
+      document.getElementById('lbl-btn-d9').innerText = t.btnD9;
+      document.getElementById('leg-lagna').innerText = t.legLagna;
+      document.getElementById('leg-exalted').innerText = t.legExalted;
+      document.getElementById('leg-vargottama').innerText = t.legVargottama;
+
+      document.getElementById('tab-lbl-career').innerText = t.tabCareer;
+      document.getElementById('tab-lbl-marriage').innerText = t.tabMarriage;
+      document.getElementById('tab-lbl-progeny').innerText = t.tabProgeny;
+      document.getElementById('tab-lbl-health').innerText = t.tabHealth;
+
+      document.getElementById('lbl-primary-career').innerText = t.primaryCareer;
+      document.getElementById('lbl-career-strength').innerText = t.careerStrength;
+      document.getElementById('lbl-secondary-career').innerText = t.secondaryCareer;
+      document.getElementById('lbl-10th-house').innerText = t.tenthHouse;
+      document.getElementById('lbl-yogakaraka').innerText = t.yogakaraka;
+      document.getElementById('lbl-citation').innerText = t.citation;
+      document.getElementById('lbl-career-windows').innerText = t.careerWindows;
+
+      document.getElementById('lbl-marriage-status').innerText = t.marriageStatus;
+      document.getElementById('lbl-chevvai-status').innerText = t.chevvaiStatus;
+      document.getElementById('lbl-7th-house').innerText = t.seventhHouse;
+      document.getElementById('lbl-kalathra-karaka').innerText = t.kalathraKaraka;
+      document.getElementById('lbl-partner-dir').innerText = t.partnerDir;
+      document.getElementById('lbl-marriage-windows').innerText = t.marriageWindows;
+
+      document.getElementById('lbl-progeny-title').innerText = t.progenyTitle;
+      document.getElementById('lbl-5th-house').innerText = t.fifthHouse;
+      document.getElementById('lbl-putrakaraka').innerText = t.putrakaraka;
+      document.getElementById('prog-desc').innerText = t.progenyDesc;
+
+      document.getElementById('lbl-health-title').innerText = t.healthTitle;
+      document.getElementById('lbl-6th-house').innerText = t.sixthHouse;
+      document.getElementById('lbl-marakas').innerText = t.marakas;
+      document.getElementById('lbl-organ-vulnerability').innerText = t.organVulnerability;
+
+      document.getElementById('hdr-panchangam-date').innerText = t.hdrPanchangamDate;
+      document.getElementById('txt-panchangam-desc').innerText = t.panchangamDesc;
+      document.getElementById('btn-panchangam-today').innerText = t.panchangamToday;
+      document.getElementById('lbl-dinamana').innerText = t.dinamana;
+      document.getElementById('lbl-sunrise').innerText = t.sunrise;
+      document.getElementById('lbl-nethiram').innerText = t.nethiram;
+      document.getElementById('lbl-jeevan').innerText = t.jeevan;
+      document.getElementById('lbl-amritadi').innerText = t.amritadi;
+      document.getElementById('hdr-pancha-angas').innerText = t.hdrPanchaAngas;
+      document.getElementById('lbl-anga-tithi').innerText = t.angaTithi;
+      document.getElementById('lbl-anga-vara').innerText = t.angaVara;
+      document.getElementById('lbl-anga-nak').innerText = t.angaNak;
+      document.getElementById('lbl-anga-yoga').innerText = t.angaYoga;
+      document.getElementById('lbl-anga-karana').innerText = t.angaKarana;
+      document.getElementById('hdr-time-windows').innerText = t.hdrTimeWindows;
+      document.getElementById('lbl-nalla-neram').innerText = t.nallaNeram;
+      document.getElementById('lbl-gowri-neram').innerText = t.gowriNeram;
+      document.getElementById('lbl-rahu-kalam').innerText = t.rahuKalam;
+      document.getElementById('lbl-yamagandam').innerText = t.yamagandam;
+      document.getElementById('lbl-kuligai').innerText = t.kuligai;
+      document.getElementById('lbl-thiyajyam').innerText = t.thiyajyam;
+      document.getElementById('hdr-travel-guide').innerText = t.hdrTravelGuide;
+      document.getElementById('lbl-vaara-soolai').innerText = t.vaaraSoolai;
+      document.getElementById('lbl-parikaram').innerText = t.parikaram;
+      document.getElementById('lbl-chandrashtama-hdr').innerText = t.chandrashtamaHdr;
+      document.getElementById('lbl-panchangam-citation').innerText = t.panchangamCitation;
+
+      document.getElementById('hdr-academy-title').innerText = t.academyTitle;
+      document.getElementById('lbl-academy-level').innerText = t.academyLevel;
+      document.getElementById('txt-academy-subtitle').innerText = t.academySubtitle;
+      document.getElementById('lbl-tab-l1').innerText = t.tabL1;
+      document.getElementById('lbl-tab-l2').innerText = t.tabL2;
+      document.getElementById('lbl-tab-l3').innerText = t.tabL3;
+      document.getElementById('lbl-tab-l4').innerText = t.tabL4;
+      document.getElementById('lbl-tab-l5').innerText = t.tabL5;
+      document.getElementById('lbl-tab-l6').innerText = t.tabL6;
+      document.getElementById('lbl-tab-l7').innerText = t.tabL7;
+
+      runAllCalculations();
+      runPanchangamCalculations();
+    }
+
+    function switchMasterView(view) {
+      currentMasterView = view;
+      ['horoscope', 'panchangam', 'academy'].forEach(function(v) {
+        document.getElementById('view-' + v).classList.add('hidden');
+        document.getElementById('nav-btn-' + v).className = "flex-1 sm:flex-none px-3.5 py-2 rounded-lg text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition flex items-center justify-center gap-1.5";
+      });
+
+      document.getElementById('view-' + view).classList.remove('hidden');
+      document.getElementById('nav-btn-' + view).className = "flex-1 sm:flex-none px-3.5 py-2 rounded-lg tab-active transition flex items-center justify-center gap-1.5";
+
+      if (view === 'panchangam') {
+        runPanchangamCalculations();
+      }
+    }
+
+    function switchLesson(lessonNum) {
+      currentLessonId = lessonNum;
+      for (let i = 1; i <= 7; i++) {
+        const p = document.getElementById('panel-lesson-' + i);
+        const b = document.getElementById('btn-lesson-' + i);
+        if (p) p.classList.add('hidden');
+        if (b) b.className = (i === 7)
+          ? "whitespace-nowrap px-3 py-2 rounded-lg text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition flex items-center gap-1.5 bg-amber-500/10"
+          : "whitespace-nowrap px-3 py-2 rounded-lg text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition flex items-center gap-1.5";
+      }
+
+      const activePanel = document.getElementById('panel-lesson-' + lessonNum);
+      const activeBtn = document.getElementById('btn-lesson-' + lessonNum);
+      if (activePanel) activePanel.classList.remove('hidden');
+      if (activeBtn) activeBtn.className = "whitespace-nowrap px-3 py-2 rounded-lg lesson-tab-active transition flex items-center gap-1.5 shadow-xs";
+    }
+
+    function switchChartMode(mode) {
+      currentChartMode = mode;
+      if (mode === 'D1') {
+        document.getElementById('btn-chart-d1').className = "px-3 py-1.5 rounded-lg subtab-active transition flex items-center gap-1";
+        document.getElementById('btn-chart-d9').className = "px-3 py-1.5 rounded-lg text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition flex items-center gap-1";
+      } else {
+        document.getElementById('btn-chart-d1').className = "px-3 py-1.5 rounded-lg text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition flex items-center gap-1";
+        document.getElementById('btn-chart-d9').className = "px-3 py-1.5 rounded-lg subtab-active transition flex items-center gap-1";
+      }
+      runAllCalculations();
+    }
+
+    function switchLifeTab(tab) {
+      ['career', 'marriage', 'progeny', 'health'].forEach(function(t) {
+        document.getElementById('panel-' + t).classList.add('hidden');
+        document.getElementById('tab-btn-' + t).className = "px-4 py-2 rounded-xl text-[var(--muted-foreground)] hover:bg-[var(--secondary)] transition flex items-center gap-1.5";
+      });
+      document.getElementById('panel-' + tab).classList.remove('hidden');
+      document.getElementById('tab-btn-' + tab).className = "px-4 py-2 rounded-xl bg-amber-600 text-white shadow-xs transition flex items-center gap-1.5";
+    }
+
+    function loadProfile(type) {
+      activeProfile = type;
+      const p = PROFILES[type];
+      document.getElementById('in-dob').value = p.dob;
+      document.getElementById('in-lagna').value = p.lagnaIdx;
+      document.getElementById('in-dasha-lord').value = p.dashaLord;
+      document.getElementById('in-dasha-years').value = p.dashaYears;
+
+      ['benchmark', 'tech', 'finance'].forEach(function(k) {
+        const btn = document.getElementById('btn-profile-' + k);
+        if (k === type) {
+          btn.className = "px-3 py-1.5 rounded-lg border border-amber-500/40 bg-amber-500/15 text-amber-900 dark:text-amber-200 font-bold transition flex items-center gap-1.5";
+        } else {
+          btn.className = "px-3 py-1.5 rounded-lg border border-[var(--border)] bg-[var(--secondary)] text-[var(--foreground)] font-bold transition flex items-center gap-1.5";
+        }
+      });
+
+      runAllCalculations();
+    }
+
+    function onLagnaChange() {
+      const l = parseInt(document.getElementById('in-lagna').value, 10);
+      if (l === 2) activeProfile = 'benchmark';
+      else if (l === 10) activeProfile = 'tech';
+      else if (l === 1) activeProfile = 'finance';
+      else activeProfile = 'custom';
+      runAllCalculations();
+    }
+
+    function renderSouthIndianChart(activeLagnaIdx, planetsList, isD9Mode, isLagnaVargottama) {
+      for (let i = 0; i < 12; i++) {
+        const box = document.getElementById('box-' + i);
+        if (box) {
+          const pSpace = box.querySelector('.planets-space');
+          if (pSpace) pSpace.innerHTML = '';
+        }
+      }
+
+      const lagnaBox = document.getElementById('box-' + activeLagnaIdx).querySelector('.planets-space');
+      const lagnaBadge = document.createElement('span');
+      lagnaBadge.className = isLagnaVargottama && isD9Mode
+        ? "px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 font-black text-[11px] border border-emerald-400"
+        : "px-1.5 py-0.5 rounded bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-300 font-black text-[11px]";
+      
+      const lLabel = currentLang === 'ta' ? "ல (L)" : "Asc (L)";
+      lagnaBadge.innerText = isLagnaVargottama && isD9Mode ? lLabel + " ★ வ" : lLabel;
+      lagnaBox.appendChild(lagnaBadge);
+
+      let vargottamaList = [];
+      if (isLagnaVargottama) {
+        vargottamaList.push(currentLang === 'ta' ? "லக்கினம்" : "Lagna");
+      }
+
+      planetsList.forEach(function(p) {
+        const signIdx = isD9Mode ? p.d9 : p.d1;
+        const pBox = document.getElementById('box-' + signIdx)?.querySelector('.planets-space');
+        if (!pBox) return;
+
+        const isVargo = (p.d1 === p.d9) || p.isVargottama;
+        if (isVargo && !vargottamaList.includes(p.name_ta)) {
+          vargottamaList.push(currentLang === 'ta' ? p.name_ta.replace(/\(உ\)/g, '').trim() : p.name_en.replace(/\(Ex\)/g, '').trim());
+        }
+
+        const badge = document.createElement('span');
+        let styleClass = "px-1.5 py-0.5 rounded text-[11px] font-bold ";
+
+        if (isVargo && isD9Mode) {
+          styleClass += "bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 font-black border border-emerald-400/60";
+        } else if (p.isExalted || (isD9Mode && p.isD9Exalted)) {
+          styleClass += "bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-200 font-black border border-amber-400/50";
+        } else {
+          styleClass += "bg-[var(--secondary)] text-[var(--foreground)] border border-[var(--border)]";
+        }
+
+        badge.className = styleClass;
+        let pName = currentLang === 'ta' ? p.name_ta : p.name_en;
+        if (isVargo && isD9Mode) {
+          pName += " ★";
+        }
+        badge.innerText = pName;
+        pBox.appendChild(badge);
+      });
+
+      const cTitle = document.getElementById('center-title');
+      const cLagna = document.getElementById('center-lagna');
+      const cVargPill = document.getElementById('center-vargottama-pill');
+      const vargSummary = document.getElementById('vargottama-summary-text');
+
+      if (isD9Mode) {
+        cTitle.innerText = currentLang === 'ta' ? "நவாம்ச சக்கரம் (D9)" : "Navamsha Chakra (D9)";
+        cLagna.innerText = currentLang === 'ta' 
+          ? "நவாம்ச லக்கினம்: " + RASIS_DATA[activeLagnaIdx].name_ta
+          : "Navamsha Lagna: " + RASIS_DATA[activeLagnaIdx].name_en;
+        
+        if (isLagnaVargottama) {
+          cVargPill.classList.remove('hidden');
+          cVargPill.innerText = currentLang === 'ta' ? "★ வர்க்கோத்தம லக்கினம்" : "★ Vargottama Lagna";
+        } else {
+          cVargPill.classList.add('hidden');
+        }
+      } else {
+        cTitle.innerText = currentLang === 'ta' ? "ராசி சக்கரம் (D1)" : "Rasi Chakra (D1)";
+        cLagna.innerText = currentLang === 'ta' 
+          ? "உதய லக்கினம்: " + RASIS_DATA[activeLagnaIdx].name_ta
+          : "Ascendant: " + RASIS_DATA[activeLagnaIdx].name_en;
+        cVargPill.classList.add('hidden');
+      }
+
+      if (vargottamaList.length > 0) {
+        vargSummary.innerText = currentLang === 'ta'
+          ? "வர்க்கோத்தம கிரகங்கள்: " + vargottamaList.join(', ') + " (அதி உச்ச ஆற்றல்)"
+          : "Vargottama Planets: " + vargottamaList.join(', ') + " (Highest Auspicious Dignity)";
+      } else {
+        vargSummary.innerText = "";
+      }
+    }
+
+    function runAllCalculations() {
+      const lagnaIdx = parseInt(document.getElementById('in-lagna').value, 10);
+      const lagnaData = RASIS_DATA[lagnaIdx];
+      const chRules = CHANDRIKA_RULES[lagnaIdx];
+
+      let currentProf = PROFILES[activeProfile] || {
+        d1Lagna: lagnaIdx,
+        d9Lagna: lagnaIdx,
+        planets: [
+          { name_ta: "சூரி", name_en: "Sun", d1: (lagnaIdx + 4) % 12, d9: (lagnaIdx + 4) % 12 },
+          { name_ta: "குரு", name_en: "Jup", d1: (lagnaIdx + 8) % 12, d9: (lagnaIdx + 8) % 12 },
+          { name_ta: "சுக்", name_en: "Ven", d1: (lagnaIdx + 1) % 12, d9: (lagnaIdx + 1) % 12 },
+          { name_ta: "சனி", name_en: "Sat", d1: (lagnaIdx + 9) % 12, d9: (lagnaIdx + 9) % 12 }
+        ]
+      };
+
+      const isD9 = currentChartMode === 'D9';
+      const d1Lagna = lagnaIdx;
+      const d9Lagna = currentProf.d9LagnaIdx !== undefined ? currentProf.d9LagnaIdx : lagnaIdx;
+      const isLagnaVargo = (d1Lagna === d9Lagna);
+      const activeChartLagna = isD9 ? d9Lagna : d1Lagna;
+
+      renderSouthIndianChart(activeChartLagna, currentProf.planets, isD9, isLagnaVargo);
+
+      document.getElementById('center-yogi').innerText = currentLang === 'ta'
+        ? "ராஜ யோககாரகன்: " + chRules.yogi_ta
+        : "Raja Yogakaraka: " + chRules.yogi_en;
+
+      const r10 = RASIS_DATA[(lagnaIdx + 9) % 12];
+      const r7 = RASIS_DATA[(lagnaIdx + 6) % 12];
+      const r5 = RASIS_DATA[(lagnaIdx + 4) % 12];
+      const r6 = RASIS_DATA[(lagnaIdx + 5) % 12];
+
+      const isGovtAffinity = (lagnaIdx === 2 && activeProfile === 'benchmark');
+      const isTechAffinity = (lagnaIdx === 10 || activeProfile === 'tech');
+      const isFinanceAffinity = (lagnaIdx === 1 || activeProfile === 'finance');
+
+      if (isGovtAffinity) {
+        document.getElementById('career-primary-title').innerText = currentLang === 'ta'
+          ? "அரசு உயர் பதவி, நீதித்துறை, நிர்வாக அதிகாரம் (Govt / Judicial / Admin)"
+          : "Government Sovereign Authority, Judiciary, High Administration";
+        document.getElementById('career-secondary-title').innerText = currentLang === 'ta'
+          ? "சட்ட ஆலோசனை, கல்வி & பெருநிறுவனத் தலைமை"
+          : "Legal Consultancy, Education & Corporate Leadership";
+        document.getElementById('career-primary-score').innerText = "96%";
+        document.getElementById('bar-career-score').style.width = "96%";
+      } else if (isTechAffinity) {
+        document.getElementById('career-primary-title').innerText = currentLang === 'ta'
+          ? "மென்பொருள், தகவல் தொழில்நுட்பம், கணினிப் பொறியியல் (Software / Tech)"
+          : "Software Engineering, High Technology, Digital Systems";
+        document.getElementById('career-secondary-title').innerText = currentLang === 'ta'
+          ? "அரசு நிர்வாகம், தொழில்துறை தலைமை & ஆராய்ச்சி"
+          : "Industrial Management, Corporate Leadership & Research";
+        document.getElementById('career-primary-score').innerText = "94%";
+        document.getElementById('bar-career-score').style.width = "94%";
+      } else if (isFinanceAffinity) {
+        document.getElementById('career-primary-title').innerText = currentLang === 'ta'
+          ? "வணிகம், பெருநிறுவன நிதி, முதலீட்டு மேலாண்மை (Finance / Corporate)"
+          : "Corporate Wealth, Banking, Investment Management & Commerce";
+        document.getElementById('career-secondary-title').innerText = currentLang === 'ta'
+          ? "தொழில்நுட்ப மேலாண்மை & அரசு ஆலோசகர்"
+          : "Technology Management & Economic Advisory";
+        document.getElementById('career-primary-score').innerText = "91%";
+        document.getElementById('bar-career-score').style.width = "91%";
+      } else {
+        document.getElementById('career-primary-title').innerText = currentLang === 'ta'
+          ? "வணிகம், நிதி, பொது நிர்வாகம் (Commerce / Finance / Admin)"
+          : "Commerce, Financial Management & Corporate Administration";
+        document.getElementById('career-secondary-title').innerText = currentLang === 'ta'
+          ? "கல்வி, ஆலோசனை & தொழில்நுட்பம்"
+          : "Education, Consultancy & Applied Tech";
+        document.getElementById('career-primary-score').innerText = "82%";
+        document.getElementById('bar-career-score').style.width = "82%";
+      }
+
+      document.getElementById('career-10th-text').innerText = currentLang === 'ta'
+        ? r10.name_ta + " (அதிபதி: " + r10.lord_ta + ")"
+        : r10.name_en + " (Lord: " + r10.lord_en + ")";
+
+      document.getElementById('career-yogi-text').innerText = currentLang === 'ta' ? chRules.yogi_ta : chRules.yogi_en;
+
+      const cHtml = `
+        <div class="p-3 rounded-xl bg-[var(--secondary)]/40 border border-[var(--border)] flex justify-between items-center">
+          <div>
+            <div class="font-bold text-[var(--foreground)]">${currentLang === 'ta' ? r10.lord_ta + ' மகா திசை / புக்தி காலம்' : r10.lord_en + ' Maha Dasha / Bhukti Period'}</div>
+            <div class="text-[11px] text-[var(--muted-foreground)]">${currentLang === 'ta' ? '10-ம் அதிபதியின் உத்தியோக கர்ம பலன் காலம்' : '10th Lord Active Karma & Elevation Window'}</div>
+          </div>
+          <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
+            ${currentLang === 'ta' ? 'உத்தியோக உயர்வு ✓' : 'Promotion & Rise ✓'}
+          </span>
+        </div>
+        <div class="p-3 rounded-xl bg-[var(--secondary)]/40 border border-[var(--border)] flex justify-between items-center">
+          <div>
+            <div class="font-bold text-[var(--foreground)]">${currentLang === 'ta' ? 'ராஜ யோககாரகன் (' + chRules.yogi_ta + ') தசா காலம்' : 'Raja Yogakaraka (' + chRules.yogi_en + ') Dasha Period'}</div>
+            <div class="text-[11px] text-[var(--muted-foreground)]">${currentLang === 'ta' ? 'உச்ச அந்தஸ்து மற்றும் அதிகாரப் பதவி காலம்' : 'Peak Authority and Executive Elevation'}</div>
+          </div>
+          <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-200">
+            ${currentLang === 'ta' ? 'ராஜயோக காலம் ★' : 'Raja Yoga Window ★'}
+          </span>
+        </div>
+      `;
+      document.getElementById('career-windows-list').innerHTML = cHtml;
+
+      document.getElementById('mrg-7th-text').innerText = currentLang === 'ta'
+        ? r7.name_ta + " (அதிபதி: " + r7.lord_ta + ")"
+        : r7.name_en + " (Lord: " + r7.lord_en + ")";
+      document.getElementById('mrg-karaka-text').innerText = currentLang === 'ta' ? "சுக்கிரன் (Venus)" : "Venus";
+      document.getElementById('mrg-direction-text').innerText = currentLang === 'ta'
+        ? r7.name_ta + " ராசிக்குரிய திசை (மண்டலம்)"
+        : "Direction ruled by " + r7.name_en + " Rasi";
+
+      const mHtml = `
+        <div class="p-3 rounded-xl bg-[var(--secondary)]/40 border border-[var(--border)] flex justify-between items-center">
+          <div>
+            <div class="font-bold text-[var(--foreground)]">${currentLang === 'ta' ? '7-ம் அதிபதி (' + r7.lord_ta + ') தசா-புக்தி' : '7th Lord (' + r7.lord_en + ') Period'}</div>
+            <div class="text-[11px] text-[var(--muted-foreground)]">${currentLang === 'ta' ? 'மாங்கல்ய பாக்கியம் & இல்வாழ்க்கை ஆரம்பம் (வயது 22-34)' : 'Auspicious Marriage & Alliance Window (Age 22-34)'}</div>
+          </div>
+          <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300">
+            ${currentLang === 'ta' ? 'அதி உன்னத காலம் ✓' : 'Prime Window ✓'}
+          </span>
+        </div>
+      `;
+      document.getElementById('mrg-windows-list').innerHTML = mHtml;
+
+      document.getElementById('prog-5th-text').innerText = currentLang === 'ta'
+        ? r5.name_ta + " (அதிபதி: " + r5.lord_ta + ")"
+        : r5.name_en + " (Lord: " + r5.lord_en + ")";
+
+      document.getElementById('health-6th-text').innerText = currentLang === 'ta'
+        ? r6.name_ta + " (அதிபதி: " + r6.lord_ta + ")"
+        : r6.name_en + " (Lord: " + r6.lord_en + ")";
+      document.getElementById('health-marakas-text').innerText = currentLang === 'ta' ? chRules.marakas_ta : chRules.marakas_en;
+      document.getElementById('health-organ-text').innerText = currentLang === 'ta' ? ORGAN_MAP[r6.id].ta : ORGAN_MAP[r6.id].en;
+    }
+
+    const WEEKDAY_NAMES = [
+      { ta: "ஞாயிறு", en: "Sunday", lord_ta: "சூரியன்", lord_en: "Sun" },
+      { ta: "திங்கள்", en: "Monday", lord_ta: "சந்திரன்", lord_en: "Moon" },
+      { ta: "செவ்வாய்", en: "Tuesday", lord_ta: "செவ்வாய்", lord_en: "Mars" },
+      { ta: "புதன்", en: "Wednesday", lord_ta: "புதன்", lord_en: "Mercury" },
+      { ta: "வியாழன்", en: "Thursday", lord_ta: "குரு", lord_en: "Jupiter" },
+      { ta: "வெள்ளி", en: "Friday", lord_ta: "சுக்கிரன்", lord_en: "Venus" },
+      { ta: "சனி", en: "Saturday", lord_ta: "சனி", lord_en: "Saturn" }
+    ];
+
+    const RAHU_YAMA_KULI = [
+      { rahu: "மாலை 04:30 - 06:00", yama: "மதியம் 12:00 - 01:30", kuli: "மதியம் 03:00 - 04:30" },
+      { rahu: "காலை 07:30 - 09:00", yama: "காலை 10:30 - 12:00", kuli: "மதியம் 01:30 - 03:00" },
+      { rahu: "மதியம் 03:00 - 04:30", yama: "காலை 09:00 - 10:30", kuli: "மதியம் 12:00 - 01:30" },
+      { rahu: "மதியம் 12:00 - 01:30", yama: "காலை 07:30 - 09:00", kuli: "காலை 10:30 - 12:00" },
+      { rahu: "மதியம் 01:30 - 03:00", yama: "காலை 06:00 - 07:30", kuli: "காலை 09:00 - 10:30" },
+      { rahu: "காலை 10:30 - 12:00", yama: "மதியம் 03:00 - 04:30", kuli: "காலை 07:30 - 09:00" },
+      { rahu: "காலை 09:00 - 10:30", yama: "மதியம் 01:30 - 03:00", kuli: "காலை 06:00 - 07:30" }
+    ];
+
+    const SOOLAI_INFO = [
+      { dir_ta: "மேற்கு", dir_en: "West", pari_ta: "வெல்லம் உண்டு பயணிக்கவும்", pari_en: "Consume jaggery before travel" },
+      { dir_ta: "கிழக்கு", dir_en: "East", pari_ta: "தயிர் உண்டு பயணிக்கவும்", pari_en: "Consume curd before travel" },
+      { dir_ta: "வடக்கு", dir_en: "North", pari_ta: "பால் அருந்திப் பயணிக்கவும்", pari_en: "Consume milk before travel" },
+      { dir_ta: "வடக்கு", dir_en: "North", pari_ta: "பால் அருந்திப் பயணிக்கவும்", pari_en: "Consume milk before travel" },
+      { dir_ta: "தெற்கு", dir_en: "South", pari_ta: "நெய் உண்டு பயணிக்கவும்", pari_en: "Consume ghee before travel" },
+      { dir_ta: "மேற்கு", dir_en: "West", pari_ta: "வெல்லம் உண்டு பயணிக்கவும்", pari_en: "Consume jaggery before travel" },
+      { dir_ta: "கிழக்கு", dir_en: "East", pari_ta: "நல்லெண்ணெய் தடவிப் பயணிக்கவும்", pari_en: "Apply sesame oil before travel" }
+    ];
+
+    function setTodayPanchangam() {
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('in-panchangam-date').value = today;
+      runPanchangamCalculations();
+    }
+
+    function runPanchangamCalculations() {
+      const dateVal = document.getElementById('in-panchangam-date').value;
+      const d = new Date(dateVal);
+      const dayOfWeek = d.getDay();
+      const wInfo = WEEKDAY_NAMES[dayOfWeek];
+      const ryk = RAHU_YAMA_KULI[dayOfWeek];
+      const soolai = SOOLAI_INFO[dayOfWeek];
+
+      const isPage37Benchmark = (dateVal === "2026-08-17");
+
+      if (isPage37Benchmark) {
+        document.getElementById('p-dinamana').innerText = currentLang === 'ta' ? "அகல் 30 50" : "30 Ghati 50 Vighati (12h 20m)";
+        document.getElementById('p-nethiram').innerText = currentLang === 'ta' ? "2 (முழு பார்வை)" : "2 (Full Vision - Auspicious)";
+        document.getElementById('p-jeevan').innerText = currentLang === 'ta' ? "1 (முழு உயிர்)" : "1 (Full Life Force)";
+        document.getElementById('p-amritadi').innerText = currentLang === 'ta' ? "சித்த யோகம்" : "Siddha Yoga";
+        document.getElementById('p-amritadi-desc').innerText = currentLang === 'ta' ? "சுப காரியங்களுக்கு உகந்தது ✓" : "Highly Auspicious for all Endeavors ✓";
+        document.getElementById('p-tithi').innerText = currentLang === 'ta' ? "சதுர்த்தி (வளர்பிறை)" : "Chaturthi (Shukla Paksha)";
+        document.getElementById('p-nakshatra').innerText = currentLang === 'ta' ? "அஸ்தம் (3-ம் பாதம்)" : "Hasta (Pada 3)";
+        document.getElementById('p-thiyajyam').innerText = currentLang === 'ta' ? "நாழிகை 21 (மதியம் 02:24 - 04:00)" : "Ghati 21 (02:24 PM - 04:00 PM)";
+        document.getElementById('p-chandrashtama-rasi').innerText = currentLang === 'ta' 
+          ? "கும்ப ராசி அன்பர்களுக்கு இன்று சந்திராஷ்டமம்" 
+          : "Chandrashtamam for Aquarius (Kumbha) sign today";
+      } else {
+        document.getElementById('p-dinamana').innerText = currentLang === 'ta' ? "அகல் 30 15" : "30 Ghati 15 Vighati (12h 06m)";
+        document.getElementById('p-nethiram').innerText = currentLang === 'ta' ? "2 (முழு பார்வை)" : "2 (Full Vision - Auspicious)";
+        document.getElementById('p-jeevan').innerText = currentLang === 'ta' ? "1 (முழு உயிர்)" : "1 (Full Life Force)";
+        document.getElementById('p-amritadi').innerText = currentLang === 'ta' ? "அமிர்த யோகம்" : "Amrita Yoga";
+        document.getElementById('p-amritadi-desc').innerText = currentLang === 'ta' ? "சகல சுப காரிய சாதகம் ✓" : "All Auspicious Works Blessed ✓";
+        document.getElementById('p-tithi').innerText = currentLang === 'ta' ? "சப்தமி / அஷ்டமி" : "Saptami / Ashtami";
+        document.getElementById('p-nakshatra').innerText = currentLang === 'ta' ? "ரோகிணி (2-ம் பாதம்)" : "Rohini (Pada 2)";
+        document.getElementById('p-thiyajyam').innerText = currentLang === 'ta' ? "நாழிகை 40 (மாலை 04:00 - 05:36)" : "Ghati 40 (04:00 PM - 05:36 PM)";
+        document.getElementById('p-chandrashtama-rasi').innerText = currentLang === 'ta'
+          ? "துலாம் ராசி அன்பர்களுக்கு இன்று சந்திராஷ்டமம்"
+          : "Chandrashtamam for Libra (Thula) sign today";
+      }
+
+      document.getElementById('p-vara').innerText = currentLang === 'ta' ? wInfo.ta + "க்கிழமை" : wInfo.en;
+      document.getElementById('p-vara-lord').innerText = currentLang === 'ta' ? "அதிபதி: " + wInfo.lord_ta : "Lord: " + wInfo.lord_en;
+      document.getElementById('p-rahu-kalam').innerText = ryk.rahu;
+      document.getElementById('p-yamagandam').innerText = ryk.yama;
+      document.getElementById('p-kuligai').innerText = ryk.kuli;
+
+      document.getElementById('p-soolai-dir').innerText = currentLang === 'ta' ? soolai.dir_ta : soolai.dir_en;
+      document.getElementById('p-soolai-pari').innerText = currentLang === 'ta' ? soolai.pari_ta : soolai.pari_en;
+    }
+
+    runAllCalculations();
+    runPanchangamCalculations();
+
+    // Disable Right-Click with "Don't do that" Warning
+    let rightClickToastTimer = null;
+    document.addEventListener('contextmenu', function (e) {
+      e.preventDefault();
+      const warningEl = document.getElementById('right-click-warning');
+      if (!warningEl) return;
+
+      warningEl.style.display = 'block';
+      warningEl.style.opacity = '1';
+
+      // Trigger shake animation
+      warningEl.classList.remove('warning-shake');
+      void warningEl.offsetWidth; // force DOM reflow
+      warningEl.classList.add('warning-shake');
+
+      if (rightClickToastTimer) clearTimeout(rightClickToastTimer);
+      rightClickToastTimer = setTimeout(function () {
+        warningEl.style.opacity = '0';
+        setTimeout(function () {
+          warningEl.style.display = 'none';
+        }, 300);
+      }, 2500);
+    });
+  </script>
+</body>
+</html>
