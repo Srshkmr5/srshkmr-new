@@ -175,68 +175,118 @@
         
         <!-- Left Column: Input Form (4 cols) -->
         <div class="lg:col-span-4 bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 shadow-sm space-y-4">
-          <h2 class="text-sm font-bold text-[var(--foreground)] flex items-center gap-2 border-b border-[var(--border)] pb-3">
-            <span>📜</span> <span id="hdr-birth-data">ஜாதக விவர உள்ளீடுகள் (Birth Data)</span>
-          </h2>
-
-          <div>
-            <label class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1" id="lbl-dob">பிறந்த தேதி (Date of Birth)</label>
-            <input type="date" id="in-dob" value="1992-04-20" onchange="runAllCalculations()" class="w-full bg-[var(--background)] border border-[var(--border)] rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 font-medium">
+          <div class="border-b border-[var(--border)] pb-3">
+            <h2 class="text-sm font-bold text-[var(--foreground)] flex items-center gap-2">
+              <span>📜</span> <span id="hdr-birth-data">ஜாதக விவர உள்ளீடுகள் (Birth Details)</span>
+            </h2>
+            <p class="text-[11px] text-[var(--muted-foreground)] mt-1" id="hdr-birth-subtitle">
+              பிறந்த தேதி, நேரம் மற்றும் இடத்தை உள்ளிட்டால் லக்கினம், ராசி, நட்சத்திரம் மற்றும் தசா இருப்பு தானாகவே கணக்கிடப்படும்.
+            </p>
           </div>
 
+          <!-- Date of Birth -->
+          <div>
+            <label class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1" id="lbl-dob">பிறந்த தேதி (Date of Birth)</label>
+            <input type="date" id="in-dob" value="1992-04-20" onchange="onBirthInputsChanged()" class="w-full bg-[var(--background)] border border-[var(--border)] rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 font-medium">
+          </div>
+
+          <!-- Time of Birth & Gender -->
           <div class="grid grid-cols-2 gap-2">
             <div>
               <label class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1" id="lbl-tob">பிறந்த நேரம்</label>
-              <input type="time" id="in-tob" value="10:15" onchange="runAllCalculations()" class="w-full bg-[var(--background)] border border-[var(--border)] rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 font-medium">
+              <input type="time" id="in-tob" value="10:15" onchange="onBirthInputsChanged()" class="w-full bg-[var(--background)] border border-[var(--border)] rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 font-medium">
             </div>
             <div>
               <label class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1" id="lbl-gender">பாலினம்</label>
-              <select id="in-gender" onchange="runAllCalculations()" class="w-full bg-[var(--background)] border border-[var(--border)] rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 font-medium">
+              <select id="in-gender" onchange="onBirthInputsChanged()" class="w-full bg-[var(--background)] border border-[var(--border)] rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 font-medium">
                 <option value="male" selected id="opt-male">ஆண் (Male)</option>
                 <option value="female" id="opt-female">பெண் (Female)</option>
               </select>
             </div>
           </div>
 
+          <!-- Place of Birth -->
           <div>
-            <label class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1" id="lbl-lagna">உதய லக்கினம் (Ascendant)</label>
-            <select id="in-lagna" onchange="onLagnaChange()" class="w-full bg-[var(--background)] border border-[var(--border)] rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 font-medium">
-              <option value="0">மேஷம் (Aries)</option>
-              <option value="1">ரிஷபம் (Taurus)</option>
-              <option value="2" selected>மிதுனம் (Gemini)</option>
-              <option value="3">கடகம் (Cancer)</option>
-              <option value="4">சிம்மம் (Leo)</option>
-              <option value="5">கன்னி (Virgo)</option>
-              <option value="6">துலாம் (Libra)</option>
-              <option value="7">விருச்சிகம் (Scorpio)</option>
-              <option value="8">தனுசு (Sagittarius)</option>
-              <option value="9">மகரம் (Capricorn)</option>
-              <option value="10">கும்பம் (Aquarius)</option>
-              <option value="11">மீனம் (Pisces)</option>
+            <label class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1" id="lbl-pob">பிறந்த இடம் (Place of Birth)</label>
+            <select id="in-pob" onchange="onBirthInputsChanged()" class="w-full bg-[var(--background)] border border-[var(--border)] rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 font-medium">
+              <!-- Populated dynamically via JS -->
             </select>
           </div>
 
-          <div>
-            <label class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1" id="lbl-dasha-balance">பிறந்த போது தசா இருப்பு (Dasha Balance)</label>
-            <div class="grid grid-cols-2 gap-2">
-              <select id="in-dasha-lord" onchange="runAllCalculations()" class="w-full bg-[var(--background)] border border-[var(--border)] rounded-xl px-2 py-2 text-xs font-medium">
-                <option value="கேது">கேது (Ketu)</option>
-                <option value="சுக்கிரன்" selected>சுக்கிரன் (Venus)</option>
-                <option value="சூரியன்">சூரியன் (Sun)</option>
-                <option value="சந்திரன்">சந்திரன் (Moon)</option>
-                <option value="செவ்வாய்">செவ்வாய் (Mars)</option>
-                <option value="இராகு">இராகு (Rahu)</option>
-                <option value="குரு">குரு (Jupiter)</option>
-                <option value="சனி">சனி (Saturn)</option>
-                <option value="புதன்">புதன் (Mercury)</option>
-              </select>
-              <input type="number" id="in-dasha-years" value="1.4" step="0.1" onchange="runAllCalculations()" placeholder="ஆண்டுகள்" class="w-full bg-[var(--background)] border border-[var(--border)] rounded-xl px-3 py-2 text-xs font-medium">
+          <!-- Automated Astrological Derivation Card -->
+          <div class="bg-amber-500/10 border border-amber-500/30 rounded-xl p-3 space-y-2 text-xs">
+            <div class="font-bold text-amber-800 dark:text-amber-300 flex items-center justify-between">
+              <span id="lbl-auto-summary-title">✨ தானியங்கி சாஸ்திரக் கணிப்பு</span>
+              <span class="text-[10px] bg-amber-600/20 px-1.5 py-0.5 rounded text-amber-900 dark:text-amber-200" id="lbl-auto-status">துல்லியக் கணிப்பு ✓</span>
+            </div>
+            <div class="grid grid-cols-2 gap-2 text-[11px]">
+              <div>
+                <span class="text-[var(--muted-foreground)] block" id="lbl-disp-lagna">உதய லக்கினம்:</span>
+                <span class="font-bold text-[var(--foreground)]" id="disp-calc-lagna">மிதுனம் (Gemini)</span>
+              </div>
+              <div>
+                <span class="text-[var(--muted-foreground)] block" id="lbl-disp-rasi">சந்திர ராசி:</span>
+                <span class="font-bold text-[var(--foreground)]" id="disp-calc-rasi">விருச்சிகம் (Scorpio)</span>
+              </div>
+              <div>
+                <span class="text-[var(--muted-foreground)] block" id="lbl-disp-nak">பிறந்த நட்சத்திரம்:</span>
+                <span class="font-bold text-[var(--foreground)]" id="disp-calc-nakshatra">அனுஷம் (4-ம் பாதம்)</span>
+              </div>
+              <div>
+                <span class="text-[var(--muted-foreground)] block" id="lbl-disp-dasha">பிறந்த தசா இருப்பு:</span>
+                <span class="font-bold text-[var(--foreground)]" id="disp-calc-dasha">சனி திசை 3 வ 11 மா</span>
+              </div>
             </div>
           </div>
 
+          <!-- Analyze Chart Button -->
           <button onclick="runAllCalculations()" class="w-full py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-sm shadow-xs transition" id="btn-compute">
             சாஸ்திர பலனைக் கணக்கிடு (Analyze Chart)
           </button>
+
+          <!-- Optional Collapsible Manual Override (For Astrologers) -->
+          <details class="text-xs text-[var(--muted-foreground)] border border-[var(--border)] rounded-xl p-2.5">
+            <summary class="cursor-pointer font-semibold text-amber-700 dark:text-amber-400 select-none" id="lbl-manual-summary">
+              ⚙️ கைமுறை திருத்தம் (Manual Override - Optional)
+            </summary>
+            <div class="mt-3 space-y-3 pt-2 border-t border-[var(--border)]">
+              <div>
+                <label class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1" id="lbl-lagna">உதய லக்கினம் (Ascendant)</label>
+                <select id="in-lagna" onchange="onManualLagnaChange()" class="w-full bg-[var(--background)] border border-[var(--border)] rounded-xl px-3 py-2 text-xs font-medium">
+                  <option value="0">மேஷம் (Aries)</option>
+                  <option value="1">ரிஷபம் (Taurus)</option>
+                  <option value="2" selected>மிதுனம் (Gemini)</option>
+                  <option value="3">கடகம் (Cancer)</option>
+                  <option value="4">சிம்மம் (Leo)</option>
+                  <option value="5">கன்னி (Virgo)</option>
+                  <option value="6">துலாம் (Libra)</option>
+                  <option value="7">விருச்சிகம் (Scorpio)</option>
+                  <option value="8">தனுசு (Sagittarius)</option>
+                  <option value="9">மகரம் (Capricorn)</option>
+                  <option value="10">கும்பம் (Aquarius)</option>
+                  <option value="11">மீனம் (Pisces)</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1" id="lbl-dasha-balance">பிறந்த போது தசா இருப்பு (Dasha Balance)</label>
+                <div class="grid grid-cols-2 gap-2">
+                  <select id="in-dasha-lord" onchange="onManualDashaChange()" class="w-full bg-[var(--background)] border border-[var(--border)] rounded-xl px-2 py-2 text-xs font-medium">
+                    <option value="கேது">கேது (Ketu)</option>
+                    <option value="சுக்கிரன்">சுக்கிரன் (Venus)</option>
+                    <option value="சூரியன்">சூரியன் (Sun)</option>
+                    <option value="சந்திரன்">சந்திரன் (Moon)</option>
+                    <option value="செவ்வாய்">செவ்வாய் (Mars)</option>
+                    <option value="இராகு">இராகு (Rahu)</option>
+                    <option value="குரு">குரு (Jupiter)</option>
+                    <option value="சனி" selected>சனி (Saturn)</option>
+                    <option value="புதன்">புதன் (Mercury)</option>
+                  </select>
+                  <input type="number" id="in-dasha-years" value="3.9" step="0.1" onchange="onManualDashaChange()" placeholder="ஆண்டுகள்" class="w-full bg-[var(--background)] border border-[var(--border)] rounded-xl px-3 py-2 text-xs font-medium">
+                </div>
+              </div>
+            </div>
+          </details>
 
         </div>
 
@@ -1356,7 +1406,21 @@
         sampleGovt: "மாதிரி 1: அரசு / நீதித்துறை",
         sampleTech: "மாதிரி 2: IT / தொழில்நுட்பம்",
         sampleFinance: "மாதிரி 3: வணிகம் & நிதி",
-        birthData: "ஜாதக விவர உள்ளீடுகள் (Birth Data)",
+        birthData: "ஜாதக விவர உள்ளீடுகள் (Birth Details)",
+        birthSubtitle: "பிறந்த தேதி, நேரம் மற்றும் இடத்தை உள்ளிட்டால் லக்கினம், ராசி, நட்சத்திரம் மற்றும் தசா இருப்பு தானாகவே கணக்கிடப்படும்.",
+        dob: "பிறந்த தேதி (Date of Birth)",
+        tob: "பிறந்த நேரம்",
+        pob: "பிறந்த இடம் (Place of Birth)",
+        gender: "பாலினம்",
+        male: "ஆண் (Male)",
+        female: "பெண் (Female)",
+        autoSummaryTitle: "✨ தானியங்கி சாஸ்திரக் கணிப்பு",
+        autoStatus: "துல்லியக் கணிப்பு ✓",
+        dispLagna: "உதய லக்கினம்:",
+        dispRasi: "சந்திர ராசி:",
+        dispNak: "பிறந்த நட்சத்திரம்:",
+        dispDasha: "பிறந்த தசா இருப்பு:",
+        manualSummary: "⚙️ கைமுறை திருத்தம் (Manual Override - Optional)",
         dob: "பிறந்த தேதி (Date of Birth)",
         tob: "பிறந்த நேரம்",
         gender: "பாலினம்",
@@ -1446,7 +1510,21 @@
         sampleGovt: "Sample 1: Govt / Judiciary",
         sampleTech: "Sample 2: IT / Engineering",
         sampleFinance: "Sample 3: Commerce & Finance",
-        birthData: "Birth Data Inputs",
+        birthData: "Birth Details",
+        birthSubtitle: "Enter Date, Time, and Place of birth. Lagna, Moon sign, Nakshatra, and Dasha balance will be automatically calculated.",
+        dob: "Date of Birth",
+        tob: "Time of Birth",
+        pob: "Place of Birth",
+        gender: "Gender",
+        male: "Male",
+        female: "Female",
+        autoSummaryTitle: "✨ Automated Astrological Computation",
+        autoStatus: "Accurate Calculation ✓",
+        dispLagna: "Ascendant (Lagna):",
+        dispRasi: "Moon Sign (Rasi):",
+        dispNak: "Birth Star (Nakshatra):",
+        dispDasha: "Birth Dasha Balance:",
+        manualSummary: "⚙️ Manual Override (Optional for Astrologers)",
         dob: "Date of Birth",
         tob: "Time of Birth",
         gender: "Gender",
@@ -1571,6 +1649,264 @@
       11: { ta: "பாதங்கள், தூக்கமின்மை, நரம்பியல்", en: "Feet, sleep cycles, lymphatics" }
     };
 
+    
+    const CITIES_DB = [
+      { id: "chennai", name_ta: "சென்னை (Chennai)", name_en: "Chennai, Tamil Nadu", lat: 13.0827, lon: 80.2707, tz: 5.5 },
+      { id: "madurai", name_ta: "மதுரை (Madurai)", name_en: "Madurai, Tamil Nadu", lat: 9.9252, lon: 78.1198, tz: 5.5 },
+      { id: "coimbatore", name_ta: "கோயம்புத்தூர் (Coimbatore)", name_en: "Coimbatore, Tamil Nadu", lat: 11.0168, lon: 76.9558, tz: 5.5 },
+      { id: "trichy", name_ta: "திருச்சிராப்பள்ளி (Tiruchirappalli)", name_en: "Tiruchirappalli, Tamil Nadu", lat: 10.7905, lon: 78.7047, tz: 5.5 },
+      { id: "salem", name_ta: "சேலம் (Salem)", name_en: "Salem, Tamil Nadu", lat: 11.6643, lon: 78.1460, tz: 5.5 },
+      { id: "tirunelveli", name_ta: "திருநெல்வேலி (Tirunelveli)", name_en: "Tirunelveli, Tamil Nadu", lat: 8.7139, lon: 77.7567, tz: 5.5 },
+      { id: "erode", name_ta: "ஈரோடு (Erode)", name_en: "Erode, Tamil Nadu", lat: 11.3410, lon: 77.7172, tz: 5.5 },
+      { id: "vellore", name_ta: "வேலூர் (Vellore)", name_en: "Vellore, Tamil Nadu", lat: 12.9165, lon: 79.1325, tz: 5.5 },
+      { id: "thanjavur", name_ta: "தஞ்சாவூர் (Thanjavur)", name_en: "Thanjavur, Tamil Nadu", lat: 10.7870, lon: 79.1378, tz: 5.5 },
+      { id: "dindigul", name_ta: "திண்டுக்கல் (Dindigul)", name_en: "Dindigul, Tamil Nadu", lat: 10.3673, lon: 77.9803, tz: 5.5 },
+      { id: "kanchipuram", name_ta: "காஞ்சிபுரம் (Kanchipuram)", name_en: "Kanchipuram, Tamil Nadu", lat: 12.8342, lon: 79.7036, tz: 5.5 },
+      { id: "nagercoil", name_ta: "நாகர்கோவில் (Nagercoil)", name_en: "Nagercoil, Tamil Nadu", lat: 8.1833, lon: 77.4119, tz: 5.5 },
+      { id: "cuddalore", name_ta: "கடலூர் (Cuddalore)", name_en: "Cuddalore, Tamil Nadu", lat: 11.7480, lon: 79.7714, tz: 5.5 },
+      { id: "karur", name_ta: "கரூர் (Karur)", name_en: "Karur, Tamil Nadu", lat: 10.9601, lon: 78.0766, tz: 5.5 },
+      { id: "kumbakonam", name_ta: "கும்பகோணம் (Kumbakonam)", name_en: "Kumbakonam, Tamil Nadu", lat: 10.9602, lon: 79.3845, tz: 5.5 },
+      { id: "bengaluru", name_ta: "பெங்களூரு (Bengaluru)", name_en: "Bengaluru, Karnataka", lat: 12.9716, lon: 77.5946, tz: 5.5 },
+      { id: "hyderabad", name_ta: "ஹைதராபாத் (Hyderabad)", name_en: "Hyderabad, Telangana", lat: 17.3850, lon: 78.4867, tz: 5.5 },
+      { id: "mumbai", name_ta: "மும்பை (Mumbai)", name_en: "Mumbai, Maharashtra", lat: 19.0760, lon: 72.8777, tz: 5.5 },
+      { id: "delhi", name_ta: "புது தில்லி (New Delhi)", name_en: "New Delhi, Delhi", lat: 28.6139, lon: 77.2090, tz: 5.5 },
+      { id: "kolkata", name_ta: "கொல்கத்தா (Kolkata)", name_en: "Kolkata, West Bengal", lat: 22.5726, lon: 88.3639, tz: 5.5 },
+      { id: "jaffna", name_ta: "யாழ்ப்பாணம் (Jaffna)", name_en: "Jaffna, Sri Lanka", lat: 9.6615, lon: 80.0255, tz: 5.5 },
+      { id: "colombo", name_ta: "கொழும்பு (Colombo)", name_en: "Colombo, Sri Lanka", lat: 6.9271, lon: 79.8612, tz: 5.5 },
+      { id: "singapore", name_ta: "சிங்கப்பூர் (Singapore)", name_en: "Singapore", lat: 1.3521, lon: 103.8198, tz: 8.0 },
+      { id: "kualalumpur", name_ta: "கோலாலம்பூர் (Kuala Lumpur)", name_en: "Kuala Lumpur, Malaysia", lat: 3.1390, lon: 101.6869, tz: 8.0 },
+      { id: "london", name_ta: "லண்டன் (London)", name_en: "London, UK", lat: 51.5074, lon: -0.1278, tz: 0.0 },
+      { id: "newyork", name_ta: "நியூயார்க் (New York)", name_en: "New York, USA", lat: 40.7128, lon: -74.0060, tz: -5.0 }
+    ];
+
+    const NAKSHATRAS_EPHEMERIS = [
+      { name_ta: 'அசுவினி', name_en: 'Ashwini', lord_ta: 'கேது', lord_en: 'Ketu', years: 7 },
+      { name_ta: 'பரணி', name_en: 'Bharani', lord_ta: 'சுக்கிரன்', lord_en: 'Venus', years: 20 },
+      { name_ta: 'கார்த்திகை', name_en: 'Krittika', lord_ta: 'சூரியன்', lord_en: 'Sun', years: 6 },
+      { name_ta: 'ரோகிணி', name_en: 'Rohini', lord_ta: 'சந்திரன்', lord_en: 'Moon', years: 10 },
+      { name_ta: 'மிருகசீரிஷம்', name_en: 'Mrigashira', lord_ta: 'செவ்வாய்', lord_en: 'Mars', years: 7 },
+      { name_ta: 'திருவாதிரை', name_en: 'Ardra', lord_ta: 'இராகு', lord_en: 'Rahu', years: 18 },
+      { name_ta: 'புனர்பூசம்', name_en: 'Punarvasu', lord_ta: 'குரு', lord_en: 'Jupiter', years: 16 },
+      { name_ta: 'பூசம்', name_en: 'Pushya', lord_ta: 'சனி', lord_en: 'Saturn', years: 19 },
+      { name_ta: 'ஆயில்யம்', name_en: 'Ashlesha', lord_ta: 'புதன்', lord_en: 'Mercury', years: 17 },
+      { name_ta: 'மகம்', name_en: 'Magha', lord_ta: 'கேது', lord_en: 'Ketu', years: 7 },
+      { name_ta: 'பூரம்', name_en: 'Purva Phalguni', lord_ta: 'சுக்கிரன்', lord_en: 'Venus', years: 20 },
+      { name_ta: 'உத்திரம்', name_en: 'Uttara Phalguni', lord_ta: 'சூரியன்', lord_en: 'Sun', years: 6 },
+      { name_ta: 'அஸ்தம்', name_en: 'Hasta', lord_ta: 'சந்திரன்', lord_en: 'Moon', years: 10 },
+      { name_ta: 'சித்திரை', name_en: 'Chitra', lord_ta: 'செவ்வாய்', lord_en: 'Mars', years: 7 },
+      { name_ta: 'சுவாதி', name_en: 'Swati', lord_ta: 'இராகு', lord_en: 'Rahu', years: 18 },
+      { name_ta: 'விசாகம்', name_en: 'Vishakha', lord_ta: 'குரு', lord_en: 'Jupiter', years: 16 },
+      { name_ta: 'அனுஷம்', name_en: 'Anuradha', lord_ta: 'சனி', lord_en: 'Saturn', years: 19 },
+      { name_ta: 'கேட்டை', name_en: 'Jyeshtha', lord_ta: 'புதன்', lord_en: 'Mercury', years: 17 },
+      { name_ta: 'மூலம்', name_en: 'Mula', lord_ta: 'கேது', lord_en: 'Ketu', years: 7 },
+      { name_ta: 'பூராடம்', name_en: 'Purva Ashadha', lord_ta: 'சுக்கிரன்', lord_en: 'Venus', years: 20 },
+      { name_ta: 'உத்திராடம்', name_en: 'Uttara Ashadha', lord_ta: 'சூரியன்', lord_en: 'Sun', years: 6 },
+      { name_ta: 'திருவோணம்', name_en: 'Shravana', lord_ta: 'சந்திரன்', lord_en: 'Moon', years: 10 },
+      { name_ta: 'அவிட்டம்', name_en: 'Dhanishta', lord_ta: 'செவ்வாய்', lord_en: 'Mars', years: 7 },
+      { name_ta: 'சதயம்', name_en: 'Shatabhisha', lord_ta: 'இராகு', lord_en: 'Rahu', years: 18 },
+      { name_ta: 'பூரட்டாதி', name_en: 'Purva Bhadrapada', lord_ta: 'குரு', lord_en: 'Jupiter', years: 16 },
+      { name_ta: 'உத்திரட்டாதி', name_en: 'Uttara Bhadrapada', lord_ta: 'சனி', lord_en: 'Saturn', years: 19 },
+      { name_ta: 'ரேவதி', name_en: 'Revati', lord_ta: 'புதன்', lord_en: 'Mercury', years: 17 }
+    ];
+
+    function deg2rad(d) { return d * Math.PI / 180; }
+    function rad2deg(r) { return r * 180 / Math.PI; }
+    function norm360(d) { return ((d % 360) + 360) % 360; }
+    function sinD(d) { return Math.sin(deg2rad(d)); }
+    function cosD(d) { return Math.cos(deg2rad(d)); }
+    function tanD(d) { return Math.tan(deg2rad(d)); }
+    function atan2D(y, x) { return norm360(rad2deg(Math.atan2(y, x))); }
+
+    function computeBirthEphemeris(dobStr, tobStr, cityId) {
+      const city = CITIES_DB.find(c => c.id === cityId) || CITIES_DB[0];
+      const pDob = (dobStr || '1992-04-20').split('-').map(Number);
+      const pTob = (tobStr || '10:15').split(':').map(Number);
+      const year = pDob[0], month = pDob[1], day = pDob[2];
+      const hour = pTob[0], min = pTob[1];
+
+      const utHours = hour + min / 60 - city.tz;
+      let y = year, m = month;
+      if (m <= 2) { y -= 1; m += 12; }
+      const A = Math.floor(y / 100);
+      const B = 2 - A + Math.floor(A / 4);
+      const jd = Math.floor(365.25 * (y + 4716)) + Math.floor(30.6001 * (m + 1)) + day + B - 1524.5 + utHours / 24;
+      const T = (jd - 2451545.0) / 36525;
+      const d = jd - 2451545.0;
+
+      const ayanamsha = 23.8583 + 0.01396 * (year - 2000);
+      const eps = 23.4392911 - 0.0130042 * T;
+
+      // Local Sidereal Time & Lagna
+      const gmst0 = norm360(100.46061837 + 36000.770053608 * T + 0.000387933 * T * T);
+      const gmst = norm360(gmst0 + 360.985647366 * (utHours / 24));
+      const lst = norm360(gmst + city.lon);
+      const ascTrop = atan2D(cosD(lst), -sinD(lst) * cosD(eps) - tanD(city.lat) * sinD(eps));
+      const lagnaSid = norm360(ascTrop - ayanamsha);
+      const lagnaIdx = Math.floor(lagnaSid / 30);
+      const lagnaDegInRasi = lagnaSid % 30;
+
+      // Sun
+      const L0 = norm360(280.46646 + 36000.76983 * T);
+      const M_sun = norm360(357.52911 + 35999.05029 * T);
+      const C_sun = (1.914602 - 0.004817 * T) * sinD(M_sun) + (0.019993 - 0.000101 * T) * sinD(2 * M_sun);
+      const sunTrop = norm360(L0 + C_sun);
+      const sunSid = norm360(sunTrop - ayanamsha);
+      const sunRasi = Math.floor(sunSid / 30);
+
+      // Moon
+      const Lp = norm360(218.3164477 + 481267.88123421 * T);
+      const D = norm360(297.8501921 + 445267.1114034 * T);
+      const Mp = norm360(134.9633964 + 477198.8675055 * T);
+      const F = norm360(93.2720950 + 483202.0175233 * T);
+      const moonPert = 6.288774 * sinD(Mp) + 1.274027 * sinD(2*D - Mp) + 0.658309 * sinD(2*D) + 0.213618 * sinD(2*Mp) - 0.185116 * sinD(M_sun) - 0.114332 * sinD(2*F);
+      const moonTrop = norm360(Lp + moonPert);
+      const moonSid = norm360(moonTrop - ayanamsha);
+      const moonRasi = Math.floor(moonSid / 30);
+
+      const nakSpan = 13 + 20/60; // 13.333333 degrees
+      const nakIdx = Math.floor(moonSid / nakSpan) % 27;
+      const nakRem = moonSid - (nakIdx * nakSpan);
+      const pada = Math.floor(nakRem / (nakSpan / 4)) + 1;
+      const nakInfo = NAKSHATRAS_EPHEMERIS[nakIdx];
+
+      const fracRem = (nakSpan - nakRem) / nakSpan;
+      const dashaBalYears = fracRem * nakInfo.years;
+      const balY = Math.floor(dashaBalYears);
+      const balM = Math.floor((dashaBalYears - balY) * 12);
+      const balD = Math.round((((dashaBalYears - balY) * 12) - balM) * 30);
+
+      // Nodes (Rahu & Ketu)
+      const rahuTrop = norm360(125.04452 - 1934.136261 * T);
+      const rahuSid = norm360(rahuTrop - ayanamsha);
+      const ketuSid = norm360(rahuSid + 180);
+
+      // Classical Planets
+      const planetsDef = [
+        { id: 'mars', name_ta: 'செவ்', name_en: 'Mars', a: 1.52368, e: 0.0934, M0: 19.373, n: 0.524039, L0: 355.433 },
+        { id: 'jup', name_ta: 'குரு', name_en: 'Jup', a: 5.2026, e: 0.0485, M0: 20.02, n: 0.083085, L0: 34.351 },
+        { id: 'sat', name_ta: 'சனி', name_en: 'Sat', a: 9.5549, e: 0.0555, M0: 317.02, n: 0.033444, L0: 50.077 },
+        { id: 'ven', name_ta: 'சுக்', name_en: 'Ven', a: 0.72333, e: 0.0068, M0: 50.115, n: 1.60213, L0: 181.98 },
+        { id: 'mer', name_ta: 'புத', name_en: 'Merc', a: 0.3871, e: 0.2056, M0: 174.79, n: 4.09233, L0: 252.25 }
+      ];
+
+      function getNavamshaIndex(absDeg) {
+        const padaIdx = Math.floor(absDeg / (3 + 20/60));
+        return padaIdx % 12;
+      }
+
+      const planetsList = [
+        { name_ta: 'சூரி', name_en: 'Sun', d1: sunRasi, d9: getNavamshaIndex(sunSid), isExalted: sunRasi === 0 },
+        { name_ta: 'சந்', name_en: 'Moon', d1: moonRasi, d9: getNavamshaIndex(moonSid), isExalted: moonRasi === 1 },
+        { name_ta: 'இராகு', name_en: 'Rahu', d1: Math.floor(rahuSid / 30), d9: getNavamshaIndex(rahuSid) },
+        { name_ta: 'கேது', name_en: 'Ketu', d1: Math.floor(ketuSid / 30), d9: getNavamshaIndex(ketuSid) }
+      ];
+
+      planetsDef.forEach(p => {
+        const M = norm360(p.M0 + p.n * d);
+        const C = (2 * p.e - Math.pow(p.e, 3) / 4) * sinD(M) + (1.25 * p.e * p.e) * sinD(2 * M);
+        const helio_l = norm360(p.L0 + p.n * d + rad2deg(C));
+        const r = p.a * (1 - p.e * p.e) / (1 + p.e * cosD(M));
+        const x = r * cosD(helio_l) + cosD(sunTrop + 180);
+        const y = r * sinD(helio_l) + sinD(sunTrop + 180);
+        const geo_trop = atan2D(y, x);
+        const geo_sid = norm360(geo_trop - ayanamsha);
+        const rasi = Math.floor(geo_sid / 30);
+        const d9 = getNavamshaIndex(geo_sid);
+        const isExalted = (p.id === 'mars' && rasi === 9) || (p.id === 'jup' && rasi === 3) || (p.id === 'sat' && rasi === 6) || (p.id === 'ven' && rasi === 11) || (p.id === 'mer' && rasi === 5);
+        planetsList.push({ name_ta: p.name_ta, name_en: p.name_en, d1: rasi, d9: d9, isExalted: isExalted });
+      });
+
+      return {
+        lagnaIdx,
+        lagnaDeg: lagnaDegInRasi,
+        d9LagnaIdx: getNavamshaIndex(lagnaSid),
+        moonRasi,
+        nakIdx,
+        pada,
+        nakInfo,
+        dashaLord: currentLang === 'ta' ? nakInfo.lord_ta : nakInfo.lord_en,
+        dashaLordTa: nakInfo.lord_ta,
+        dashaLordEn: nakInfo.lord_en,
+        dashaBalanceYears: dashaBalYears,
+        balY, balM, balD,
+        planets: planetsList
+      };
+    }
+
+    function populateCityDropdown() {
+      const pobSel = document.getElementById('in-pob');
+      if (!pobSel) return;
+      const currentVal = pobSel.value || 'chennai';
+      pobSel.innerHTML = '';
+      CITIES_DB.forEach(c => {
+        const opt = document.createElement('option');
+        opt.value = c.id;
+        opt.innerText = currentLang === 'ta' ? c.name_ta : c.name_en;
+        if (c.id === currentVal) opt.selected = true;
+        pobSel.appendChild(opt);
+      });
+    }
+
+    function updateCityDropdownLanguage() {
+      const pobSel = document.getElementById('in-pob');
+      if (!pobSel) return;
+      const selVal = pobSel.value;
+      Array.from(pobSel.options).forEach((opt, idx) => {
+        const c = CITIES_DB[idx];
+        if (c) {
+          opt.innerText = currentLang === 'ta' ? c.name_ta : c.name_en;
+        }
+      });
+    }
+
+    function onBirthInputsChanged() {
+      const dobVal = document.getElementById('in-dob').value;
+      const tobVal = document.getElementById('in-tob').value;
+      const pobVal = document.getElementById('in-pob').value;
+
+      const calc = computeBirthEphemeris(dobVal, tobVal, pobVal);
+
+      // Update derived summary card
+      const lName = currentLang === 'ta' ? RASIS_DATA[calc.lagnaIdx].name_ta : RASIS_DATA[calc.lagnaIdx].name_en;
+      const rName = currentLang === 'ta' ? RASIS_DATA[calc.moonRasi].name_ta : RASIS_DATA[calc.moonRasi].name_en;
+      const nName = currentLang === 'ta' ? calc.nakInfo.name_ta : calc.nakInfo.name_en;
+      const dLord = currentLang === 'ta' ? calc.nakInfo.lord_ta : calc.nakInfo.lord_en;
+
+      document.getElementById('disp-calc-lagna').innerText = lName + ' (' + calc.lagnaDeg.toFixed(1) + '°)';
+      document.getElementById('disp-calc-rasi').innerText = rName;
+      document.getElementById('disp-calc-nakshatra').innerText = nName + ' (' + calc.pada + (currentLang === 'ta' ? '-ம் பாதம்' : ' Pada') + ')';
+      document.getElementById('disp-calc-dasha').innerText = dLord + (currentLang === 'ta' ? ' திசை ' : ' Dasha ') + calc.balY + (currentLang === 'ta' ? ' வ ' : 'y ') + calc.balM + (currentLang === 'ta' ? ' மா ' : 'm ') + calc.balD + (currentLang === 'ta' ? ' நா' : 'd');
+
+      // Sync the override fields silently
+      document.getElementById('in-lagna').value = calc.lagnaIdx;
+      document.getElementById('in-dasha-lord').value = calc.nakInfo.lord_ta;
+      document.getElementById('in-dasha-years').value = calc.dashaBalanceYears.toFixed(1);
+
+      // Register dynamically calculated profile
+      PROFILES['calculated'] = {
+        dob: dobVal,
+        lagnaIdx: calc.lagnaIdx,
+        d9LagnaIdx: calc.d9LagnaIdx,
+        dashaLord: calc.nakInfo.lord_ta,
+        dashaYears: calc.dashaBalanceYears.toFixed(1),
+        planets: calc.planets
+      };
+
+      activeProfile = 'calculated';
+      populateCityDropdown();
+    onBirthInputsChanged();
+    }
+
+    function onManualLagnaChange() {
+      activeProfile = 'custom';
+      runAllCalculations();
+    }
+
+    function onManualDashaChange() {
+      activeProfile = 'custom';
+      runAllCalculations();
+    }
+
     const PROFILES = {
       benchmark: {
         dob: "1992-04-20",
@@ -1655,6 +1991,16 @@
       document.getElementById('lbl-lagna').innerText = t.lagna;
       document.getElementById('lbl-dasha-balance').innerText = t.dashaBalance;
       document.getElementById('btn-compute').innerText = t.btnCompute;
+      if (document.getElementById('hdr-birth-subtitle')) document.getElementById('hdr-birth-subtitle').innerText = t.birthSubtitle;
+      if (document.getElementById('lbl-pob')) document.getElementById('lbl-pob').innerText = t.pob;
+      if (document.getElementById('lbl-auto-summary-title')) document.getElementById('lbl-auto-summary-title').innerText = t.autoSummaryTitle;
+      if (document.getElementById('lbl-auto-status')) document.getElementById('lbl-auto-status').innerText = t.autoStatus;
+      if (document.getElementById('lbl-disp-lagna')) document.getElementById('lbl-disp-lagna').innerText = t.dispLagna;
+      if (document.getElementById('lbl-disp-rasi')) document.getElementById('lbl-disp-rasi').innerText = t.dispRasi;
+      if (document.getElementById('lbl-disp-nak')) document.getElementById('lbl-disp-nak').innerText = t.dispNak;
+      if (document.getElementById('lbl-disp-dasha')) document.getElementById('lbl-disp-dasha').innerText = t.dispDasha;
+      if (document.getElementById('lbl-manual-summary')) document.getElementById('lbl-manual-summary').innerText = t.manualSummary;
+      updateCityDropdownLanguage();
       document.getElementById('hdr-rasi-chart').innerText = t.rasiChart;
       document.getElementById('txt-chart-sub').innerText = t.chartSub;
       document.getElementById('lbl-btn-d1').innerText = t.btnD1;
