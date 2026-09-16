@@ -356,10 +356,23 @@
             </p>
           </div>
 
-          <!-- Date of Birth -->
+          <!-- Date of Birth (DD-MM-YYYY) -->
           <div>
-            <label class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1" id="lbl-dob">பிறந்த தேதி (Date of Birth)</label>
-            <input type="date" id="in-dob" value="1992-04-20" onchange="onBirthInputsChanged()" class="w-full bg-black/60 border border-amber-500/30 text-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 font-medium">
+            <div class="flex justify-between items-center mb-1">
+              <label class="block text-xs font-semibold text-[var(--muted-foreground)]" id="lbl-dob">பிறந்த தேதி (Date of Birth)</label>
+              <span class="text-[10px] text-amber-400/90 font-mono font-bold tracking-wider" id="lbl-dob-format">DD-MM-YYYY</span>
+            </div>
+            <div class="relative flex items-center">
+              <input type="text" id="in-dob" value="20-04-1992" placeholder="DD-MM-YYYY" maxlength="10" inputmode="numeric"
+                oninput="handleDateInputMask(this, 'in-dob-native', onBirthInputsChanged)"
+                onchange="onBirthInputsChanged()"
+                class="w-full bg-black/60 border border-amber-500/30 text-white rounded-xl pl-3 pr-10 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 font-mono font-medium tracking-wider">
+              <button type="button" onclick="openDatePicker('in-dob-native')" class="absolute right-2 text-amber-400 hover:text-amber-300 p-1.5 rounded-lg focus:outline-none transition cursor-pointer" title="Calendar Picker (தேதி தேர்வு)">
+                📅
+              </button>
+              <input type="date" id="in-dob-native" value="1992-04-20" tabindex="-1" class="sr-only pointer-events-none"
+                onchange="onNativeDatePicked(this, 'in-dob', onBirthInputsChanged)">
+            </div>
           </div>
 
           <!-- Time of Birth & Gender -->
@@ -836,8 +849,18 @@
         </div>
         
         <div class="flex items-center gap-2 w-full sm:w-auto">
-          <input type="date" id="in-panchangam-date" value="2026-08-17" onchange="runPanchangamCalculations()" class="bg-black/60 border border-amber-500/30 text-white rounded-xl px-3 py-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-amber-500">
-          <button onclick="setTodayPanchangam()" class="px-3 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs shadow-xs transition" id="btn-panchangam-today">
+          <div class="relative flex items-center">
+            <input type="text" id="in-panchangam-date" value="17-08-2026" placeholder="DD-MM-YYYY" maxlength="10" inputmode="numeric"
+              oninput="handleDateInputMask(this, 'in-panchangam-native', runPanchangamCalculations)"
+              onchange="runPanchangamCalculations()"
+              class="w-36 bg-black/60 border border-amber-500/30 text-white rounded-xl pl-3 pr-9 py-2 text-sm font-mono font-medium tracking-wider focus:outline-none focus:ring-2 focus:ring-amber-500">
+            <button type="button" onclick="openDatePicker('in-panchangam-native')" class="absolute right-1.5 text-amber-400 hover:text-amber-300 p-1 rounded-lg focus:outline-none transition cursor-pointer" title="Calendar Picker (தேதி தேர்வு)">
+              📅
+            </button>
+            <input type="date" id="in-panchangam-native" value="2026-08-17" tabindex="-1" class="sr-only pointer-events-none"
+              onchange="onNativeDatePicked(this, 'in-panchangam-date', runPanchangamCalculations)">
+          </div>
+          <button onclick="setTodayPanchangam()" class="px-3 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs shadow-xs transition cursor-pointer whitespace-nowrap" id="btn-panchangam-today">
             இன்று (Today)
           </button>
         </div>
@@ -1628,7 +1651,7 @@
         sampleFinance: "மாதிரி 3: வணிகம் & நிதி",
         birthData: "ஜாதக விவர உள்ளீடுகள் (Birth Details)",
         birthSubtitle: "பிறந்த தேதி, நேரம் மற்றும் இடத்தை உள்ளிட்டால் லக்கினம், ராசி, நட்சத்திரம் மற்றும் தசா இருப்பு தானாகவே கணக்கிடப்படும்.",
-        dob: "பிறந்த தேதி (Date of Birth)",
+        dob: "பிறந்த தேதி (Date of Birth) [DD-MM-YYYY]",
         tob: "பிறந்த நேரம்",
         pob: "பிறந்த இடம் (Place of Birth)",
         gender: "பாலினம்",
@@ -1732,7 +1755,7 @@
         sampleFinance: "Sample 3: Commerce & Finance",
         birthData: "Birth Details",
         birthSubtitle: "Enter Date, Time, and Place of birth. Lagna, Moon sign, Nakshatra, and Dasha balance will be automatically calculated.",
-        dob: "Date of Birth",
+        dob: "Date of Birth [DD-MM-YYYY]",
         tob: "Time of Birth",
         pob: "Place of Birth",
         gender: "Gender",
@@ -1937,11 +1960,88 @@
     function tanD(d) { return Math.tan(deg2rad(d)); }
     function atan2D(y, x) { return norm360(rad2deg(Math.atan2(y, x))); }
 
+    // ==========================================
+    // DATE PARSING & MASKING HELPERS (DD-MM-YYYY)
+    // ==========================================
+    function parseDateInput(val) {
+      if (!val) return null;
+      val = String(val).trim();
+      let day, month, year;
+      if (val.includes('-')) {
+        const parts = val.split('-');
+        if (parts[0].length === 4) {
+          year = parseInt(parts[0], 10); month = parseInt(parts[1], 10); day = parseInt(parts[2], 10);
+        } else {
+          day = parseInt(parts[0], 10); month = parseInt(parts[1], 10); year = parseInt(parts[2], 10);
+        }
+      } else if (val.includes('/')) {
+        const parts = val.split('/');
+        if (parts[0].length === 4) {
+          year = parseInt(parts[0], 10); month = parseInt(parts[1], 10); day = parseInt(parts[2], 10);
+        } else {
+          day = parseInt(parts[0], 10); month = parseInt(parts[1], 10); year = parseInt(parts[2], 10);
+        }
+      } else if (val.length === 8 && /^\d+$/.test(val)) {
+        day = parseInt(val.substring(0, 2), 10); month = parseInt(val.substring(2, 4), 10); year = parseInt(val.substring(4, 8), 10);
+      } else {
+        return null;
+      }
+      if (isNaN(year) || isNaN(month) || isNaN(day)) return null;
+      if (month < 1 || month > 12 || day < 1 || day > 31 || year < 1800 || year > 2200) return null;
+      const pad = (n) => String(n).padStart(2, '0');
+      const ddmmyyyy = `${pad(day)}-${pad(month)}-${year}`;
+      const yyyymmdd = `${year}-${pad(month)}-${pad(day)}`;
+      const dateObj = new Date(year, month - 1, day);
+      return { day, month, year, ddmmyyyy, yyyymmdd, dateObj };
+    }
+
+    function handleDateInputMask(inputEl, nativeId, callback) {
+      const digits = inputEl.value.replace(/\D/g, '');
+      if (digits.length <= 8) {
+        if (digits.length > 4) {
+          inputEl.value = digits.substring(0, 2) + '-' + digits.substring(2, 4) + '-' + digits.substring(4);
+        } else if (digits.length > 2) {
+          inputEl.value = digits.substring(0, 2) + '-' + digits.substring(2);
+        } else {
+          inputEl.value = digits;
+        }
+      }
+      const parsed = parseDateInput(inputEl.value);
+      if (parsed) {
+        const nat = document.getElementById(nativeId);
+        if (nat) nat.value = parsed.yyyymmdd;
+        if (typeof callback === 'function') callback();
+      }
+    }
+
+    function openDatePicker(nativeId) {
+      const el = document.getElementById(nativeId);
+      if (!el) return;
+      if (typeof el.showPicker === 'function') {
+        try {
+          el.showPicker();
+          return;
+        } catch (err) {}
+      }
+      el.click();
+    }
+
+    function onNativeDatePicked(nativeEl, textId, callback) {
+      const val = nativeEl.value;
+      if (!val) return;
+      const parsed = parseDateInput(val);
+      if (parsed) {
+        const textEl = document.getElementById(textId);
+        if (textEl) textEl.value = parsed.ddmmyyyy;
+        if (typeof callback === 'function') callback();
+      }
+    }
+
     function computeBirthEphemeris(dobStr, tobStr, cityId) {
       const city = CITIES_DB.find(c => c.id === cityId) || CITIES_DB[0];
-      const pDob = (dobStr || '1992-04-20').split('-').map(Number);
+      const parsedDob = parseDateInput(dobStr) || { year: 1992, month: 4, day: 20 };
       const pTob = (tobStr || '10:15').split(':').map(Number);
-      const year = pDob[0], month = pDob[1], day = pDob[2];
+      const year = parsedDob.year, month = parsedDob.month, day = parsedDob.day;
       const hour = pTob[0], min = pTob[1];
 
       const utHours = hour + min / 60 - city.tz;
@@ -2113,8 +2213,7 @@
       };
 
       activeProfile = 'calculated';
-      populateCityDropdown();
-    onBirthInputsChanged();
+      runAllCalculations();
     }
 
     function onManualLagnaChange() {
@@ -2129,7 +2228,7 @@
 
     const PROFILES = {
       benchmark: {
-        dob: "1992-04-20",
+        dob: "20-04-1992",
         lagnaIdx: 2,
         d9LagnaIdx: 2,
         dashaLord: "சுக்கிரன்",
@@ -2147,7 +2246,7 @@
         ]
       },
       tech: {
-        dob: "1996-09-15",
+        dob: "15-09-1996",
         lagnaIdx: 10,
         d9LagnaIdx: 8,
         dashaLord: "சந்திரன்",
@@ -2163,7 +2262,7 @@
         ]
       },
       finance: {
-        dob: "1994-11-25",
+        dob: "25-11-1994",
         lagnaIdx: 1,
         d9LagnaIdx: 0,
         dashaLord: "செவ்வாய்",
@@ -2358,6 +2457,9 @@
       activeProfile = type;
       const p = PROFILES[type];
       document.getElementById('in-dob').value = p.dob;
+      const parsedProfileDob = parseDateInput(p.dob);
+      const natDob = document.getElementById('in-dob-native');
+      if (natDob && parsedProfileDob) natDob.value = parsedProfileDob.yyyymmdd;
       document.getElementById('in-lagna').value = p.lagnaIdx;
       document.getElementById('in-dasha-lord').value = p.dashaLord;
       document.getElementById('in-dasha-years').value = p.dashaYears;
@@ -2659,20 +2761,26 @@
     ];
 
     function setTodayPanchangam() {
-      const today = new Date().toISOString().split('T')[0];
-      document.getElementById('in-panchangam-date').value = today;
+      const d = new Date();
+      const pad = (n) => String(n).padStart(2, '0');
+      const ddmmyyyy = `${pad(d.getDate())}-${pad(d.getMonth() + 1)}-${d.getFullYear()}`;
+      const yyyymmdd = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+      document.getElementById('in-panchangam-date').value = ddmmyyyy;
+      const nat = document.getElementById('in-panchangam-native');
+      if (nat) nat.value = yyyymmdd;
       runPanchangamCalculations();
     }
 
     function runPanchangamCalculations() {
       const dateVal = document.getElementById('in-panchangam-date').value;
-      const d = new Date(dateVal);
+      const parsed = parseDateInput(dateVal) || { day: 17, month: 8, year: 2026, ddmmyyyy: "17-08-2026", yyyymmdd: "2026-08-17", dateObj: new Date(2026, 7, 17) };
+      const d = parsed.dateObj || new Date(parsed.year, parsed.month - 1, parsed.day);
       const dayOfWeek = d.getDay();
       const wInfo = WEEKDAY_NAMES[dayOfWeek];
       const ryk = RAHU_YAMA_KULI[dayOfWeek];
       const soolai = SOOLAI_INFO[dayOfWeek];
 
-      const isPage37Benchmark = (dateVal === "2026-08-17");
+      const isPage37Benchmark = (parsed.day === 17 && parsed.month === 8 && parsed.year === 2026);
 
       if (isPage37Benchmark) {
         document.getElementById('p-dinamana').innerText = currentLang === 'ta' ? "அகல் 30 50" : "30 Ghati 50 Vighati (12h 20m)";
@@ -2710,7 +2818,8 @@
       document.getElementById('p-soolai-pari').innerText = currentLang === 'ta' ? soolai.pari_ta : soolai.pari_en;
     }
 
-    runAllCalculations();
+    populateCityDropdown();
+    onBirthInputsChanged();
     runPanchangamCalculations();
 
     // Disable Right-Click with "Don't do that" Warning
