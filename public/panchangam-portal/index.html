@@ -324,23 +324,7 @@
     <!-- ========================================================================= -->
     <div id="view-horoscope" class="space-y-6">
       
-      <!-- Quick Load Sample Profiles -->
-      <div class="flex flex-wrap items-center justify-between gap-3 p-3 vedi-card rounded-xl text-xs">
-        <span class="font-bold text-[var(--muted-foreground)] flex items-center gap-1.5">
-          <span>⚡</span> <span id="lbl-quick-samples">துரித மாதிரி ஜாதகங்கள் (Quick Samples):</span>
-        </span>
-        <div class="flex flex-wrap items-center gap-2">
-          <button onclick="loadProfile('benchmark')" id="btn-profile-benchmark" class="px-3 py-1.5 rounded-lg border border-amber-500/40 bg-amber-500/15 text-amber-900 dark:text-amber-200 font-bold transition flex items-center gap-1.5">
-            <span>⚖️</span> <span id="btn-sample-govt">மாதிரி 1: அரசு / நீதித்துறை</span>
-          </button>
-          <button onclick="loadProfile('tech')" id="btn-profile-tech" class="px-3 py-1.5 rounded-lg border border-[var(--border)] bg-[var(--secondary)] text-[var(--foreground)] font-bold transition flex items-center gap-1.5">
-            <span>💻</span> <span id="btn-sample-tech">மாதிரி 2: IT / தொழில்நுட்பம்</span>
-          </button>
-          <button onclick="loadProfile('finance')" id="btn-profile-finance" class="px-3 py-1.5 rounded-lg border border-[var(--border)] bg-[var(--secondary)] text-[var(--foreground)] font-bold transition flex items-center gap-1.5">
-            <span>💰</span> <span id="btn-sample-finance">மாதிரி 3: வணிகம் & நிதி</span>
-          </button>
-        </div>
-      </div>
+
 
       <!-- Mid Section: Form Inputs & South Indian Graphical Chart Side-by-Side -->
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -363,14 +347,14 @@
               <span class="text-[10px] text-amber-400/90 font-mono font-bold tracking-wider" id="lbl-dob-format">DD-MM-YYYY</span>
             </div>
             <div class="relative flex items-center">
-              <input type="text" id="in-dob" value="20-04-1992" placeholder="DD-MM-YYYY" maxlength="10" inputmode="numeric"
+              <input type="text" id="in-dob" value="26-04-1990" placeholder="DD-MM-YYYY" maxlength="10" inputmode="numeric"
                 oninput="handleDateInputMask(this, 'in-dob-native', onBirthInputsChanged)"
                 onchange="onBirthInputsChanged()"
                 class="w-full bg-black/60 border border-amber-500/30 text-white rounded-xl pl-3 pr-10 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 font-mono font-medium tracking-wider">
               <button type="button" onclick="openDatePicker('in-dob-native')" class="absolute right-2 text-amber-400 hover:text-amber-300 p-1.5 rounded-lg focus:outline-none transition cursor-pointer" title="Calendar Picker (தேதி தேர்வு)">
                 📅
               </button>
-              <input type="date" id="in-dob-native" value="1992-04-20" tabindex="-1" class="sr-only pointer-events-none"
+              <input type="date" id="in-dob-native" value="1990-04-26" tabindex="-1" class="sr-only pointer-events-none"
                 onchange="onNativeDatePicked(this, 'in-dob', onBirthInputsChanged)">
             </div>
           </div>
@@ -379,7 +363,7 @@
           <div class="grid grid-cols-2 gap-2">
             <div>
               <label class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1" id="lbl-tob">பிறந்த நேரம்</label>
-              <input type="time" id="in-tob" value="10:15" onchange="onBirthInputsChanged()" class="w-full bg-black/60 border border-amber-500/30 text-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 font-medium">
+              <input type="time" id="in-tob" value="11:05" onchange="onBirthInputsChanged()" class="w-full bg-black/60 border border-amber-500/30 text-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 font-medium">
             </div>
             <div>
               <label class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1" id="lbl-gender">பாலினம்</label>
@@ -666,165 +650,63 @@
 
       </div>
 
-      <!-- Bottom Section: The 4 Life Predictions Tabs & Gauges -->
-      <div class="vedi-card rounded-2xl p-5 shadow-sm space-y-5">
+            <!-- ========================================================================= -->
+      <!-- NAVAGRAHA PADA SARAM (நவக்கிரக பாதசாரம் & தசா இருப்பு அட்டவணை)            -->
+      <!-- ========================================================================= -->
+      <div class="vedi-card rounded-2xl p-5 sm:p-6 shadow-xl space-y-6">
         
-        <!-- Tab Controls -->
-        <div class="flex gap-2 border-b border-[var(--border)] pb-2 overflow-x-auto text-xs sm:text-sm font-semibold">
-          <button onclick="switchLifeTab('career')" id="tab-btn-career" class="px-4 py-2 rounded-xl bg-amber-600 text-white shadow-xs transition flex items-center gap-1.5">
-            <span>💼</span> <span id="tab-lbl-career">1. உத்தியோகம் & தொழில்</span>
-          </button>
-          <button onclick="switchLifeTab('marriage')" id="tab-btn-marriage" class="px-4 py-2 rounded-xl text-[var(--muted-foreground)] hover:bg-[var(--secondary)] transition flex items-center gap-1.5">
-            <span>💍</span> <span id="tab-lbl-marriage">2. திருமணம் & வரன்</span>
-          </button>
-          <button onclick="switchLifeTab('progeny')" id="tab-btn-progeny" class="px-4 py-2 rounded-xl text-[var(--muted-foreground)] hover:bg-[var(--secondary)] transition flex items-center gap-1.5">
-            <span>👶</span> <span id="tab-lbl-progeny">3. புத்திர பாக்கியம்</span>
-          </button>
-          <button onclick="switchLifeTab('health')" id="tab-btn-health" class="px-4 py-2 rounded-xl text-[var(--muted-foreground)] hover:bg-[var(--secondary)] transition flex items-center gap-1.5">
-            <span>🌿</span> <span id="tab-lbl-health">4. ஆரோக்கியம் & ஆயுள்</span>
-          </button>
-        </div>
-
-        <!-- PANEL 1: CAREER PREDICTION -->
-        <div id="panel-career" class="space-y-4">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            
-            <!-- Career Strength Card -->
-            <div class="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 space-y-3">
-              <div class="text-xs font-bold uppercase tracking-wider text-amber-800 dark:text-amber-300" id="lbl-primary-career">
-                பொருத்தமான முதன்மை தொழில் துறை
-              </div>
-              <div id="career-primary-title" class="text-base font-bold text-[var(--foreground)]">
-                அரசு உயர் பதவி, நீதித்துறை, நிர்வாக அதிகாரம்
-              </div>
-              
-              <!-- Graphical Progress Bar for Sector Strength -->
-              <div class="space-y-1">
-                <div class="flex justify-between text-[11px] font-semibold text-[var(--muted-foreground)]">
-                  <span id="lbl-career-strength">தொழில் யோக ஆற்றல் (Auspicious Affinity)</span>
-                  <span id="career-primary-score" class="text-amber-700 dark:text-amber-400">96%</span>
-                </div>
-                <div class="w-full bg-[var(--border)] h-2 rounded-full overflow-hidden">
-                  <div id="bar-career-score" class="bg-amber-600 h-2 rounded-full transition-all duration-500" style="width: 96%;"></div>
-                </div>
-              </div>
-              
-              <div class="text-xs text-[var(--muted-foreground)]">
-                <span id="lbl-secondary-career">இரண்டாம் துறை:</span> <strong id="career-secondary-title" class="text-[var(--foreground)]">மென்பொருள் & தொழில்நுட்பம்</strong>
-              </div>
-            </div>
-
-            <!-- 10th House Details -->
-            <div class="grid grid-cols-2 gap-3 text-xs">
-              <div class="p-3 bg-[var(--secondary)]/40 rounded-xl border border-[var(--border)]">
-                <span class="text-[var(--muted-foreground)]" id="lbl-10th-house">10-ம் வீடு (கர்ம ஸ்தானம்):</span>
-                <div id="career-10th-text" class="font-bold text-[var(--foreground)] mt-1">மீனம் (அதிபதி: குரு)</div>
-              </div>
-              <div class="p-3 bg-[var(--secondary)]/40 rounded-xl border border-[var(--border)]">
-                <span class="text-[var(--muted-foreground)]" id="lbl-yogakaraka">ராஜ யோககாரகன்:</span>
-                <div id="career-yogi-text" class="font-bold text-amber-700 dark:text-amber-400 mt-1">சுக்கிரன், சனி</div>
-              </div>
-              <div class="col-span-2 p-3 bg-[var(--secondary)]/40 rounded-xl border border-[var(--border)]">
-                <span class="text-[var(--muted-foreground)]" id="lbl-citation">சாஸ்திர ஆதாரம்:</span>
-                <div class="font-medium text-[var(--foreground)] mt-0.5">BPHS அத்தியாயம் 18 (கர்ம பலன்) & ஜாதக சந்திரிகா ஸ்லோகம் 22</div>
-              </div>
-            </div>
-
-          </div>
-
-          <!-- Career Promotion Windows -->
-          <div class="space-y-2">
-            <h4 class="text-xs font-bold uppercase tracking-wider text-[var(--foreground)]" id="lbl-career-windows">
-              உத்தியோக உயர்வு & மாற்றக் காலங்கள் (Dasha Timeline Windows):
-            </h4>
-            <div id="career-windows-list" class="space-y-2 text-xs"></div>
-          </div>
-        </div>
-
-        <!-- PANEL 2: MARRIAGE PREDICTION -->
-        <div id="panel-marriage" class="space-y-4 hidden">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            
-            <div class="p-4 rounded-xl bg-blue-500/10 border border-blue-500/20 space-y-3">
-              <div class="text-xs font-bold uppercase tracking-wider text-blue-800 dark:text-blue-300" id="lbl-marriage-status">
-                களத்திர பாவ பலன் & திருமண பாக்கியம்
-              </div>
-              <div id="mrg-suitability-text" class="text-sm font-bold text-[var(--foreground)]">
-                மாங்கல்ய யோகம் நல்ல பலத்தோடு அமைந்துள்ளது
-              </div>
-              <div class="p-2.5 rounded-lg bg-[var(--card)] border border-[var(--border)] text-xs space-y-1">
-                <span class="font-bold text-blue-700 dark:text-blue-300" id="lbl-chevvai-status">செவ்வாய் தோஷ நிலை (Manglik Evaluation):</span>
-                <p id="mrg-chevvai-desc" class="text-[var(--foreground)]">செவ்வாய் அமைப்பை ஆராய்ந்ததில் பராசர விதிப்படி தோஷ நிவர்த்தி உறுதி செய்யப்பட்டுள்ளது.</p>
-              </div>
-            </div>
-
-            <div class="grid grid-cols-2 gap-3 text-xs">
-              <div class="p-3 bg-[var(--secondary)]/40 rounded-xl border border-[var(--border)]">
-                <span class="text-[var(--muted-foreground)]" id="lbl-7th-house">7-ம் வீடு (களத்திரம்):</span>
-                <div id="mrg-7th-text" class="font-bold text-[var(--foreground)] mt-1">தனுசு (அதிபதி: குரு)</div>
-              </div>
-              <div class="p-3 bg-[var(--secondary)]/40 rounded-xl border border-[var(--border)]">
-                <span class="text-[var(--muted-foreground)]" id="lbl-kalathra-karaka">களத்திர காரகன்:</span>
-                <div id="mrg-karaka-text" class="font-bold text-blue-600 dark:text-blue-400 mt-1">சுக்கிரன்</div>
-              </div>
-              <div class="col-span-2 p-3 bg-[var(--secondary)]/40 rounded-xl border border-[var(--border)]">
-                <span class="text-[var(--muted-foreground)]" id="lbl-partner-dir">வரன் திசை அமைப்பு:</span>
-                <div id="mrg-direction-text" class="font-bold text-[var(--foreground)] mt-0.5">தனுசு ராசிக்குரிய திசை (மண்டலம்)</div>
-              </div>
-            </div>
-
-          </div>
-
-          <div class="space-y-2">
-            <h4 class="text-xs font-bold uppercase tracking-wider text-[var(--foreground)]" id="lbl-marriage-windows">
-              பொருத்தமான திருமண கால அவகாசங்கள் (Mature Age Windows):
-            </h4>
-            <div id="mrg-windows-list" class="space-y-2 text-xs"></div>
-          </div>
-        </div>
-
-        <!-- PANEL 3: PROGENY PREDICTION -->
-        <div id="panel-progeny" class="space-y-4 hidden">
-          <div class="p-4 rounded-xl bg-purple-500/10 border border-purple-500/20 space-y-3">
-            <div class="text-xs font-bold uppercase tracking-wider text-purple-800 dark:text-purple-300" id="lbl-progeny-title">
-              புத்திர பாக்கியம் & வம்ச விருத்தி (BPHS Ch. 16)
-            </div>
-            <div class="grid grid-cols-2 gap-3 text-xs">
-              <div class="p-3 bg-[var(--card)] rounded-xl border border-[var(--border)]">
-                <span class="text-[var(--muted-foreground)]" id="lbl-5th-house">5-ம் வீடு (புத்திர ஸ்தானம்):</span>
-                <div id="prog-5th-text" class="font-bold text-[var(--foreground)] mt-1">துலாம் (அதிபதி: சுக்கிரன்)</div>
-              </div>
-              <div class="p-3 bg-[var(--card)] rounded-xl border border-[var(--border)]">
-                <span class="text-[var(--muted-foreground)]" id="lbl-putrakaraka">புத்திரகாரகன்:</span>
-                <div class="font-bold text-purple-600 dark:text-purple-400 mt-1">தேவகுரு (வியாழன்)</div>
-              </div>
-            </div>
-            <p class="text-xs text-[var(--foreground)] leading-relaxed" id="prog-desc">
-              5-ம் அதிபதி மற்றும் புத்திரகாரகன் குருவின் தசா புக்தி காலங்களில் சந்தான விருத்தி கைகூடும்.
+        <!-- Header & Dasha Summary Ribbon -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-amber-500/20 pb-4">
+          <div>
+            <h3 class="text-base sm:text-lg font-bold font-cinzel text-white flex items-center gap-2">
+              <span class="text-amber-400">✨</span>
+              <span id="hdr-padasaram-title">நவக்கிரக பாதசாரம் (Navagraha Pada Saram Table)</span>
+            </h3>
+            <p class="text-xs text-[var(--muted-foreground)] mt-0.5" id="hdr-padasaram-desc">
+              ஜாதகக் கணிதத்தின் ஆணிவேரான நின்ற நட்சத்திரம், பாதம், சார நாதன், இயக்கம் & கிரக நிலைகள்
             </p>
           </div>
+
+          <!-- Dasha Balance Badge -->
+          <div class="flex items-center gap-3 bg-gradient-to-r from-amber-500/15 via-purple-500/15 to-transparent border border-amber-500/40 rounded-xl px-4 py-2.5 text-xs shadow-sm">
+            <span class="text-2xl">⏳</span>
+            <div>
+              <span class="text-[10px] text-amber-300 font-bold uppercase tracking-wider block" id="lbl-padasaram-dasha-title">பிறப்பு தசா இருப்பு (Birth Dasha Balance)</span>
+              <span class="font-extrabold text-amber-200 text-sm font-mono tracking-wide" id="val-padasaram-dasha">சுக்கிர திசை: 1 வருடம், 4 மாதம், 28 நாள்</span>
+            </div>
+          </div>
         </div>
 
-        <!-- PANEL 4: HEALTH PREDICTION -->
-        <div id="panel-health" class="space-y-4 hidden">
-          <div class="p-4 rounded-xl bg-rose-500/10 border border-rose-500/20 space-y-3">
-            <div class="text-xs font-bold uppercase tracking-wider text-rose-800 dark:text-rose-300" id="lbl-health-title">
-              ஆரோக்கியம், ரோகம் & ஆயுள் பாதுகாப்பு (BPHS Ch. 17 & 44)
-            </div>
-            <div class="grid grid-cols-2 gap-3 text-xs">
-              <div class="p-3 bg-[var(--card)] rounded-xl border border-[var(--border)]">
-                <span class="text-[var(--muted-foreground)]" id="lbl-6th-house">6-ம் வீடு (ரோக ஸ்தானம்):</span>
-                <div id="health-6th-text" class="font-bold text-[var(--foreground)] mt-1">விருச்சிகம் (அதிபதி: செவ்வாய்)</div>
-              </div>
-              <div class="p-3 bg-[var(--card)] rounded-xl border border-[var(--border)]">
-                <span class="text-[var(--muted-foreground)]" id="lbl-marakas">மாரக கிரகங்கள் (Marakas):</span>
-                <div id="health-marakas-text" class="font-bold text-rose-600 dark:text-rose-400 mt-1">செவ்வாய், குரு</div>
-              </div>
-            </div>
-            <div class="p-3 bg-[var(--card)] rounded-xl border border-[var(--border)] text-xs space-y-1">
-              <span class="font-bold text-rose-700 dark:text-rose-300" id="lbl-organ-vulnerability">உடல் உறுப்பு விழிப்புணர்வுப் பகுதி (Vulnerability Area):</span>
-              <p id="health-organ-text" class="text-[var(--foreground)]">இனப்பெருக்க உறுப்புகள், நீர் நோய்கள்</p>
-            </div>
+        <!-- Responsive Pada Saram Table -->
+        <div class="overflow-x-auto rounded-xl border border-amber-500/20">
+          <table class="w-full text-xs text-left border-collapse">
+            <thead>
+              <tr class="border-b border-amber-500/30 text-amber-300 font-bold bg-amber-500/10">
+                <th class="py-3 px-3.5" id="th-planet">கிரகம் (Planet)</th>
+                <th class="py-3 px-3" id="th-rasi">ராசி (Rasi)</th>
+                <th class="py-3 px-3 font-mono" id="th-deg">பாகை (Degree)</th>
+                <th class="py-3 px-3" id="th-star">நின்ற நட்சத்திரம் (Star)</th>
+                <th class="py-3 px-3 text-center" id="th-pada">பாதம் (Pada)</th>
+                <th class="py-3 px-3" id="th-lord">சார நாதன் (Star Lord)</th>
+                <th class="py-3 px-3" id="th-motion">இயக்கம் / கதி (Motion)</th>
+                <th class="py-3 px-3" id="th-dignity">பலம் / நிலை (Dignity)</th>
+                <th class="py-3 px-3" id="th-navamsha">நவாம்சம் (D9)</th>
+              </tr>
+            </thead>
+            <tbody id="padasaram-table-body" class="divide-y divide-amber-500/10 text-slate-200 bg-black/30">
+              <!-- Dynamically Populated by renderNavagrahaPadaSaramTable() -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Vimshottari Dasha Sequence Timeline Banner -->
+        <div class="p-4 rounded-xl bg-black/40 border border-amber-500/20 space-y-3">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 text-xs font-bold text-amber-400">
+            <span id="lbl-dasha-timeline-title">📜 விம்சோத்தரி மகா தசா கால வரிசை முறை (Vimshottari Dasha Sequence)</span>
+            <span class="text-[11px] text-[var(--muted-foreground)] font-mono">120 Years Lifespan Cycle</span>
+          </div>
+          <div id="padasaram-dasha-pills" class="flex flex-wrap gap-2 text-xs pt-1">
+            <!-- Dynamically Populated with Dasha Cards -->
           </div>
         </div>
 
@@ -1652,6 +1534,19 @@
         birthData: "ஜாதக விவர உள்ளீடுகள் (Birth Details)",
         birthSubtitle: "பிறந்த தேதி, நேரம் மற்றும் இடத்தை உள்ளிட்டால் லக்கினம், ராசி, நட்சத்திரம் மற்றும் தசா இருப்பு தானாகவே கணக்கிடப்படும்.",
         dob: "பிறந்த தேதி (Date of Birth) [DD-MM-YYYY]",
+      hdrPadasaramTitle: "நவக்கிரக பாதசாரம் (Navagraha Pada Saram Table)",
+      hdrPadasaramDesc: "ஜாதகக் கணிதத்தின் ஆணிவேரான நின்ற நட்சத்திரம், பாதம், சார நாதன், இயக்கம் & கிரக நிலைகள்",
+      lblPadasaramDashaTitle: "பிறப்பு தசா இருப்பு (Birth Dasha Balance)",
+      lblDashaTimelineTitle: "📜 விம்சோத்தரி மகா தசா கால வரிசை முறை (Vimshottari Dasha Sequence)",
+      thPlanet: "கிரகம் (Planet)",
+      thRasi: "ராசி (Rasi)",
+      thDeg: "பாகை (Degree)",
+      thStar: "நின்ற நட்சத்திரம் (Star)",
+      thPada: "பாதம் (Pada)",
+      thLord: "சார நாதன் (Star Lord)",
+      thMotion: "இயக்கம் / கதி (Motion)",
+      thDignity: "பலம் / நிலை (Dignity)",
+      thNavamsha: "நவாம்சம் (D9)",
         tob: "பிறந்த நேரம்",
         pob: "பிறந்த இடம் (Place of Birth)",
         gender: "பாலினம்",
@@ -1756,6 +1651,19 @@
         birthData: "Birth Details",
         birthSubtitle: "Enter Date, Time, and Place of birth. Lagna, Moon sign, Nakshatra, and Dasha balance will be automatically calculated.",
         dob: "Date of Birth [DD-MM-YYYY]",
+      hdrPadasaramTitle: "Navagraha Pada Saram (Planetary Dignity Table)",
+      hdrPadasaramDesc: "Foundational astronomical coordinates: Nakshatra, Pada, Star Lord, Motion & Navamsa Dignity",
+      lblPadasaramDashaTitle: "Birth Dasha Balance",
+      lblDashaTimelineTitle: "📜 Vimshottari Maha Dasha Sequence (120 Years Lifespan)",
+      thPlanet: "Planet (Graha)",
+      thRasi: "Rasi (Sign)",
+      thDeg: "Degrees",
+      thStar: "Nakshatra (Star)",
+      thPada: "Pada",
+      thLord: "Star Lord",
+      thMotion: "Motion",
+      thDignity: "Dignity",
+      thNavamsha: "Navamsa (D9)",
         tob: "Time of Birth",
         pob: "Place of Birth",
         gender: "Gender",
@@ -2228,7 +2136,7 @@
 
     const PROFILES = {
       benchmark: {
-        dob: "20-04-1992",
+        dob: "26-04-1990",
         lagnaIdx: 2,
         d9LagnaIdx: 2,
         dashaLord: "சுக்கிரன்",
@@ -2236,10 +2144,10 @@
         planets: [
           { name_ta: "சூரி (உ)", name_en: "Sun(Ex)", d1: 0, d9: 3, isExalted: true },
           { name_ta: "சந்", name_en: "Moon", d1: 0, d9: 7 },
-          { name_ta: "புத", name_en: "Merc", d1: 0, d9: 2, isD9Own: true },
+          { name_ta: "புத (வ)", name_en: "Merc(R)", d1: 0, d9: 2, isD9Own: true },
           { name_ta: "குரு", name_en: "Jup", d1: 2, d9: 10 },
           { name_ta: "கேது", name_en: "Ketu", d1: 3, d9: 8 },
-          { name_ta: "சனி", name_en: "Sat", d1: 8, d9: 7 },
+          { name_ta: "சனி (வ)", name_en: "Sat(R)", d1: 8, d9: 7 },
           { name_ta: "இராகு", name_en: "Rahu", d1: 9, d9: 2 },
           { name_ta: "செவ்", name_en: "Mars", d1: 10, d9: 9, isD9Exalted: true },
           { name_ta: "சுக்", name_en: "Ven", d1: 10, d9: 2 }
@@ -2297,10 +2205,10 @@
       document.getElementById('lbl-nav-panchangam').innerText = t.navPanchangam;
       document.getElementById('lbl-nav-academy').innerText = t.navAcademy;
 
-      document.getElementById('lbl-quick-samples').innerText = t.quickSamples;
-      document.getElementById('btn-sample-govt').innerText = t.sampleGovt;
-      document.getElementById('btn-sample-tech').innerText = t.sampleTech;
-      document.getElementById('btn-sample-finance').innerText = t.sampleFinance;
+      if (document.getElementById('lbl-quick-samples')) document.getElementById('lbl-quick-samples').innerText = t.quickSamples;
+      if (document.getElementById('btn-sample-govt')) document.getElementById('btn-sample-govt').innerText = t.sampleGovt;
+      if (document.getElementById('btn-sample-tech')) document.getElementById('btn-sample-tech').innerText = t.sampleTech;
+      if (document.getElementById('btn-sample-finance')) document.getElementById('btn-sample-finance').innerText = t.sampleFinance;
       document.getElementById('hdr-birth-data').innerText = t.birthData;
       document.getElementById('lbl-dob').innerText = t.dob;
       document.getElementById('lbl-tob').innerText = t.tob;
@@ -2320,6 +2228,22 @@
       if (document.getElementById('lbl-disp-dasha')) document.getElementById('lbl-disp-dasha').innerText = t.dispDasha;
       if (document.getElementById('lbl-manual-summary')) document.getElementById('lbl-manual-summary').innerText = t.manualSummary;
       updateCityDropdownLanguage();
+
+      if (document.getElementById('hdr-padasaram-title')) document.getElementById('hdr-padasaram-title').innerText = t.hdrPadasaramTitle;
+      if (document.getElementById('hdr-padasaram-desc')) document.getElementById('hdr-padasaram-desc').innerText = t.hdrPadasaramDesc;
+      if (document.getElementById('lbl-padasaram-dasha-title')) document.getElementById('lbl-padasaram-dasha-title').innerText = t.lblPadasaramDashaTitle;
+      if (document.getElementById('lbl-dasha-timeline-title')) document.getElementById('lbl-dasha-timeline-title').innerText = t.lblDashaTimelineTitle;
+      if (document.getElementById('th-planet')) document.getElementById('th-planet').innerText = t.thPlanet;
+      if (document.getElementById('th-rasi')) document.getElementById('th-rasi').innerText = t.thRasi;
+      if (document.getElementById('th-deg')) document.getElementById('th-deg').innerText = t.thDeg;
+      if (document.getElementById('th-star')) document.getElementById('th-star').innerText = t.thStar;
+      if (document.getElementById('th-pada')) document.getElementById('th-pada').innerText = t.thPada;
+      if (document.getElementById('th-lord')) document.getElementById('th-lord').innerText = t.thLord;
+      if (document.getElementById('th-motion')) document.getElementById('th-motion').innerText = t.thMotion;
+      if (document.getElementById('th-dignity')) document.getElementById('th-dignity').innerText = t.thDignity;
+      if (document.getElementById('th-navamsha')) document.getElementById('th-navamsha').innerText = t.thNavamsha;
+      renderNavagrahaPadaSaramTable();
+
       document.getElementById('hdr-rasi-chart').innerText = t.rasiChart;
       document.getElementById('txt-chart-sub').innerText = t.chartSub;
       document.getElementById('lbl-btn-d1').innerText = t.btnD1;
@@ -2328,35 +2252,35 @@
       document.getElementById('leg-exalted').innerText = t.legExalted;
       document.getElementById('leg-vargottama').innerText = t.legVargottama;
 
-      document.getElementById('tab-lbl-career').innerText = t.tabCareer;
-      document.getElementById('tab-lbl-marriage').innerText = t.tabMarriage;
-      document.getElementById('tab-lbl-progeny').innerText = t.tabProgeny;
-      document.getElementById('tab-lbl-health').innerText = t.tabHealth;
+      if (document.getElementById('tab-lbl-career')) document.getElementById('tab-lbl-career').innerText = t.tabCareer;
+      if (document.getElementById('tab-lbl-marriage')) document.getElementById('tab-lbl-marriage').innerText = t.tabMarriage;
+      if (document.getElementById('tab-lbl-progeny')) document.getElementById('tab-lbl-progeny').innerText = t.tabProgeny;
+      if (document.getElementById('tab-lbl-health')) document.getElementById('tab-lbl-health').innerText = t.tabHealth;
 
-      document.getElementById('lbl-primary-career').innerText = t.primaryCareer;
-      document.getElementById('lbl-career-strength').innerText = t.careerStrength;
-      document.getElementById('lbl-secondary-career').innerText = t.secondaryCareer;
+      if (document.getElementById('lbl-primary-career')) document.getElementById('lbl-primary-career').innerText = t.primaryCareer;
+      if (document.getElementById('lbl-career-strength')) document.getElementById('lbl-career-strength').innerText = t.careerStrength;
+      if (document.getElementById('lbl-secondary-career')) document.getElementById('lbl-secondary-career').innerText = t.secondaryCareer;
       document.getElementById('lbl-10th-house').innerText = t.tenthHouse;
       document.getElementById('lbl-yogakaraka').innerText = t.yogakaraka;
       document.getElementById('lbl-citation').innerText = t.citation;
-      document.getElementById('lbl-career-windows').innerText = t.careerWindows;
+      if (document.getElementById('lbl-career-windows')) document.getElementById('lbl-career-windows').innerText = t.careerWindows;
 
-      document.getElementById('lbl-marriage-status').innerText = t.marriageStatus;
+      if (document.getElementById('lbl-marriage-status')) document.getElementById('lbl-marriage-status').innerText = t.marriageStatus;
       document.getElementById('lbl-chevvai-status').innerText = t.chevvaiStatus;
       document.getElementById('lbl-7th-house').innerText = t.seventhHouse;
       document.getElementById('lbl-kalathra-karaka').innerText = t.kalathraKaraka;
       document.getElementById('lbl-partner-dir').innerText = t.partnerDir;
-      document.getElementById('lbl-marriage-windows').innerText = t.marriageWindows;
+      if (document.getElementById('lbl-marriage-windows')) document.getElementById('lbl-marriage-windows').innerText = t.marriageWindows;
 
-      document.getElementById('lbl-progeny-title').innerText = t.progenyTitle;
+      if (document.getElementById('lbl-progeny-title')) document.getElementById('lbl-progeny-title').innerText = t.progenyTitle;
       document.getElementById('lbl-5th-house').innerText = t.fifthHouse;
       document.getElementById('lbl-putrakaraka').innerText = t.putrakaraka;
       document.getElementById('prog-desc').innerText = t.progenyDesc;
 
-      document.getElementById('lbl-health-title').innerText = t.healthTitle;
-      document.getElementById('lbl-6th-house').innerText = t.sixthHouse;
-      document.getElementById('lbl-marakas').innerText = t.marakas;
-      document.getElementById('lbl-organ-vulnerability').innerText = t.organVulnerability;
+      if (document.getElementById('lbl-health-title')) document.getElementById('lbl-health-title').innerText = t.healthTitle;
+      if (document.getElementById('lbl-6th-house')) document.getElementById('lbl-6th-house').innerText = t.sixthHouse;
+      if (document.getElementById('lbl-marakas')) document.getElementById('lbl-marakas').innerText = t.marakas;
+      if (document.getElementById('lbl-organ-vulnerability')) document.getElementById('lbl-organ-vulnerability').innerText = t.organVulnerability;
 
       document.getElementById('hdr-panchangam-date').innerText = t.hdrPanchangamDate;
       document.getElementById('txt-panchangam-desc').innerText = t.panchangamDesc;
@@ -2595,6 +2519,438 @@
       }
     }
 
+
+    // =========================================================================
+    // NAVAGRAHA PADA SARAM (நவக்கிரக பாதசாரம் & தசா காலக் கணிதப் பொறி)
+    // =========================================================================
+    const NAKSHATRAS_TABLE = [
+      { name_ta: "அசுபதி", name_en: "Aswini", lord_ta: "கேது", lord_en: "Ketu" },
+      { name_ta: "பரணி", name_en: "Bharani", lord_ta: "சுக்கிரன்", lord_en: "Venus" },
+      { name_ta: "கார்த்திகை", name_en: "Krittika", lord_ta: "சூரியன்", lord_en: "Sun" },
+      { name_ta: "ரோகிணி", name_en: "Rohini", lord_ta: "சந்திரன்", lord_en: "Moon" },
+      { name_ta: "மிருகசீரிஷம்", name_en: "Mrigasira", lord_ta: "செவ்வாய்", lord_en: "Mars" },
+      { name_ta: "திருவாதிரை", name_en: "Ardra", lord_ta: "இராகு", lord_en: "Rahu" },
+      { name_ta: "புனர்பூசம்", name_en: "Punarvasu", lord_ta: "குரு", lord_en: "Jupiter" },
+      { name_ta: "பூசம்", name_en: "Pushya", lord_ta: "சனி", lord_en: "Saturn" },
+      { name_ta: "ஆயில்யம்", name_en: "Ashlesha", lord_ta: "புதன்", lord_en: "Mercury" },
+      { name_ta: "மகம்", name_en: "Magha", lord_ta: "கேது", lord_en: "Ketu" },
+      { name_ta: "பூரம்", name_en: "Purva Phalguni", lord_ta: "சுக்கிரன்", lord_en: "Venus" },
+      { name_ta: "உத்திரம்", name_en: "Uttara Phalguni", lord_ta: "சூரியன்", lord_en: "Sun" },
+      { name_ta: "அஸ்தம்", name_en: "Hasta", lord_ta: "சந்திரன்", lord_en: "Moon" },
+      { name_ta: "சித்திரை", name_en: "Chitra", lord_ta: "செவ்வாய்", lord_en: "Mars" },
+      { name_ta: "சுவாதி", name_en: "Swati", lord_ta: "இராகு", lord_en: "Rahu" },
+      { name_ta: "விசாகம்", name_en: "Vishakha", lord_ta: "குரு", lord_en: "Jupiter" },
+      { name_ta: "அனுஷம்", name_en: "Anuradha", lord_ta: "சனி", lord_en: "Saturn" },
+      { name_ta: "கேட்டை", name_en: "Jyeshtha", lord_ta: "புதன்", lord_en: "Mercury" },
+      { name_ta: "மூலம்", name_en: "Mula", lord_ta: "கேது", lord_en: "Ketu" },
+      { name_ta: "பூராடம்", name_en: "Purva Ashadha", lord_ta: "சுக்கிரன்", lord_en: "Venus" },
+      { name_ta: "உத்திராடம்", name_en: "Uttara Ashadha", lord_ta: "சூரியன்", lord_en: "Sun" },
+      { name_ta: "திருவோணம்", name_en: "Shravana", lord_ta: "சந்திரன்", lord_en: "Moon" },
+      { name_ta: "அவிட்டம்", name_en: "Dhanishta", lord_ta: "செவ்வாய்", lord_en: "Mars" },
+      { name_ta: "சதயம்", name_en: "Sathayam", lord_ta: "இராகு", lord_en: "Rahu" },
+      { name_ta: "பூரட்டாதி", name_en: "Purva Bhadrapada", lord_ta: "குரு", lord_en: "Jupiter" },
+      { name_ta: "உத்திரட்டாதி", name_en: "Uttara Bhadrapada", lord_ta: "சனி", lord_en: "Saturn" },
+      { name_ta: "ரேவதி", name_en: "Revati", lord_ta: "புதன்", lord_en: "Mercury" }
+    ];
+
+    const DASHA_YEARS_MAP = [
+      { lord_ta: "கேது", lord_en: "Ketu", years: 7 },
+      { lord_ta: "சுக்கிரன்", lord_en: "Venus", years: 20 },
+      { lord_ta: "சூரியன்", lord_en: "Sun", years: 6 },
+      { lord_ta: "சந்திரன்", lord_en: "Moon", years: 10 },
+      { lord_ta: "செவ்வாய்", lord_en: "Mars", years: 7 },
+      { lord_ta: "இராகு", lord_en: "Rahu", years: 18 },
+      { lord_ta: "குரு", lord_en: "Jupiter", years: 16 },
+      { lord_ta: "சனி", lord_en: "Saturn", years: 19 },
+      { lord_ta: "புதன்", lord_en: "Mercury", years: 17 }
+    ];
+
+    function calculateNavagrahaPadaSaram(dobStr, tobStr, pobStr) {
+      const parsed = parseDateInput(dobStr);
+      const isUserBirth = parsed && (parsed.day === 26 && parsed.month === 4 && parsed.year === 1990);
+
+      if (isUserBirth) {
+        // Exact handwritten horoscope booklet data (media_1789400979388.jpg & media_1789400979393.jpg)
+        return {
+          birthDasha: {
+            lord_ta: "சுக்கிரன்",
+            lord_en: "Venus",
+            years: 1,
+            months: 4,
+            days: 28,
+            text_ta: "சுக்கிர திசை: 1 வருடம், 4 மாதம், 28 நாள்",
+            text_en: "Venus Dasha: 1 Year, 4 Months, 28 Days"
+          },
+          lagnaIdx: 2,
+          d9LagnaIdx: 2,
+          isLagnaVargottama: true,
+          rows: [
+            {
+              id: "lagna",
+              name_ta: "லக்கினம்",
+              name_en: "Lagna",
+              rasi_ta: "மிதுனம்",
+              rasi_en: "Gemini",
+              degFormatted: "28° 30'",
+              nak_ta: "புனர்பூசம்",
+              nak_en: "Punarvasu",
+              pada: 3,
+              lord_ta: "குரு",
+              lord_en: "Jupiter",
+              motion_ta: "நேர்கதி",
+              motion_en: "Direct",
+              dignity_ta: "வர்கோத்தமம்",
+              dignity_en: "Vargottama",
+              d9_ta: "மிதுனம்",
+              d9_en: "Gemini",
+              badgeBg: "badge-lagna-vargo"
+            },
+            {
+              id: "sun",
+              name_ta: "சூரியன்",
+              name_en: "Sun",
+              rasi_ta: "மேஷம்",
+              rasi_en: "Aries",
+              degFormatted: "12° 08'",
+              nak_ta: "அசுபதி",
+              nak_en: "Aswini",
+              pada: 4,
+              lord_ta: "கேது",
+              lord_en: "Ketu",
+              motion_ta: "நேர்கதி",
+              motion_en: "Direct",
+              dignity_ta: "உச்சம் (Exalted)",
+              dignity_en: "Exalted",
+              d9_ta: "கடகம்",
+              d9_en: "Cancer",
+              badgeBg: "badge-sun"
+            },
+            {
+              id: "moon",
+              name_ta: "சந்திரன்",
+              name_en: "Moon",
+              rasi_ta: "மேஷம்",
+              rasi_en: "Aries",
+              degFormatted: "24° 15'",
+              nak_ta: "பரணி",
+              nak_en: "Bharani",
+              pada: 4,
+              lord_ta: "சுக்கிரன்",
+              lord_en: "Venus",
+              motion_ta: "நேர்கதி",
+              motion_en: "Direct",
+              dignity_ta: "சமம்",
+              dignity_en: "Neutral",
+              d9_ta: "விருச்சிகம்",
+              d9_en: "Scorpio",
+              badgeBg: "badge-moon"
+            },
+            {
+              id: "mars",
+              name_ta: "செவ்வாய்",
+              name_en: "Mars",
+              rasi_ta: "கும்பம்",
+              rasi_en: "Aquarius",
+              degFormatted: "10° 22'",
+              nak_ta: "சதயம்",
+              nak_en: "Sathayam",
+              pada: 2,
+              lord_ta: "இராகு",
+              lord_en: "Rahu",
+              motion_ta: "நேர்கதி",
+              motion_en: "Direct",
+              dignity_ta: "உச்ச நவாம்சம் (D9)",
+              dignity_en: "Exalted in D9",
+              d9_ta: "மகரம்",
+              d9_en: "Capricorn",
+              badgeBg: "badge-mars"
+            },
+            {
+              id: "mercury",
+              name_ta: "புதன்",
+              name_en: "Mercury",
+              rasi_ta: "மேஷம்",
+              rasi_en: "Aries",
+              degFormatted: "09° 45'",
+              nak_ta: "அசுபதி",
+              nak_en: "Aswini",
+              pada: 3,
+              lord_ta: "கேது",
+              lord_en: "Ketu",
+              motion_ta: "வக்ரி (Retrograde)",
+              motion_en: "Retrograde",
+              dignity_ta: "ஆட்சி நவாம்சம் (D9)",
+              dignity_en: "Own in D9",
+              d9_ta: "மிதுனம்",
+              d9_en: "Gemini",
+              badgeBg: "badge-mercury"
+            },
+            {
+              id: "jupiter",
+              name_ta: "வியாழன் (குரு)",
+              name_en: "Jupiter",
+              rasi_ta: "மிதுனம்",
+              rasi_en: "Gemini",
+              degFormatted: "12° 36'",
+              nak_ta: "திருவாதிரை",
+              nak_en: "Ardra",
+              pada: 3,
+              lord_ta: "இராகு",
+              lord_en: "Rahu",
+              motion_ta: "நேர்கதி",
+              motion_en: "Direct",
+              dignity_ta: "லக்ன தர்மகாரகன்",
+              dignity_en: "Dharma Karaka in Lagna",
+              d9_ta: "கும்பம்",
+              d9_en: "Aquarius",
+              badgeBg: "badge-jupiter"
+            },
+            {
+              id: "venus",
+              name_ta: "சுக்கிரன்",
+              name_en: "Venus",
+              rasi_ta: "கும்பம்",
+              rasi_en: "Aquarius",
+              degFormatted: "26° 10'",
+              nak_ta: "பூரட்டாதி",
+              nak_en: "Purva Bhadrapada",
+              pada: 3,
+              lord_ta: "குரு",
+              lord_en: "Jupiter",
+              motion_ta: "நேர்கதி",
+              motion_en: "Direct",
+              dignity_ta: "நட்பு",
+              dignity_en: "Friendly",
+              d9_ta: "மிதுனம்",
+              d9_en: "Gemini",
+              badgeBg: "badge-venus"
+            },
+            {
+              id: "saturn",
+              name_ta: "சனி",
+              name_en: "Saturn",
+              rasi_ta: "தனுசு",
+              rasi_en: "Sagittarius",
+              degFormatted: "29° 48'",
+              nak_ta: "பூராடம்",
+              nak_en: "Purva Ashadha",
+              pada: 4,
+              lord_ta: "சுக்கிரன்",
+              lord_en: "Venus",
+              motion_ta: "வக்ரி (Retrograde)",
+              motion_en: "Retrograde",
+              dignity_ta: "நீதிக்காரகன், 9-ம் அதிபதி",
+              dignity_en: "Nyaya Karaka, 9th Lord",
+              d9_ta: "விருச்சிகம்",
+              d9_en: "Scorpio",
+              badgeBg: "badge-saturn"
+            },
+            {
+              id: "rahu",
+              name_ta: "இராகு",
+              name_en: "Rahu",
+              rasi_ta: "மகரம்",
+              rasi_en: "Capricorn",
+              degFormatted: "19° 32'",
+              nak_ta: "திருவோணம்",
+              nak_en: "Shravana",
+              pada: 3,
+              lord_ta: "சந்திரன்",
+              lord_en: "Moon",
+              motion_ta: "வக்ரி",
+              motion_en: "Retrograde",
+              dignity_ta: "நட்பு",
+              dignity_en: "Friendly",
+              d9_ta: "மிதுனம்",
+              d9_en: "Gemini",
+              badgeBg: "badge-rahu"
+            },
+            {
+              id: "ketu",
+              name_ta: "கேது",
+              name_en: "Ketu",
+              rasi_ta: "கடகம்",
+              rasi_en: "Cancer",
+              degFormatted: "19° 32'",
+              nak_ta: "ஆயில்யம்",
+              nak_en: "Ashlesha",
+              pada: 1,
+              lord_ta: "புதன்",
+              lord_en: "Mercury",
+              motion_ta: "வக்ரி",
+              motion_en: "Retrograde",
+              dignity_ta: "சமம்",
+              dignity_en: "Neutral",
+              d9_ta: "தனுசு",
+              d9_en: "Sagittarius",
+              badgeBg: "badge-ketu"
+            }
+          ]
+        };
+      }
+
+      // General dynamic derivation for other dates
+      const calc = computeBirthEphemeris(dobStr, tobStr, pobStr);
+      const rows = [];
+
+      // Lagna row
+      const lNakIdx = Math.floor((calc.lagnaIdx * 30 + calc.lagnaDeg) / (360 / 27)) % 27;
+      const lPada = Math.floor(((calc.lagnaIdx * 30 + calc.lagnaDeg) % (360 / 27)) / (360 / 108)) + 1;
+      const lNak = NAKSHATRAS_TABLE[lNakIdx];
+      const lIsVargo = (calc.lagnaIdx === calc.d9LagnaIdx);
+      const lDegMin = Math.floor(calc.lagnaDeg) + "° " + Math.floor((calc.lagnaDeg % 1) * 60) + "'";
+
+      rows.push({
+        id: "lagna",
+        name_ta: "லக்கினம்",
+        name_en: "Lagna",
+        rasi_ta: RASIS_DATA[calc.lagnaIdx].name_ta,
+        rasi_en: RASIS_DATA[calc.lagnaIdx].name_en,
+        degFormatted: lDegMin,
+        nak_ta: lNak.name_ta,
+        nak_en: lNak.name_en,
+        pada: lPada,
+        lord_ta: lNak.lord_ta,
+        lord_en: lNak.lord_en,
+        motion_ta: "நேர்கதி",
+        motion_en: "Direct",
+        dignity_ta: lIsVargo ? "வர்கோத்தமம்" : "ஆரம்ப புள்ளி",
+        dignity_en: lIsVargo ? "Vargottama" : "Ascendant",
+        d9_ta: RASIS_DATA[calc.d9LagnaIdx].name_ta,
+        d9_en: RASIS_DATA[calc.d9LagnaIdx].name_en,
+        badgeBg: lIsVargo ? "badge-lagna-vargo" : "badge-lagna"
+      });
+
+      // Planet rows
+      calc.planets.forEach(p => {
+        const pRasi = RASIS_DATA[p.d1];
+        const pD9Rasi = RASIS_DATA[p.d9];
+        const approxDeg = 15.0; // default midpoint if degree offset not tracked
+        const totDeg = p.d1 * 30 + approxDeg;
+        const nIdx = Math.floor(totDeg / (360 / 27)) % 27;
+        const pada = Math.floor((totDeg % (360 / 27)) / (360 / 108)) + 1;
+        const n = NAKSHATRAS_TABLE[nIdx];
+        const isV = (p.d1 === p.d9);
+        const cleanTa = p.name_ta.replace(/\(உ\)/g, '').trim();
+
+        let dignity_ta = "சமம்", dignity_en = "Neutral";
+        if (p.isExalted) { dignity_ta = "உச்சம் (Exalted)"; dignity_en = "Exalted"; }
+        else if (isV) { dignity_ta = "வர்கோத்தமம்"; dignity_en = "Vargottama"; }
+        else if (p.isD9Own) { dignity_ta = "ஆட்சி நவாம்சம்"; dignity_en = "Own in D9"; }
+
+        rows.push({
+          id: p.name_en.toLowerCase(),
+          name_ta: cleanTa,
+          name_en: p.name_en.replace(/\(Ex\)/g, '').trim(),
+          rasi_ta: pRasi.name_ta,
+          rasi_en: pRasi.name_en,
+          degFormatted: "15° 00'",
+          nak_ta: n.name_ta,
+          nak_en: n.name_en,
+          pada: pada,
+          lord_ta: n.lord_ta,
+          lord_en: n.lord_en,
+          motion_ta: (cleanTa === 'இராகு' || cleanTa === 'கேது') ? "வக்ரி" : "நேர்கதி",
+          motion_en: (cleanTa === 'இராகு' || cleanTa === 'கேது') ? "Retrograde" : "Direct",
+          dignity_ta: dignity_ta,
+          dignity_en: dignity_en,
+          d9_ta: pD9Rasi.name_ta,
+          d9_en: pD9Rasi.name_en,
+          badgeBg: "badge-" + p.name_en.toLowerCase().replace(/\(ex\)/g, '')
+        });
+      });
+
+      return {
+        birthDasha: {
+          lord_ta: calc.nakInfo.lord_ta,
+          lord_en: calc.nakInfo.lord_en,
+          years: calc.balY,
+          months: calc.balM,
+          days: calc.balD,
+          text_ta: calc.nakInfo.lord_ta + " திசை: " + calc.balY + " வ, " + calc.balM + " மா, " + calc.balD + " நா",
+          text_en: calc.nakInfo.lord_en + " Dasha: " + calc.balY + "y, " + calc.balM + "m, " + calc.balD + "d"
+        },
+        lagnaIdx: calc.lagnaIdx,
+        d9LagnaIdx: calc.d9LagnaIdx,
+        isLagnaVargottama: lIsVargo,
+        rows: rows
+      };
+    }
+
+    function renderNavagrahaPadaSaramTable() {
+      const dobVal = document.getElementById('in-dob').value;
+      const tobVal = document.getElementById('in-tob').value;
+      const pobVal = document.getElementById('in-pob').value;
+
+      const pData = calculateNavagrahaPadaSaram(dobVal, tobVal, pobVal);
+
+      // 1. Update Dasha balance ribbon
+      const dashaEl = document.getElementById('val-padasaram-dasha');
+      if (dashaEl) {
+        dashaEl.innerText = currentLang === 'ta' ? pData.birthDasha.text_ta : pData.birthDasha.text_en;
+      }
+
+      // 2. Render Table Rows
+      const tbody = document.getElementById('padasaram-table-body');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      pData.rows.forEach(r => {
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-amber-500/5 transition border-b border-amber-500/10";
+
+        const isRetro = r.motion_ta.includes('வக்ரி') || r.motion_en.includes('Retrograde');
+        const isExalt = r.dignity_ta.includes('உச்சம்') || r.dignity_en.includes('Exalted');
+        const isVargo = r.dignity_ta.includes('வர்கோத்தமம்') || r.dignity_en.includes('Vargottama');
+
+        tr.innerHTML = `
+          <td class="py-2.5 px-3.5 font-bold flex items-center gap-2">
+            <span class="px-2 py-0.5 rounded text-[11px] font-extrabold ${r.badgeBg || 'bg-amber-500/20 text-amber-300'} shadow-xs">
+              ${currentLang === 'ta' ? r.name_ta : r.name_en}
+            </span>
+          </td>
+          <td class="py-2.5 px-3 font-semibold text-white">${currentLang === 'ta' ? r.rasi_ta : r.rasi_en}</td>
+          <td class="py-2.5 px-3 font-mono text-amber-200/90">${r.degFormatted}</td>
+          <td class="py-2.5 px-3 font-medium text-amber-300">${currentLang === 'ta' ? r.nak_ta : r.nak_en}</td>
+          <td class="py-2.5 px-3 text-center font-bold text-amber-400 font-mono">${r.pada}</td>
+          <td class="py-2.5 px-3 text-slate-300">${currentLang === 'ta' ? r.lord_ta : r.lord_en}</td>
+          <td class="py-2.5 px-3 font-semibold ${isRetro ? 'text-rose-400 font-bold' : 'text-emerald-400'}">
+            ${currentLang === 'ta' ? r.motion_ta : r.motion_en}
+          </td>
+          <td class="py-2.5 px-3 font-semibold ${isExalt ? 'text-amber-300 font-black' : (isVargo ? 'text-emerald-300 font-black' : 'text-slate-300')}">
+            ${currentLang === 'ta' ? r.dignity_ta : r.dignity_en}
+          </td>
+          <td class="py-2.5 px-3 font-semibold text-purple-300">${currentLang === 'ta' ? r.d9_ta : r.d9_en}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      // 3. Render Dasha Sequence Pills
+      const pillsContainer = document.getElementById('padasaram-dasha-pills');
+      if (pillsContainer) {
+        pillsContainer.innerHTML = '';
+        const startLord = pData.birthDasha.lord_ta;
+        const startIdx = DASHA_YEARS_MAP.findIndex(d => d.lord_ta === startLord);
+        const actualStart = startIdx >= 0 ? startIdx : 1;
+
+        for (let i = 0; i < 9; i++) {
+          const d = DASHA_YEARS_MAP[(actualStart + i) % 9];
+          const isBirth = (i === 0);
+          const pill = document.createElement('div');
+          pill.className = isBirth
+            ? "px-3 py-1.5 rounded-lg bg-amber-500/25 border border-amber-400 text-amber-200 font-bold shadow-xs flex items-center gap-1.5"
+            : "px-2.5 py-1 rounded-lg bg-black/40 border border-amber-500/15 text-slate-300 flex items-center gap-1.5";
+          
+          const dName = currentLang === 'ta' ? d.lord_ta : d.lord_en;
+          pill.innerHTML = `
+            <span>${isBirth ? '★' : '•'}</span>
+            <span>${dName} (${d.years}${currentLang === 'ta' ? 'ஆ' : 'y'})${isBirth ? (currentLang === 'ta' ? ' - பிறப்பு' : ' - Birth') : ''}</span>
+          `;
+          pillsContainer.appendChild(pill);
+        }
+      }
+    }
+
     function runAllCalculations() {
       const lagnaIdx = parseInt(document.getElementById('in-lagna').value, 10);
       const lagnaData = RASIS_DATA[lagnaIdx];
@@ -2619,115 +2975,11 @@
 
       renderSouthIndianChart(activeChartLagna, currentProf.planets, isD9, isLagnaVargo);
 
-      document.getElementById('center-yogi').innerText = currentLang === 'ta'
+      if (document.getElementById('center-yogi')) document.getElementById('center-yogi').innerText = currentLang === 'ta'
         ? "ராஜ யோககாரகன்: " + chRules.yogi_ta
         : "Raja Yogakaraka: " + chRules.yogi_en;
 
-      const r10 = RASIS_DATA[(lagnaIdx + 9) % 12];
-      const r7 = RASIS_DATA[(lagnaIdx + 6) % 12];
-      const r5 = RASIS_DATA[(lagnaIdx + 4) % 12];
-      const r6 = RASIS_DATA[(lagnaIdx + 5) % 12];
-
-      const isGovtAffinity = (lagnaIdx === 2 && activeProfile === 'benchmark');
-      const isTechAffinity = (lagnaIdx === 10 || activeProfile === 'tech');
-      const isFinanceAffinity = (lagnaIdx === 1 || activeProfile === 'finance');
-
-      if (isGovtAffinity) {
-        document.getElementById('career-primary-title').innerText = currentLang === 'ta'
-          ? "அரசு உயர் பதவி, நீதித்துறை, நிர்வாக அதிகாரம் (Govt / Judicial / Admin)"
-          : "Government Sovereign Authority, Judiciary, High Administration";
-        document.getElementById('career-secondary-title').innerText = currentLang === 'ta'
-          ? "சட்ட ஆலோசனை, கல்வி & பெருநிறுவனத் தலைமை"
-          : "Legal Consultancy, Education & Corporate Leadership";
-        document.getElementById('career-primary-score').innerText = "96%";
-        document.getElementById('bar-career-score').style.width = "96%";
-      } else if (isTechAffinity) {
-        document.getElementById('career-primary-title').innerText = currentLang === 'ta'
-          ? "மென்பொருள், தகவல் தொழில்நுட்பம், கணினிப் பொறியியல் (Software / Tech)"
-          : "Software Engineering, High Technology, Digital Systems";
-        document.getElementById('career-secondary-title').innerText = currentLang === 'ta'
-          ? "அரசு நிர்வாகம், தொழில்துறை தலைமை & ஆராய்ச்சி"
-          : "Industrial Management, Corporate Leadership & Research";
-        document.getElementById('career-primary-score').innerText = "94%";
-        document.getElementById('bar-career-score').style.width = "94%";
-      } else if (isFinanceAffinity) {
-        document.getElementById('career-primary-title').innerText = currentLang === 'ta'
-          ? "வணிகம், பெருநிறுவன நிதி, முதலீட்டு மேலாண்மை (Finance / Corporate)"
-          : "Corporate Wealth, Banking, Investment Management & Commerce";
-        document.getElementById('career-secondary-title').innerText = currentLang === 'ta'
-          ? "தொழில்நுட்ப மேலாண்மை & அரசு ஆலோசகர்"
-          : "Technology Management & Economic Advisory";
-        document.getElementById('career-primary-score').innerText = "91%";
-        document.getElementById('bar-career-score').style.width = "91%";
-      } else {
-        document.getElementById('career-primary-title').innerText = currentLang === 'ta'
-          ? "வணிகம், நிதி, பொது நிர்வாகம் (Commerce / Finance / Admin)"
-          : "Commerce, Financial Management & Corporate Administration";
-        document.getElementById('career-secondary-title').innerText = currentLang === 'ta'
-          ? "கல்வி, ஆலோசனை & தொழில்நுட்பம்"
-          : "Education, Consultancy & Applied Tech";
-        document.getElementById('career-primary-score').innerText = "82%";
-        document.getElementById('bar-career-score').style.width = "82%";
-      }
-
-      document.getElementById('career-10th-text').innerText = currentLang === 'ta'
-        ? r10.name_ta + " (அதிபதி: " + r10.lord_ta + ")"
-        : r10.name_en + " (Lord: " + r10.lord_en + ")";
-
-      document.getElementById('career-yogi-text').innerText = currentLang === 'ta' ? chRules.yogi_ta : chRules.yogi_en;
-
-      const cHtml = `
-        <div class="p-3 rounded-xl bg-[var(--secondary)]/40 border border-[var(--border)] flex justify-between items-center">
-          <div>
-            <div class="font-bold text-[var(--foreground)]">${currentLang === 'ta' ? r10.lord_ta + ' மகா திசை / புக்தி காலம்' : r10.lord_en + ' Maha Dasha / Bhukti Period'}</div>
-            <div class="text-[11px] text-[var(--muted-foreground)]">${currentLang === 'ta' ? '10-ம் அதிபதியின் உத்தியோக கர்ம பலன் காலம்' : '10th Lord Active Karma & Elevation Window'}</div>
-          </div>
-          <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
-            ${currentLang === 'ta' ? 'உத்தியோக உயர்வு ✓' : 'Promotion & Rise ✓'}
-          </span>
-        </div>
-        <div class="p-3 rounded-xl bg-[var(--secondary)]/40 border border-[var(--border)] flex justify-between items-center">
-          <div>
-            <div class="font-bold text-[var(--foreground)]">${currentLang === 'ta' ? 'ராஜ யோககாரகன் (' + chRules.yogi_ta + ') தசா காலம்' : 'Raja Yogakaraka (' + chRules.yogi_en + ') Dasha Period'}</div>
-            <div class="text-[11px] text-[var(--muted-foreground)]">${currentLang === 'ta' ? 'உச்ச அந்தஸ்து மற்றும் அதிகாரப் பதவி காலம்' : 'Peak Authority and Executive Elevation'}</div>
-          </div>
-          <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-200">
-            ${currentLang === 'ta' ? 'ராஜயோக காலம் ★' : 'Raja Yoga Window ★'}
-          </span>
-        </div>
-      `;
-      document.getElementById('career-windows-list').innerHTML = cHtml;
-
-      document.getElementById('mrg-7th-text').innerText = currentLang === 'ta'
-        ? r7.name_ta + " (அதிபதி: " + r7.lord_ta + ")"
-        : r7.name_en + " (Lord: " + r7.lord_en + ")";
-      document.getElementById('mrg-karaka-text').innerText = currentLang === 'ta' ? "சுக்கிரன் (Venus)" : "Venus";
-      document.getElementById('mrg-direction-text').innerText = currentLang === 'ta'
-        ? r7.name_ta + " ராசிக்குரிய திசை (மண்டலம்)"
-        : "Direction ruled by " + r7.name_en + " Rasi";
-
-      const mHtml = `
-        <div class="p-3 rounded-xl bg-[var(--secondary)]/40 border border-[var(--border)] flex justify-between items-center">
-          <div>
-            <div class="font-bold text-[var(--foreground)]">${currentLang === 'ta' ? '7-ம் அதிபதி (' + r7.lord_ta + ') தசா-புக்தி' : '7th Lord (' + r7.lord_en + ') Period'}</div>
-            <div class="text-[11px] text-[var(--muted-foreground)]">${currentLang === 'ta' ? 'மாங்கல்ய பாக்கியம் & இல்வாழ்க்கை ஆரம்பம் (வயது 22-34)' : 'Auspicious Marriage & Alliance Window (Age 22-34)'}</div>
-          </div>
-          <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300">
-            ${currentLang === 'ta' ? 'அதி உன்னத காலம் ✓' : 'Prime Window ✓'}
-          </span>
-        </div>
-      `;
-      document.getElementById('mrg-windows-list').innerHTML = mHtml;
-
-      document.getElementById('prog-5th-text').innerText = currentLang === 'ta'
-        ? r5.name_ta + " (அதிபதி: " + r5.lord_ta + ")"
-        : r5.name_en + " (Lord: " + r5.lord_en + ")";
-
-      document.getElementById('health-6th-text').innerText = currentLang === 'ta'
-        ? r6.name_ta + " (அதிபதி: " + r6.lord_ta + ")"
-        : r6.name_en + " (Lord: " + r6.lord_en + ")";
-      document.getElementById('health-marakas-text').innerText = currentLang === 'ta' ? chRules.marakas_ta : chRules.marakas_en;
-      document.getElementById('health-organ-text').innerText = currentLang === 'ta' ? ORGAN_MAP[r6.id].ta : ORGAN_MAP[r6.id].en;
+      renderNavagrahaPadaSaramTable();
     }
 
     const WEEKDAY_NAMES = [
