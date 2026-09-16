@@ -227,6 +227,81 @@
 </head>
 <body class="antialiased min-h-screen flex flex-col justify-between p-3 sm:p-6 relative selection:bg-amber-500/30 selection:text-amber-200">
 
+  <!-- ========================================================================= -->
+  <!-- GOOGLE (GMAIL) AUTHENTICATION GATE MODAL (NON-DISMISSIBLE)                -->
+  <!-- ========================================================================= -->
+  <div id="auth-gate-modal" class="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/90 backdrop-blur-md transition-opacity duration-300">
+    <div class="relative w-full max-w-md vedi-card rounded-2xl p-6 sm:p-8 shadow-2xl border border-amber-500/40 text-center space-y-5 overflow-hidden">
+      
+      <!-- Subtle Decorative Golden Glow -->
+      <div class="absolute -top-16 -left-16 w-36 h-36 bg-amber-500/20 rounded-full blur-2xl pointer-events-none"></div>
+      <div class="absolute -bottom-16 -right-16 w-36 h-36 bg-purple-500/20 rounded-full blur-2xl pointer-events-none"></div>
+
+      <!-- Sacred Icon -->
+      <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-amber-500/20 to-amber-700/20 border border-amber-500/40 flex items-center justify-center text-3xl shadow-lg">
+        🕉️
+      </div>
+
+      <!-- Modal Titles -->
+      <div class="space-y-2">
+        <h2 class="text-xl sm:text-2xl font-black font-serif text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-200 tracking-wide" id="auth-title">
+          திருக்கணித பஞ்சாங்க ஆய்வு தளம்
+        </h2>
+        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-semibold" id="auth-badge">
+          ✨ தொடர உள்நுழைவு அவசியம் (Sign-in Required)
+        </div>
+        <p class="text-xs sm:text-sm text-slate-300 pt-1 leading-relaxed" id="auth-subtitle">
+          இத்தளத்தின் திருக்கணித ஜாதகக் கணிதம், நவகிரக பாதசாரம் மற்றும் பஞ்சாங்க விபரங்களைப் பெற உங்கள் Google (Gmail) கணக்கு மூலம் உள்நுழையவும்.
+        </p>
+      </div>
+
+      <!-- Core Action: Sign in with Google Button -->
+      <div class="space-y-3 pt-1">
+        <button type="button" onclick="loginWithGoogleInteractive()" id="btn-google-signin" class="w-full py-3.5 px-4 rounded-xl bg-white hover:bg-slate-100 text-slate-800 font-bold text-sm shadow-xl hover:shadow-amber-500/20 transition cursor-pointer flex items-center justify-center gap-3 active:scale-[0.99]">
+          <svg class="w-5 h-5 flex-shrink-0" viewBox="0 0 48 48">
+            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+          </svg>
+          <span id="lbl-btn-google" class="text-slate-800 font-semibold text-sm">Sign in with Google / Google மூலம் உள்நுழைக</span>
+        </button>
+
+        <!-- Divider -->
+        <div class="relative flex py-1.5 items-center">
+          <div class="flex-grow border-t border-amber-500/20"></div>
+          <span class="flex-shrink mx-3 text-xs text-slate-400 font-medium" id="lbl-auth-or">அல்லது (Or)</span>
+          <div class="flex-grow border-t border-amber-500/20"></div>
+        </div>
+
+        <!-- Direct Gmail Entry Form -->
+        <div class="space-y-2.5 text-left">
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1" id="lbl-auth-email">Gmail முகவரி (Email Address):</label>
+            <input type="email" id="auth-input-email" placeholder="பெயர்@gmail.com (e.g. suresh@gmail.com)"
+              class="w-full bg-black/60 border border-amber-500/30 text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 font-medium">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1" id="lbl-auth-name">ஜாதகர் பெயர் (Your Name) - விருப்பத்தேர்வு:</label>
+            <input type="text" id="auth-input-name" placeholder="சு. சுரேஷ்குமார் (Suresh Kumar)"
+              class="w-full bg-black/60 border border-amber-500/30 text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 font-medium">
+          </div>
+          <button type="button" onclick="loginWithGmailDirect()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white font-bold text-xs shadow-md transition cursor-pointer flex items-center justify-center gap-1.5" id="btn-auth-direct">
+            <span>✉️</span> <span id="lbl-btn-direct">Gmail மூலம் தொடர்க (Continue with Gmail)</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Trust Note -->
+      <div class="text-[11px] text-slate-400 flex items-center justify-center gap-1.5 pt-1 border-t border-amber-500/15" id="auth-trust-note">
+        <span>🔒</span>
+        <span>பாதுகாப்பானது • No Spam • உங்கள் கணக்கு விபரங்கள் தனிப்பட்டவை</span>
+      </div>
+
+    </div>
+  </div>
+
+
   <!-- Ambient Cosmic Starfield Background SVG -->
   <div class="fixed inset-0 pointer-events-none z-0 opacity-30 star-twinkle" style="background-image: radial-gradient(2px 2px at 20px 30px, #ffffff, rgba(0,0,0,0)), radial-gradient(2px 2px at 90px 140px, #fde047, rgba(0,0,0,0)), radial-gradient(1.5px 1.5px at 150px 70px, #e2e8f0, rgba(0,0,0,0)), radial-gradient(2px 2px at 220px 240px, #f59e0b, rgba(0,0,0,0)), radial-gradient(1.5px 1.5px at 320px 180px, #ffffff, rgba(0,0,0,0)), radial-gradient(2px 2px at 420px 80px, #93c5fd, rgba(0,0,0,0)); background-size: 500px 500px;"></div>
 
@@ -1665,6 +1740,19 @@
         logoutConfirm: "கணக்கிலிருந்து வெளியேற விரும்புகிறீர்களா?",
         alertEnterGmail: "தயவுசெய்து உங்கள் Gmail முகவரியை உள்ளிடவும்.",
         alertValidGmail: "சரியான மின்னஞ்சல் முகவரியை உள்ளிடவும் (e.g. name@gmail.com).",
+        authTitle: "திருக்கணித பஞ்சாங்க ஆய்வு தளம்",
+        authBadge: "✨ தொடர உள்நுழைவு அவசியம் (Sign-in Required)",
+        authSubtitle: "இத்தளத்தின் திருக்கணித ஜாதகக் கணிதம், நவகிரக பாதசாரம் மற்றும் பஞ்சாங்க விபரங்களைப் பெற உங்கள் Google (Gmail) கணக்கு மூலம் உள்நுழையவும்.",
+        lblBtnGoogle: "Sign in with Google / Google மூலம் உள்நுழைக",
+        lblAuthOr: "அல்லது (Or)",
+        lblAuthEmail: "Gmail முகவரி (Email Address):",
+        lblAuthName: "ஜாதகர் பெயர் (Your Name) - விருப்பத்தேர்வு:",
+        lblBtnDirect: "Gmail மூலம் தொடர்க (Continue with Gmail)",
+        authTrustNote: "🔒 பாதுகாப்பானது • No Spam • உங்கள் கணக்கு விபரங்கள் தனிப்பட்டவை",
+        btnLogout: "வெளியேறு (Logout)",
+        logoutConfirm: "கணக்கிலிருந்து வெளியேற விரும்புகிறீர்களா?",
+        alertEnterGmail: "தயவுசெய்து உங்கள் Gmail முகவரியை உள்ளிடவும்.",
+        alertValidGmail: "சரியான மின்னஞ்சல் முகவரியை உள்ளிடவும் (e.g. name@gmail.com).",
       },
       en: {
         sagesBlessing: "Sacred Thirukkanitha Panchangam System Blessed by Maharishi Parashara, Vararuchi & Varahamihira",
@@ -1718,6 +1806,19 @@
         tabMarriage: "2. Marriage & Compatibility",
         tabProgeny: "3. Progeny & Children",
         tabHealth: "4. Health & Longevity",
+        authTitle: "Thirukkanitha Panchangam Portal",
+        authBadge: "✨ Sign-in Required to Access",
+        authSubtitle: "Please sign in with your Google (Gmail) account to access horoscope calculations, Navagraha Pada Saram, and daily panchangam.",
+        lblBtnGoogle: "Sign in with Google",
+        lblAuthOr: "Or Continue with Gmail",
+        lblAuthEmail: "Gmail Address:",
+        lblAuthName: "Your Name (Optional):",
+        lblBtnDirect: "Continue with Gmail",
+        authTrustNote: "🔒 Safe & Secure • No Spam • Your privacy is guaranteed",
+        btnLogout: "Logout",
+        logoutConfirm: "Are you sure you want to log out?",
+        alertEnterGmail: "Please enter your Gmail address.",
+        alertValidGmail: "Please enter a valid email address (e.g. name@gmail.com).",
         authTitle: "Thirukkanitha Panchangam Portal",
         authBadge: "✨ Sign-in Required to Access",
         authSubtitle: "Please sign in with your Google (Gmail) account to access horoscope calculations, Navagraha Pada Saram, and daily panchangam.",
@@ -2168,6 +2269,7 @@
       initUserAuth();
     }
 
+    
     function populateCityDropdown() {
       const pobSel = document.getElementById('in-pob');
       if (!pobSel) return;
@@ -2374,6 +2476,18 @@
       if (document.getElementById('leg-lagna')) document.getElementById('leg-lagna').innerText = t.legLagna;
       if (document.getElementById('leg-exalted')) document.getElementById('leg-exalted').innerText = t.legExalted;
       if (document.getElementById('leg-vargottama')) document.getElementById('leg-vargottama').innerText = t.legVargottama;
+
+      if (document.getElementById('auth-title')) document.getElementById('auth-title').innerText = t.authTitle;
+      if (document.getElementById('auth-badge')) document.getElementById('auth-badge').innerText = t.authBadge;
+      if (document.getElementById('auth-subtitle')) document.getElementById('auth-subtitle').innerText = t.authSubtitle;
+      if (document.getElementById('lbl-btn-google')) document.getElementById('lbl-btn-google').innerText = t.lblBtnGoogle;
+      if (document.getElementById('lbl-auth-or')) document.getElementById('lbl-auth-or').innerText = t.lblAuthOr;
+      if (document.getElementById('lbl-auth-email')) document.getElementById('lbl-auth-email').innerText = t.lblAuthEmail;
+      if (document.getElementById('lbl-auth-name')) document.getElementById('lbl-auth-name').innerText = t.lblAuthName;
+      if (document.getElementById('lbl-btn-direct')) document.getElementById('lbl-btn-direct').innerText = t.lblBtnDirect;
+      if (document.getElementById('auth-trust-note')) document.getElementById('auth-trust-note').innerHTML = '<span>🔒</span> <span>' + t.authTrustNote.replace('🔒 ', '') + '</span>';
+      if (document.getElementById('btn-logout')) document.getElementById('btn-logout').innerText = t.btnLogout;
+
 
       if (document.getElementById('auth-title')) document.getElementById('auth-title').innerText = t.authTitle;
       if (document.getElementById('auth-badge')) document.getElementById('auth-badge').innerText = t.authBadge;
@@ -3254,6 +3368,7 @@
       document.getElementById('p-soolai-pari').innerText = currentLang === 'ta' ? soolai.pari_ta : soolai.pari_en;
     }
 
+    initUserAuth();
     initUserAuth();
     populateCityDropdown();
     runPanchangamCalculations();
