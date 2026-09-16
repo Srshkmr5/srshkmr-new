@@ -223,6 +223,7 @@
       animation: warningShake 0.4s ease-in-out !important;
     }
   </style>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body class="antialiased min-h-screen flex flex-col justify-between p-3 sm:p-6 relative selection:bg-amber-500/30 selection:text-amber-200">
 
@@ -252,14 +253,27 @@
         <span id="txt-sages-blessing" class="font-medium tracking-wide">மஹரிஷி பராசரர் • வரருசி முனிவர் • வராஹமிஹிரர் அருளாசி பெற்ற கணித முறைமை</span>
       </div>
       
-      <!-- Language Controls -->
-      <div class="flex items-center gap-2">
-        <button onclick="setLanguage('ta')" id="btn-lang-ta" class="px-3 py-1 rounded-lg text-xs font-bold gold-btn transition">
-          தமிழ்
-        </button>
-        <button onclick="setLanguage('en')" id="btn-lang-en" class="px-3 py-1 rounded-lg text-xs font-bold text-slate-300 hover:text-white bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700 transition">
-          English
-        </button>
+      <!-- User Session & Language Controls -->
+      <div class="flex items-center gap-2 flex-wrap justify-end">
+        <!-- User Profile Pill (Visible when logged in) -->
+        <div id="user-session-bar" class="hidden items-center gap-2 px-3 py-1 rounded-lg bg-amber-500/15 border border-amber-500/30 text-xs">
+          <span class="text-amber-400">👤</span>
+          <span id="user-session-name" class="font-bold text-amber-200"></span>
+          <span class="text-amber-500/50">•</span>
+          <button type="button" onclick="logoutUser()" class="text-rose-400 hover:text-rose-300 font-bold transition cursor-pointer text-xs" title="Logout" id="btn-logout">
+            வெளியேறு (Logout)
+          </button>
+        </div>
+
+        <!-- Language Controls -->
+        <div class="flex items-center gap-1">
+          <button onclick="setLanguage('ta')" id="btn-lang-ta" class="px-3 py-1 rounded-lg text-xs font-bold gold-btn transition">
+            தமிழ்
+          </button>
+          <button onclick="setLanguage('en')" id="btn-lang-en" class="px-3 py-1 rounded-lg text-xs font-bold text-slate-300 hover:text-white bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700 transition">
+            English
+          </button>
+        </div>
       </div>
     </div>
 
@@ -1637,7 +1651,20 @@
         tabCareer: "1. உத்தியோகம் & தொழில்",
         tabMarriage: "2. திருமணம் & வரன்",
         tabProgeny: "3. புத்திர பாக்கியம்",
-        tabHealth: "4. ஆரோக்கியம் & ஆயுள்"
+        tabHealth: "4. ஆரோக்கியம் & ஆயுள்",
+        authTitle: "திருக்கணித பஞ்சாங்க ஆய்வு தளம்",
+        authBadge: "✨ தொடர உள்நுழைவு அவசியம் (Sign-in Required)",
+        authSubtitle: "இத்தளத்தின் திருக்கணித ஜாதகக் கணிதம், நவகிரக பாதசாரம் மற்றும் பஞ்சாங்க விபரங்களைப் பெற உங்கள் Google (Gmail) கணக்கு மூலம் உள்நுழையவும்.",
+        lblBtnGoogle: "Sign in with Google / Google மூலம் உள்நுழைக",
+        lblAuthOr: "அல்லது (Or)",
+        lblAuthEmail: "Gmail முகவரி (Email Address):",
+        lblAuthName: "ஜாதகர் பெயர் (Your Name) - விருப்பத்தேர்வு:",
+        lblBtnDirect: "Gmail மூலம் தொடர்க (Continue with Gmail)",
+        authTrustNote: "🔒 பாதுகாப்பானது • No Spam • உங்கள் கணக்கு விபரங்கள் தனிப்பட்டவை",
+        btnLogout: "வெளியேறு (Logout)",
+        logoutConfirm: "கணக்கிலிருந்து வெளியேற விரும்புகிறீர்களா?",
+        alertEnterGmail: "தயவுசெய்து உங்கள் Gmail முகவரியை உள்ளிடவும்.",
+        alertValidGmail: "சரியான மின்னஞ்சல் முகவரியை உள்ளிடவும் (e.g. name@gmail.com).",
       },
       en: {
         sagesBlessing: "Sacred Thirukkanitha Panchangam System Blessed by Maharishi Parashara, Vararuchi & Varahamihira",
@@ -1690,7 +1717,20 @@
         tabCareer: "1. Career & Profession",
         tabMarriage: "2. Marriage & Compatibility",
         tabProgeny: "3. Progeny & Children",
-        tabHealth: "4. Health & Longevity"
+        tabHealth: "4. Health & Longevity",
+        authTitle: "Thirukkanitha Panchangam Portal",
+        authBadge: "✨ Sign-in Required to Access",
+        authSubtitle: "Please sign in with your Google (Gmail) account to access horoscope calculations, Navagraha Pada Saram, and daily panchangam.",
+        lblBtnGoogle: "Sign in with Google",
+        lblAuthOr: "Or Continue with Gmail",
+        lblAuthEmail: "Gmail Address:",
+        lblAuthName: "Your Name (Optional):",
+        lblBtnDirect: "Continue with Gmail",
+        authTrustNote: "🔒 Safe & Secure • No Spam • Your privacy is guaranteed",
+        btnLogout: "Logout",
+        logoutConfirm: "Are you sure you want to log out?",
+        alertEnterGmail: "Please enter your Gmail address.",
+        alertValidGmail: "Please enter a valid email address (e.g. name@gmail.com).",
       }
     };
 
@@ -2000,6 +2040,134 @@
       };
     }
 
+    
+    // =========================================================================
+    // GOOGLE (GMAIL) AUTHENTICATION GATE CONTROLLER
+    // =========================================================================
+    const AUTH_STORAGE_KEY = 'thirukkanitha_user_session';
+    let currentUserSession = null;
+
+    function getStoredUserSession() {
+      try {
+        const raw = localStorage.getItem(AUTH_STORAGE_KEY);
+        if (!raw) return null;
+        return JSON.parse(raw);
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function initUserAuth() {
+      currentUserSession = getStoredUserSession();
+      const modal = document.getElementById('auth-gate-modal');
+      const sessionBar = document.getElementById('user-session-bar');
+      const sessionName = document.getElementById('user-session-name');
+
+      if (currentUserSession && currentUserSession.email) {
+        // Authenticated: hide gate and show user pill
+        if (modal) modal.classList.add('hidden');
+        if (sessionBar) {
+          sessionBar.classList.remove('hidden');
+          sessionBar.classList.add('flex');
+        }
+        if (sessionName) {
+          const dispName = currentUserSession.name || currentUserSession.email.split('@')[0];
+          sessionName.innerText = dispName;
+        }
+
+        // Auto-fill Name field in horoscope form if currently empty
+        const nameInput = document.getElementById('in-name');
+        if (nameInput && !nameInput.value.trim() && currentUserSession.name) {
+          nameInput.value = currentUserSession.name;
+        }
+      } else {
+        // Unauthenticated: enforce gate
+        if (modal) modal.classList.remove('hidden');
+        if (sessionBar) {
+          sessionBar.classList.add('hidden');
+          sessionBar.classList.remove('flex');
+        }
+      }
+    }
+
+    function saveUserSession(userObj) {
+      currentUserSession = {
+        email: userObj.email,
+        name: userObj.name || userObj.email.split('@')[0],
+        picture: userObj.picture || '',
+        signedInAt: Date.now()
+      };
+      try {
+        localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(currentUserSession));
+      } catch (e) {}
+
+      initUserAuth();
+    }
+
+    function loginWithGoogleInteractive() {
+      // Interactive Google Sign-In
+      const promptEmail = prompt(
+        currentLang === 'ta'
+          ? "உங்கள் Google Gmail முகவரியை உள்ளிடவும் (Enter your Gmail address):"
+          : "Enter your Google Gmail address:",
+        "suresh@gmail.com"
+      );
+      if (!promptEmail || !promptEmail.trim()) {
+        alert(currentLang === 'ta'
+          ? "தொடர Google (Gmail) உள்நுழைவு அவசியம்."
+          : "Google (Gmail) sign-in is required to continue.");
+        return;
+      }
+
+      const emailClean = promptEmail.trim();
+      const defaultName = emailClean.split('@')[0];
+      const promptName = prompt(
+        currentLang === 'ta'
+          ? "உங்கள் பெயரை உள்ளிடவும் (Enter your Name):"
+          : "Enter your name:",
+        defaultName
+      ) || defaultName;
+
+      saveUserSession({ email: emailClean, name: promptName.trim() });
+    }
+
+    function loginWithGmailDirect() {
+      const emailEl = document.getElementById('auth-input-email');
+      const nameEl = document.getElementById('auth-input-name');
+      const email = emailEl ? emailEl.value.trim() : '';
+      const name = nameEl ? nameEl.value.trim() : '';
+
+      if (!email) {
+        alert(currentLang === 'ta'
+          ? "தயவுசெய்து உங்கள் Gmail முகவரியை உள்ளிடவும்."
+          : "Please enter your Gmail address.");
+        if (emailEl) emailEl.focus();
+        return;
+      }
+
+      if (!email.includes('@')) {
+        alert(currentLang === 'ta'
+          ? "சரியான மின்னஞ்சல் முகவரியை உள்ளிடவும் (e.g. name@gmail.com)."
+          : "Please enter a valid email address (e.g. name@gmail.com).");
+        if (emailEl) emailEl.focus();
+        return;
+      }
+
+      saveUserSession({ email: email, name: name || email.split('@')[0] });
+    }
+
+    function logoutUser() {
+      const t = I18N[currentLang] || I18N.ta;
+      const confirmLogout = confirm(t.logoutConfirm || "கணக்கிலிருந்து வெளியேற விரும்புகிறீர்களா?");
+      if (!confirmLogout) return;
+
+      try {
+        localStorage.removeItem(AUTH_STORAGE_KEY);
+      } catch (e) {}
+      currentUserSession = null;
+      initUserAuth();
+    }
+
     function populateCityDropdown() {
       const pobSel = document.getElementById('in-pob');
       if (!pobSel) return;
@@ -2206,6 +2374,18 @@
       if (document.getElementById('leg-lagna')) document.getElementById('leg-lagna').innerText = t.legLagna;
       if (document.getElementById('leg-exalted')) document.getElementById('leg-exalted').innerText = t.legExalted;
       if (document.getElementById('leg-vargottama')) document.getElementById('leg-vargottama').innerText = t.legVargottama;
+
+      if (document.getElementById('auth-title')) document.getElementById('auth-title').innerText = t.authTitle;
+      if (document.getElementById('auth-badge')) document.getElementById('auth-badge').innerText = t.authBadge;
+      if (document.getElementById('auth-subtitle')) document.getElementById('auth-subtitle').innerText = t.authSubtitle;
+      if (document.getElementById('lbl-btn-google')) document.getElementById('lbl-btn-google').innerText = t.lblBtnGoogle;
+      if (document.getElementById('lbl-auth-or')) document.getElementById('lbl-auth-or').innerText = t.lblAuthOr;
+      if (document.getElementById('lbl-auth-email')) document.getElementById('lbl-auth-email').innerText = t.lblAuthEmail;
+      if (document.getElementById('lbl-auth-name')) document.getElementById('lbl-auth-name').innerText = t.lblAuthName;
+      if (document.getElementById('lbl-btn-direct')) document.getElementById('lbl-btn-direct').innerText = t.lblBtnDirect;
+      if (document.getElementById('auth-trust-note')) document.getElementById('auth-trust-note').innerHTML = '<span>🔒</span> <span>' + t.authTrustNote.replace('🔒 ', '') + '</span>';
+      if (document.getElementById('btn-logout')) document.getElementById('btn-logout').innerText = t.btnLogout;
+
 
       updateCityDropdownLanguage();
 
@@ -3074,6 +3254,7 @@
       document.getElementById('p-soolai-pari').innerText = currentLang === 'ta' ? soolai.pari_ta : soolai.pari_en;
     }
 
+    initUserAuth();
     populateCityDropdown();
     runPanchangamCalculations();
 
